@@ -4,8 +4,6 @@ iOS 风格 + Y2K 拼贴的猫咪档案 App。App 本身仍是单文件 HTML；�
 
 整个项目都保存在 `meow-system/` 文件夹里，不会和其他文件混在一起。
 
-需求规格：[REQUIREMENTS.md](REQUIREMENTS.md)
-
 ![首页](screens/home-light.png)
 
 ## 推荐：用本地服务打开

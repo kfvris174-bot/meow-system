@@ -1,0 +1,6534 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c1128">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="喵档">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231e3bdb'/%3E%3Cpath d='M14 20l5 9h26l5-9 2 30H12z' fill='%23fbf4e5'/%3E%3Crect x='24' y='32' width='4' height='3' fill='%23171c3a'/%3E%3Crect x='36' y='32' width='4' height='3' fill='%23171c3a'/%3E%3Cpath d='M30 39h4l-2 3z' fill='%23b23a4b'/%3E%3C/svg%3E">
+  <title>喵档 · MEOW SYSTEM</title>
+  <style>
+/* =========================================================
+   MEOW SYSTEM — single-file cat care app
+   Y2K collage / iOS structure
+   ========================================================= */
+
+:root {
+  --font-ui: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "SFMono-Regular", "SF Mono", Menlo, Monaco, "Courier New", monospace;
+
+  --bg: #f1e7d5;
+  --bg-2: #e6d8c0;
+  --paper: #fbf4e5;
+  --paper-2: #fffaf0;
+  --paper-3: #f5ead5;
+  --ink: #171c3a;
+  --ink-2: #454b69;
+  --ink-3: #7c8095;
+  --line: #1b2142;
+  --line-soft: rgba(27, 33, 66, 0.17);
+  --line-softer: rgba(27, 33, 66, 0.09);
+
+  --blue: #1e3bdb;
+  --blue-2: #4b66ff;
+  --blue-deep: #0c1f7a;
+  --red: #b23a4b;
+  --red-2: #d45a68;
+  --pink: #e7a6a2;
+  --green: #5d8d67;
+  --gold: #d4b45f;
+  --lav: #a793c9;
+  --white: #fffaf0;
+
+  --tone-overdue-bg: #f2c5c9;
+  --tone-overdue-ink: #7b1928;
+  --tone-today-bg: #f2d79f;
+  --tone-today-ink: #684506;
+  --tone-soon-bg: #dce5bd;
+  --tone-soon-ink: #3f5220;
+  --tone-later-bg: #e9e0cf;
+  --tone-later-ink: #5d584b;
+  --tone-plan-bg: #dfd4ee;
+  --tone-plan-ink: #49376a;
+
+  --shadow: 4px 4px 0 rgba(27, 33, 66, 0.13);
+  --shadow-strong: 6px 6px 0 rgba(27, 33, 66, 0.2);
+  --shadow-phone: 0 34px 90px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.16);
+
+  --status-bg: #0a0f26;
+  --status-ink: #f2e8d4;
+  --status-soft: #8790b8;
+  --tab-bg: rgba(251, 244, 229, 0.91);
+  --tab-line: rgba(27, 33, 66, 0.16);
+
+  --chrome: linear-gradient(135deg,
+      #ffffff 0%,
+      #dfe5f4 12%,
+      #94a1c2 27%,
+      #5c688d 40%,
+      #f7f9ff 51%,
+      #a9b5d3 63%,
+      #eef2fd 72%,
+      #5a668b 88%,
+      #c3cce2 100%);
+
+  --rainbow: repeating-linear-gradient(90deg,
+      #b23a4b 0 6px,
+      #d18047 6px 12px,
+      #d7bf5d 12px 18px,
+      #6d9870 18px 24px,
+      #405fd6 24px 30px,
+      #8c6ab4 30px 36px);
+
+  --radius: 22px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0c1128;
+  --bg-2: #111735;
+  --paper: #151b38;
+  --paper-2: #1b2243;
+  --paper-3: #121833;
+  --ink: #f2e9d8;
+  --ink-2: #c3c8dc;
+  --ink-3: #8d94b4;
+  --line: #e4dccb;
+  --line-soft: rgba(228, 220, 203, 0.2);
+  --line-softer: rgba(228, 220, 203, 0.1);
+
+  --blue: #536dff;
+  --blue-2: #7f92ff;
+  --blue-deep: #16267f;
+  --red: #e07482;
+  --red-2: #f08a96;
+  --pink: #eab3ae;
+  --green: #88b48e;
+  --gold: #e0c675;
+  --lav: #b8a7d6;
+  --white: #fffaf0;
+
+  --tone-overdue-bg: #652a39;
+  --tone-overdue-ink: #ffd9dd;
+  --tone-today-bg: #614c22;
+  --tone-today-ink: #ffe8b5;
+  --tone-soon-bg: #3e4d2b;
+  --tone-soon-ink: #e6f0c8;
+  --tone-later-bg: #303650;
+  --tone-later-ink: #d5d8e6;
+  --tone-plan-bg: #403456;
+  --tone-plan-ink: #e9dffa;
+
+  --shadow: 4px 4px 0 rgba(0, 0, 0, 0.36);
+  --shadow-strong: 6px 6px 0 rgba(0, 0, 0, 0.44);
+  --tab-bg: rgba(12, 17, 40, 0.9);
+  --tab-line: rgba(228, 220, 203, 0.16);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1128;
+    --bg-2: #111735;
+    --paper: #151b38;
+    --paper-2: #1b2243;
+    --paper-3: #121833;
+    --ink: #f2e9d8;
+    --ink-2: #c3c8dc;
+    --ink-3: #8d94b4;
+    --line: #e4dccb;
+    --line-soft: rgba(228, 220, 203, 0.2);
+    --line-softer: rgba(228, 220, 203, 0.1);
+
+    --blue: #536dff;
+    --blue-2: #7f92ff;
+    --blue-deep: #16267f;
+    --red: #e07482;
+    --red-2: #f08a96;
+    --pink: #eab3ae;
+    --green: #88b48e;
+    --gold: #e0c675;
+    --lav: #b8a7d6;
+
+    --tone-overdue-bg: #652a39;
+    --tone-overdue-ink: #ffd9dd;
+    --tone-today-bg: #614c22;
+    --tone-today-ink: #ffe8b5;
+    --tone-soon-bg: #3e4d2b;
+    --tone-soon-ink: #e6f0c8;
+    --tone-later-bg: #303650;
+    --tone-later-ink: #d5d8e6;
+    --tone-plan-bg: #403456;
+    --tone-plan-ink: #e9dffa;
+
+    --shadow: 4px 4px 0 rgba(0, 0, 0, 0.36);
+    --shadow-strong: 6px 6px 0 rgba(0, 0, 0, 0.44);
+    --tab-bg: rgba(12, 17, 40, 0.9);
+    --tab-line: rgba(228, 220, 203, 0.16);
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  background: #070b1a;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  background: #070b1a;
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  overscroll-behavior: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--blue-2);
+  outline-offset: 2px;
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+svg {
+  display: block;
+}
+
+::selection {
+  background: var(--blue);
+  color: #fff;
+}
+
+/* ---------- desktop moodboard ---------- */
+
+.scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(35, 53, 125, 0.24), transparent 45%),
+    #070b1a;
+  z-index: 0;
+}
+
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.34) 0 1px, transparent 1px 4px);
+  opacity: 0.65;
+}
+
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 0.7px, transparent 0.8px);
+  background-size: 5px 5px;
+  opacity: 0.35;
+  mix-blend-mode: screen;
+}
+
+.scene-rainbow {
+  position: absolute;
+  top: -12%;
+  left: 4%;
+  width: 180px;
+  height: 126%;
+  background: var(--rainbow);
+  opacity: 0.66;
+  transform: rotate(7deg);
+  filter: saturate(0.9);
+}
+
+.scene-rainbow.second {
+  left: auto;
+  right: 2%;
+  width: 76px;
+  opacity: 0.32;
+  transform: rotate(-4deg);
+}
+
+.scene-star {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: var(--chrome);
+  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  filter: drop-shadow(5px 6px 0 rgba(0, 0, 0, 0.48));
+}
+
+.scene-star.s1 { left: 12%; top: 13%; width: 96px; height: 96px; transform: rotate(11deg); }
+.scene-star.s2 { right: 10%; top: 9%; width: 68px; height: 68px; transform: rotate(-18deg); }
+.scene-star.s3 { left: 17%; bottom: 15%; width: 52px; height: 52px; transform: rotate(25deg); opacity: 0.9; }
+.scene-star.s4 { right: 17%; bottom: 22%; width: 110px; height: 110px; transform: rotate(8deg); opacity: 0.82; }
+
+.scene-bubble {
+  position: absolute;
+  left: 8%;
+  top: 30%;
+  width: 230px;
+  padding: 18px 20px;
+  background: #fbf4e5;
+  color: #1e3bdb;
+  border: 2px solid #0a0f26;
+  border-radius: 4px;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.45);
+  transform: rotate(-6deg);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.04em;
+}
+
+.scene-bubble::after {
+  content: "";
+  position: absolute;
+  right: 28px;
+  bottom: -18px;
+  width: 30px;
+  height: 30px;
+  background: #fbf4e5;
+  border-right: 2px solid #0a0f26;
+  border-bottom: 2px solid #0a0f26;
+  transform: rotate(45deg);
+}
+
+.scene-bubble small {
+  display: block;
+  margin-bottom: 7px;
+  color: #b23a4b;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+}
+
+.scene-system {
+  position: absolute;
+  right: 7%;
+  bottom: 10%;
+  width: 242px;
+  padding: 16px;
+  background: #1e3bdb;
+  border: 2px solid #e9dfcb;
+  color: #fff;
+  transform: rotate(3deg);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.42);
+  font-family: var(--font-mono);
+  overflow: hidden;
+}
+
+.scene-system::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 3px);
+}
+
+.scene-system > * {
+  position: relative;
+}
+
+.scene-system .sys-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: #c8d2ff;
+}
+
+.scene-system strong {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-ui);
+  font-size: 26px;
+  letter-spacing: -0.07em;
+}
+
+.scene-system p {
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: #d8e0ff;
+}
+
+.scene-cat {
+  position: absolute;
+  right: 8%;
+  top: 30%;
+  width: 126px;
+  height: 126px;
+  padding: 9px;
+  background: #1e3bdb;
+  border: 2px solid #f1e7d5;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.45);
+  transform: rotate(7deg);
+  overflow: hidden;
+}
+
+.scene-cat::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px);
+}
+
+.scene-cat svg {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.scene-label {
+  position: absolute;
+  left: 11%;
+  bottom: 11%;
+  color: #8d95ba;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  writing-mode: vertical-rl;
+}
+
+.scene-note {
+  position: absolute;
+  left: 7%;
+  top: 8%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cfd5ee;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.scene-note::before {
+  content: "";
+  width: 30px;
+  height: 4px;
+  background: var(--rainbow);
+}
+
+/* ---------- phone shell ---------- */
+
+.phone-shell {
+  position: relative;
+  z-index: 2;
+  width: min(430px, calc(100vw - 32px));
+  height: min(920px, calc(100dvh - 44px));
+  border-radius: 42px;
+  background: var(--bg);
+  overflow: hidden;
+  box-shadow: var(--shadow-phone);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  isolation: isolate;
+}
+
+.phone-screen {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.phone-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* ---------- system bar ---------- */
+
+.statusbar {
+  position: relative;
+  z-index: 30;
+  flex: none;
+  height: 31px;
+  padding: 0 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--status-bg);
+  color: var(--status-ink);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  overflow: hidden;
+}
+
+.statusbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0 1px, transparent 1px 3px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.statusbar > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sb-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 78px;
+}
+
+.sb-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 78px;
+}
+
+.sb-center {
+  color: #cfd5f2;
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  white-space: nowrap;
+}
+
+.sb-signal {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 9px;
+}
+
+.sb-signal i {
+  display: block;
+  width: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.sb-signal i:nth-child(1) { height: 4px; }
+.sb-signal i:nth-child(2) { height: 6px; }
+.sb-signal i:nth-child(3) { height: 8px; }
+.sb-signal i:nth-child(4) { height: 9px; opacity: 0.35; }
+
+.sb-battery {
+  position: relative;
+  width: 19px;
+  height: 9px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 1px;
+}
+
+.sb-battery::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 2px;
+  width: 2px;
+  height: 3px;
+  background: currentColor;
+  border-radius: 0 1px 1px 0;
+}
+
+.sb-battery i {
+  display: block;
+  width: 74%;
+  height: 100%;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.rainbow-rule {
+  flex: none;
+  height: 4px;
+  background: var(--rainbow);
+  position: relative;
+  z-index: 29;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- app + screens ---------- */
+
+#app {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 17px 16px calc(26px + var(--safe-bottom));
+  background:
+    linear-gradient(180deg, var(--bg) 0%, var(--bg) 72%, var(--bg-2) 100%);
+  position: relative;
+}
+
+.screen::-webkit-scrollbar {
+  display: none;
+}
+
+.screen.enter {
+  animation: screenIn 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- common type ---------- */
+
+.micro {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  line-height: 1.2;
+}
+
+.micro.blue { color: var(--blue); }
+.micro.red { color: var(--red); }
+.micro.light { color: rgba(255, 250, 240, 0.7); }
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 2px 13px;
+}
+
+.page-head h1 {
+  margin-top: 7px;
+  font-size: 31px;
+  line-height: 1.02;
+  letter-spacing: -0.07em;
+  font-weight: 900;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--red);
+  flex: none;
+}
+
+.head-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-top: 1px;
+}
+
+.round-btn {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--shadow);
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.round-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--shadow);
+}
+
+.round-btn.small {
+  width: 31px;
+  height: 31px;
+  border-width: 1px;
+  box-shadow: 1px 1px 0 var(--shadow);
+}
+
+.head-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  display: grid;
+  place-items: center;
+  border-radius: 99px;
+  background: var(--red);
+  color: #fff;
+  border: 1.5px solid var(--paper);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.round-btn.blue {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue-deep);
+}
+
+.round-btn.ghost {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.icon-btn:active {
+  transform: scale(0.93);
+}
+
+.icon-btn.danger {
+  color: var(--red);
+}
+
+.icon-btn.plain {
+  border-color: transparent;
+  background: transparent;
+}
+
+.icon-btn.green {
+  color: var(--green);
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 19px 2px 9px;
+}
+
+.section-head h2 {
+  font-size: 18px;
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+  font-weight: 850;
+  margin-top: 3px;
+}
+
+.section-head .head-copy {
+  min-width: 0;
+}
+
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+  padding: 5px 0;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.link-btn:active {
+  opacity: 0.55;
+}
+
+.paper-card {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+/* ---------- collage banner ---------- */
+
+.collage-banner {
+  position: relative;
+  min-height: 138px;
+  margin: 2px 0 14px;
+  padding: 17px;
+  border: 1.5px solid var(--line);
+  border-radius: 24px 28px 20px 25px;
+  background: #0b1027;
+  color: #f7edda;
+  box-shadow: var(--shadow-strong);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.collage-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 3px);
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.collage-banner::after {
+  content: "";
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  right: 22px;
+  bottom: -36px;
+  background: var(--chrome);
+  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.45));
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.banner-rainbow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  background: var(--rainbow);
+  opacity: 0.78;
+  border-right: 1px solid rgba(255, 255, 255, 0.24);
+  z-index: 1;
+}
+
+.banner-bubble {
+  position: absolute;
+  left: 61px;
+  top: 18px;
+  z-index: 4;
+  width: 196px;
+  padding: 10px 12px 11px;
+  background: #fbf4e5;
+  color: #0c1f7a;
+  border: 1.5px solid #0b1027;
+  border-radius: 7px 8px 8px 2px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.42);
+  transform: rotate(-1.8deg);
+}
+
+.banner-bubble::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  bottom: -8px;
+  width: 13px;
+  height: 13px;
+  background: #fbf4e5;
+  border-right: 1.5px solid #0b1027;
+  border-bottom: 1.5px solid #0b1027;
+  transform: rotate(45deg);
+}
+
+.banner-bubble .micro {
+  color: var(--red);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.banner-bubble strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 18px;
+  line-height: 1.16;
+  letter-spacing: -0.04em;
+  font-weight: 900;
+}
+
+.banner-cat {
+  position: absolute;
+  right: 17px;
+  top: 18px;
+  width: 80px;
+  height: 80px;
+  z-index: 3;
+  padding: 7px;
+  background: var(--blue);
+  border: 1.5px solid #f2e8d4;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+  transform: rotate(4deg);
+  overflow: hidden;
+}
+
+.banner-cat::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    conic-gradient(rgba(255, 255, 255, 0.16) 25%, transparent 0 50%, rgba(255, 255, 255, 0.16) 0 75%, transparent 0) 0 0 / 12px 12px;
+  opacity: 0.55;
+}
+
+.banner-cat svg {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  image-rendering: pixelated;
+}
+
+.banner-star {
+  position: absolute;
+  right: 70px;
+  top: 7px;
+  width: 31px;
+  height: 31px;
+  z-index: 5;
+  background: var(--chrome);
+  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  filter: drop-shadow(1px 2px 0 rgba(0, 0, 0, 0.48));
+  transform: rotate(12deg);
+}
+
+.banner-meta {
+  position: absolute;
+  left: 61px;
+  bottom: 13px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #b7c0e7;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.banner-meta .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #d7bf5d;
+  box-shadow: 0 0 0 3px rgba(215, 191, 93, 0.15);
+}
+
+/* ---------- cat switcher ---------- */
+
+.cat-switcher {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 2px 2px 10px;
+  margin: 0 -2px;
+  scrollbar-width: none;
+}
+
+.cat-switcher::-webkit-scrollbar {
+  display: none;
+}
+
+.cat-chip {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 42px;
+  padding: 4px 12px 4px 4px;
+  background: var(--paper);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  box-shadow: 2px 2px 0 var(--shadow);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.cat-chip:active {
+  transform: translate(1px, 1px);
+}
+
+.cat-chip.active {
+  background: var(--blue);
+  border-color: var(--blue-deep);
+  color: #fff;
+  box-shadow: 2px 2px 0 rgba(12, 31, 122, 0.35);
+}
+
+.cat-chip .avatar {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 50% !important;
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.cat-chip.add {
+  padding: 4px 13px;
+  color: var(--blue);
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+}
+
+.cat-chip .chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 2px rgba(178, 58, 75, 0.16);
+}
+
+/* ---------- avatars + pixel cat ---------- */
+
+.avatar {
+  --size: 48px;
+  width: var(--size);
+  height: var(--size);
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  border: 1.5px solid var(--line);
+  border-radius: calc(var(--size) * 0.28);
+  background: var(--blue);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 2px 2px 0 rgba(27, 33, 66, 0.16);
+}
+
+.avatar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    conic-gradient(rgba(255, 255, 255, 0.15) 25%, transparent 0 50%, rgba(255, 255, 255, 0.15) 0 75%, transparent 0) 0 0 / 12px 12px;
+  opacity: 0.65;
+}
+
+.avatar.pixel-2 { background: #b95c71; }
+.avatar.pixel-3 { background: #6e9065; }
+
+.avatar svg {
+  position: relative;
+  z-index: 1;
+  width: 88%;
+  height: 88%;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.18));
+}
+
+.avatar.emoji {
+  background: var(--paper-2);
+  font-size: calc(var(--size) * 0.55);
+  line-height: 1;
+}
+
+.avatar.emoji::before {
+  display: none;
+}
+
+.avatar.lg {
+  --size: 78px;
+  border-radius: 22px;
+  border-width: 2px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.28);
+}
+
+.avatar.xl {
+  --size: 92px;
+  border-radius: 26px;
+  border-width: 2px;
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- cat hero card ---------- */
+
+.cat-hero {
+  padding: 15px;
+  margin-bottom: 13px;
+  overflow: hidden;
+}
+
+.cat-hero::after {
+  content: "";
+  position: absolute;
+  right: -26px;
+  top: -30px;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30, 59, 219, 0.17) 1px, transparent 1.4px) 0 0 / 6px 6px;
+  pointer-events: none;
+}
+
+.cat-hero-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.cat-id {
+  flex: 1;
+  min-width: 0;
+  padding-right: 23px;
+}
+
+.cat-id h2 {
+  margin-top: 2px;
+  font-size: 25px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cat-id .micro {
+  color: var(--ink-3);
+}
+
+.tag-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 7px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 7px;
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: 9px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+}
+
+.tag.blue {
+  background: var(--blue);
+  border-color: var(--blue-deep);
+  color: #fff;
+}
+
+.tag.red {
+  background: var(--red);
+  border-color: #7b1928;
+  color: #fff;
+}
+
+.tag.green {
+  background: var(--green);
+  border-color: #365a3e;
+  color: #fff;
+}
+
+.cat-hero .edit-corner {
+  position: absolute;
+  right: 13px;
+  top: 13px;
+}
+
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line-soft);
+  border-radius: 13px;
+  background: var(--line-soft);
+  position: relative;
+  z-index: 1;
+}
+
+.stat {
+  min-width: 0;
+  padding: 9px 9px 8px;
+  background: var(--paper-2);
+}
+
+.stat span {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stat strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.25;
+  font-weight: 850;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-due {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 9px;
+  position: relative;
+  z-index: 1;
+}
+
+.due-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.due-pill .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  flex: none;
+}
+
+.due-pill.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); border-color: transparent; }
+.due-pill.overdue .dot { background: var(--tone-overdue-ink); }
+.due-pill.today { background: var(--tone-today-bg); color: var(--tone-today-ink); border-color: transparent; }
+.due-pill.today .dot { background: var(--tone-today-ink); }
+.due-pill.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); border-color: transparent; }
+.due-pill.soon .dot { background: var(--tone-soon-ink); }
+.due-pill.later { background: var(--tone-later-bg); color: var(--tone-later-ink); border-color: transparent; }
+.due-pill.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); border-color: transparent; }
+
+/* ---------- quick modules ---------- */
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 5px;
+}
+
+.module-tile {
+  position: relative;
+  min-height: 122px;
+  padding: 10px 9px 9px;
+  text-align: left;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 17px;
+  box-shadow: 3px 3px 0 var(--shadow);
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.module-tile:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--shadow);
+}
+
+.module-tile::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: var(--blue);
+}
+
+.module-tile.vaccine::after { background: var(--red); }
+.module-tile.neuter::after { background: var(--green); }
+
+.module-icon {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 1px 1px 0 rgba(27, 33, 66, 0.18);
+}
+
+.module-tile.vaccine .module-icon { background: var(--red); }
+.module-tile.neuter .module-icon { background: var(--green); }
+
+.module-tile .module-label {
+  display: block;
+  margin-top: 8px;
+  font-size: 9px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.11em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+
+.module-tile strong {
+  display: block;
+  margin-top: 1px;
+  font-size: 15px;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 850;
+}
+
+.module-tile .module-due {
+  display: inline-block;
+  margin-top: 8px;
+  max-width: 100%;
+  padding: 3px 5px;
+  border-radius: 5px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-soft);
+  color: var(--ink-2);
+  font-size: 9px;
+  line-height: 1.25;
+  font-weight: 750;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.module-due.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); border-color: transparent; }
+.module-due.today { background: var(--tone-today-bg); color: var(--tone-today-ink); border-color: transparent; }
+.module-due.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); border-color: transparent; }
+.module-due.later { background: var(--tone-later-bg); color: var(--tone-later-ink); border-color: transparent; }
+.module-due.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); border-color: transparent; }
+
+.module-add {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 50%;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  z-index: 2;
+  transition: transform 0.12s ease;
+}
+
+.module-add:active {
+  transform: scale(0.88);
+}
+
+/* ---------- due list ---------- */
+
+.due-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.due-card {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--blue);
+  border-radius: 13px;
+}
+
+.due-card.overdue { border-left-color: var(--red); }
+.due-card.today { border-left-color: var(--gold); }
+.due-card.soon { border-left-color: var(--green); }
+.due-card.later { border-left-color: var(--lav); }
+
+.due-card .mini-icon {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+}
+
+.due-card .due-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.due-card .due-copy strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.due-card .due-copy span {
+  display: block;
+  margin-top: 2px;
+  font-size: 9.5px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.due-badge {
+  flex: none;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-size: 9px;
+  line-height: 1.2;
+  font-weight: 800;
+  color: var(--ink-2);
+  background: var(--paper-2);
+  border: 1px solid var(--line-soft);
+}
+
+.due-badge.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); border-color: transparent; }
+.due-badge.today { background: var(--tone-today-bg); color: var(--tone-today-ink); border-color: transparent; }
+.due-badge.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); border-color: transparent; }
+.due-badge.later { background: var(--tone-later-bg); color: var(--tone-later-ink); border-color: transparent; }
+.due-badge.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); border-color: transparent; }
+
+.btn-complete {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 9px;
+  line-height: 1.2;
+  font-weight: 800;
+  box-shadow: 1px 1px 0 rgba(12, 31, 122, 0.3);
+}
+
+.btn-complete:active {
+  transform: translate(1px, 1px);
+  box-shadow: none;
+}
+
+.btn-complete.ghost {
+  background: var(--paper-2);
+  color: var(--blue);
+  border-color: var(--line-soft);
+  box-shadow: none;
+}
+
+/* ---------- timeline / recent ---------- */
+
+.timeline {
+  position: relative;
+  padding-left: 17px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 7px;
+  bottom: 9px;
+  width: 1px;
+  background: var(--line-soft);
+}
+
+.timeline-item {
+  position: relative;
+  padding: 0 0 13px 2px;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: var(--blue);
+}
+
+.timeline-item.vaccine::before { background: var(--red); }
+.timeline-item.neuter::before { background: var(--green); }
+
+.timeline-item .t-date {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+
+.timeline-item .t-title {
+  margin-top: 2px;
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.timeline-item .t-meta {
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--ink-3);
+  line-height: 1.35;
+}
+
+/* ---------- empty states ---------- */
+
+.empty {
+  padding: 24px 18px;
+  text-align: center;
+  border: 1.5px dashed var(--line-soft);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--paper) 72%, transparent);
+}
+
+.empty .empty-art {
+  width: 74px;
+  height: 74px;
+  margin: 0 auto 10px;
+  padding: 6px;
+  background: var(--blue);
+  border: 1.5px solid var(--line);
+  box-shadow: 3px 3px 0 var(--shadow);
+  transform: rotate(-3deg);
+}
+
+.empty .empty-art svg {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.empty strong {
+  display: block;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+}
+
+.empty p {
+  max-width: 240px;
+  margin: 5px auto 0;
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+.empty .btn {
+  margin-top: 12px;
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 9px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 11px;
+  background: var(--paper-2);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  box-shadow: 2px 2px 0 var(--shadow);
+  transition: transform 0.13s ease, box-shadow 0.13s ease;
+}
+
+.btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--shadow);
+}
+
+.btn.primary {
+  background: var(--blue);
+  border-color: var(--blue-deep);
+  color: #fff;
+}
+
+.btn.red {
+  background: var(--red);
+  border-color: #7b1928;
+  color: #fff;
+}
+
+.btn.ghost {
+  background: transparent;
+  box-shadow: none;
+}
+
+.btn.small {
+  min-height: 32px;
+  padding: 6px 10px;
+  font-size: 10.5px;
+  border-width: 1px;
+  box-shadow: 1px 1px 0 var(--shadow);
+}
+
+.btn.block {
+  width: 100%;
+}
+
+/* ---------- tab bar ---------- */
+
+.tabbar {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 7px 14px calc(8px + var(--safe-bottom));
+  background: var(--tab-bg);
+  border-top: 1.5px solid var(--line);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  position: relative;
+  z-index: 15;
+}
+
+.tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 5px 3px 4px;
+  border-radius: 12px;
+  color: var(--ink-3);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.tab svg {
+  width: 21px;
+  height: 21px;
+}
+
+.tab.active {
+  color: var(--blue);
+  background: color-mix(in srgb, var(--blue) 10%, transparent);
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: 1px;
+  width: 14px;
+  height: 2px;
+  border-radius: 99px;
+  background: var(--blue);
+}
+
+.tab .tab-badge {
+  position: absolute;
+  top: 2px;
+  left: calc(50% + 7px);
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  display: grid;
+  place-items: center;
+  border-radius: 99px;
+  background: var(--red);
+  color: #fff;
+  border: 1px solid var(--paper);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  line-height: 1;
+}
+
+/* ---------- reminders tab ---------- */
+
+.filter-chips {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding: 2px 2px 12px;
+  margin: 0 -2px;
+  scrollbar-width: none;
+}
+
+.filter-chips::-webkit-scrollbar { display: none; }
+
+.filter-chip {
+  flex: none;
+  padding: 7px 11px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.filter-chip.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+.reminder-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  margin-bottom: 6px;
+  background: #0b1027;
+  color: #f6ecd9;
+  border: 1.5px solid var(--line);
+  border-radius: 19px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+.reminder-summary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.26) 0 1px, transparent 1px 3px);
+  opacity: 0.8;
+}
+
+.reminder-summary::after {
+  content: "";
+  position: absolute;
+  right: -19px;
+  top: -19px;
+  width: 68px;
+  height: 68px;
+  background: var(--chrome);
+  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.5));
+}
+
+.reminder-summary > * {
+  position: relative;
+  z-index: 1;
+}
+
+.reminder-summary .rs-copy {
+  flex: 1;
+}
+
+.reminder-summary .rs-copy strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 21px;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+}
+
+.reminder-summary .rs-copy span {
+  display: block;
+  margin-top: 3px;
+  color: #afb8df;
+  font-size: 9.5px;
+}
+
+.reminder-summary .rs-count {
+  font-family: var(--font-mono);
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.08em;
+  color: #fff;
+}
+
+.reminder-group {
+  margin-top: 15px;
+}
+
+.reminder-group-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 2px 7px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.reminder-group-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line-soft);
+}
+
+.reminder-card {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--blue);
+  border-radius: 13px;
+  margin-bottom: 7px;
+}
+
+.reminder-card.overdue { border-left-color: var(--red); }
+.reminder-card.today { border-left-color: var(--gold); }
+.reminder-card.soon { border-left-color: var(--green); }
+.reminder-card.plan { border-left-color: var(--lav); }
+
+.reminder-card .avatar {
+  --size: 38px;
+  border-radius: 11px;
+}
+
+.reminder-card .r-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.reminder-card .r-copy strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 850;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reminder-card .r-copy span {
+  display: block;
+  margin-top: 2px;
+  font-size: 9.5px;
+  line-height: 1.3;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reminder-card .r-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex: none;
+}
+
+.reminder-card .r-date {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+/* ---------- detail screen ---------- */
+
+.detail-screen {
+  padding-top: 0;
+  padding-bottom: calc(34px + var(--safe-bottom));
+}
+
+.detail-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  margin: 0 -16px;
+  padding: 7px 16px 8px;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.detail-nav .nav-title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-hero {
+  position: relative;
+  margin: 14px 0 14px;
+  padding: 17px;
+  background: #0b1027;
+  color: #f6ecd9;
+  border: 1.5px solid var(--line);
+  border-radius: 25px;
+  box-shadow: var(--shadow-strong);
+  overflow: hidden;
+}
+
+.detail-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 3px);
+  opacity: 0.8;
+}
+
+.detail-hero::after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: -22px;
+  width: 100px;
+  height: 100px;
+  background: var(--chrome);
+  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, 0.55));
+  opacity: 0.92;
+}
+
+.detail-hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+.detail-hero .dh-top {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.detail-hero .dh-id {
+  min-width: 0;
+  flex: 1;
+}
+
+.detail-hero .dh-id h1 {
+  margin-top: 3px;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.07em;
+  font-weight: 900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-hero .tag {
+  background: rgba(255, 250, 240, 0.1);
+  color: #f0e8d8;
+  border-color: rgba(255, 250, 240, 0.24);
+}
+
+.detail-hero .tag.blue {
+  background: var(--blue);
+  border-color: #7c8fff;
+}
+
+.detail-hero .tag.red {
+  background: var(--red);
+  border-color: #f0a0aa;
+}
+
+.detail-hero .tag.green {
+  background: var(--green);
+  border-color: #a8d1ae;
+}
+
+.detail-hero .dh-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 15px;
+}
+
+.detail-hero .dh-stat {
+  padding: 8px;
+  background: rgba(255, 250, 240, 0.08);
+  border: 1px solid rgba(255, 250, 240, 0.2);
+  border-radius: 9px;
+  min-width: 0;
+}
+
+.detail-hero .dh-stat span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.09em;
+  color: #aeb8df;
+  text-transform: uppercase;
+}
+
+.detail-hero .dh-stat strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-hero .dh-due {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.detail-hero .due-pill {
+  background: rgba(255, 250, 240, 0.09);
+  border-color: rgba(255, 250, 240, 0.2);
+  color: #e8dfcd;
+}
+
+.detail-hero .due-pill.overdue { background: #7b1928; color: #ffe2e5; border-color: transparent; }
+.detail-hero .due-pill.today { background: #6d4f13; color: #ffe9b8; border-color: transparent; }
+.detail-hero .due-pill.soon { background: #3f5220; color: #e6f1c7; border-color: transparent; }
+.detail-hero .due-pill.plan { background: #49376a; color: #e9dffa; border-color: transparent; }
+
+/* ---------- info card ---------- */
+
+.info-card {
+  padding: 14px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 21px;
+  box-shadow: var(--shadow);
+}
+
+.info-card .section-head {
+  margin: 0 0 10px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--line-soft);
+}
+
+.field {
+  min-width: 0;
+  min-height: 57px;
+  padding: 9px 10px;
+  background: var(--paper-2);
+}
+
+.field.span-2 {
+  grid-column: 1 / -1;
+}
+
+.field span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.field strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 750;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.field.span-2 strong {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.field strong.muted {
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+/* ---------- record sections ---------- */
+
+.record-section {
+  margin-top: 21px;
+  scroll-margin-top: 54px;
+}
+
+.module-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 2px 9px;
+}
+
+.module-head .module-icon {
+  width: 33px;
+  height: 33px;
+  flex: none;
+}
+
+.module-head .module-icon.vaccine { background: var(--red); }
+.module-head .module-icon.neuter { background: var(--green); }
+
+.module-head .module-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.module-head h2 {
+  margin-top: 1px;
+  font-size: 18px;
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+  font-weight: 850;
+}
+
+.next-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  margin-bottom: 7px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--blue);
+  border-radius: 12px;
+}
+
+.next-strip.overdue { border-left-color: var(--red); }
+.next-strip.today { border-left-color: var(--gold); }
+.next-strip.soon { border-left-color: var(--green); }
+
+.next-strip .ns-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.next-strip .ns-copy strong {
+  display: block;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.next-strip .ns-copy span {
+  display: block;
+  margin-top: 1px;
+  color: var(--ink-3);
+  font-size: 9px;
+}
+
+.record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.swipe-shell {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--paper);
+  border: 0;
+}
+
+.swipe-delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 850;
+  z-index: 0;
+}
+
+.swipe-delete:active {
+  background: #8f2635;
+}
+
+.swipe-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  background: var(--paper);
+  border-radius: 14px;
+  touch-action: pan-y;
+  will-change: transform;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.swipe-content.swiping {
+  transition: none;
+}
+
+.rec-date {
+  width: 43px;
+  flex: none;
+  padding: 4px 2px;
+  text-align: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--paper-2);
+}
+
+.rec-date b {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: -0.05em;
+}
+
+.rec-date span {
+  display: block;
+  margin-top: 1px;
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.07em;
+}
+
+.rec-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.rec-copy .rec-title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.rec-copy strong {
+  display: block;
+  min-width: 0;
+  font-size: 11.5px;
+  line-height: 1.35;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rec-copy .latest-tag {
+  flex: none;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  letter-spacing: 0.08em;
+}
+
+.rec-copy .rec-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+  color: var(--ink-3);
+  font-size: 9px;
+  line-height: 1.3;
+}
+
+.rec-copy .rec-meta .sep {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--ink-3);
+}
+
+.rec-copy .rec-next {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-soft);
+  color: var(--ink-3);
+  font-size: 8px;
+  line-height: 1.25;
+}
+
+.rec-next.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); border-color: transparent; }
+.rec-next.today { background: var(--tone-today-bg); color: var(--tone-today-ink); border-color: transparent; }
+.rec-next.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); border-color: transparent; }
+.rec-next.later { background: var(--tone-later-bg); color: var(--tone-later-ink); border-color: transparent; }
+
+.rec-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: none;
+}
+
+.rec-actions .icon-btn {
+  width: 27px;
+  height: 27px;
+  border-radius: 8px;
+}
+
+.rec-actions .icon-btn.check {
+  background: var(--blue);
+  border-color: var(--blue-deep);
+  color: #fff;
+}
+
+.rec-actions .icon-btn.check:active {
+  background: var(--blue-deep);
+}
+
+/* ---------- neuter ---------- */
+
+.neuter-card {
+  padding: 13px;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+}
+
+.neuter-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.neuter-top .n-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.neuter-top strong {
+  display: block;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  font-weight: 850;
+}
+
+.neuter-top span {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink-3);
+  font-size: 9.5px;
+}
+
+.status-badge {
+  flex: none;
+  padding: 4px 7px;
+  border-radius: 5px;
+  border: 1px solid var(--line-soft);
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.status-badge.done { background: var(--tone-soon-bg); color: var(--tone-soon-ink); border-color: transparent; }
+.status-badge.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); border-color: transparent; }
+.status-badge.none { background: var(--tone-later-bg); color: var(--tone-later-ink); border-color: transparent; }
+
+.neuter-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.neuter-meta .nm {
+  padding: 7px 8px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+}
+
+.neuter-meta span {
+  display: block;
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.neuter-meta strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 10.5px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.neuter-notes {
+  margin-top: 8px;
+  padding: 8px 9px;
+  border-left: 2px solid var(--line-soft);
+  color: var(--ink-2);
+  font-size: 10px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.danger-zone {
+  margin-top: 26px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.danger-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  padding: 10px;
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ---------- settings ---------- */
+
+.system-panel {
+  position: relative;
+  padding: 16px;
+  margin: 2px 0 15px;
+  background: #1e3bdb;
+  color: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 23px;
+  box-shadow: var(--shadow-strong);
+  overflow: hidden;
+}
+
+.system-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px),
+    conic-gradient(rgba(255, 255, 255, 0.1) 25%, transparent 0 50%, rgba(255, 255, 255, 0.1) 0 75%, transparent 0) 0 0 / 14px 14px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.system-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.system-panel .sys-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #c7d1ff;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.system-panel h2 {
+  margin-top: 8px;
+  font-size: 26px;
+  line-height: 1.05;
+  letter-spacing: -0.06em;
+  font-weight: 900;
+}
+
+.system-panel p {
+  max-width: 280px;
+  margin-top: 5px;
+  color: #d5ddff;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.system-panel .sys-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 13px;
+}
+
+.sys-mini {
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 8px;
+}
+
+.sys-mini span {
+  display: block;
+  color: #c7d1ff;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sys-mini strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.settings-group {
+  margin-top: 19px;
+}
+
+.settings-group-title {
+  margin: 0 2px 7px;
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.settings-card {
+  overflow: hidden;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.setting-row:last-child {
+  border-bottom: 0;
+}
+
+.setting-row .setting-icon {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+}
+
+.setting-row .setting-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.setting-row strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.setting-row span {
+  display: block;
+  margin-top: 1px;
+  color: var(--ink-3);
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.setting-row .chev {
+  flex: none;
+  color: var(--ink-3);
+}
+
+.setting-row.danger strong { color: var(--red); }
+.setting-row.danger .setting-icon { color: var(--red); }
+
+.theme-segmented {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 13px;
+  box-shadow: var(--shadow);
+}
+
+.theme-segmented button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px 7px;
+  border-radius: 9px;
+  color: var(--ink-3);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.theme-segmented button.active {
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 1px 1px 0 rgba(12, 31, 122, 0.3);
+}
+
+.about-card {
+  padding: 13px;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: 15px;
+}
+
+.about-card .about-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.about-card .about-title strong {
+  font-size: 15px;
+  letter-spacing: -0.04em;
+}
+
+.about-card .about-title span {
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+
+.about-card p {
+  color: var(--ink-3);
+  font-size: 9.5px;
+  line-height: 1.6;
+}
+
+.about-card .about-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 9px;
+}
+
+.about-card .about-meta span {
+  padding: 3px 6px;
+  border: 1px solid var(--line-soft);
+  border-radius: 5px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.04em;
+}
+
+.screen-footer {
+  padding: 22px 0 2px;
+  text-align: center;
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---------- modal / sheet ---------- */
+
+#modal-root:empty {
+  display: none;
+}
+
+.modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 7, 20, 0.62);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  animation: fadeIn 0.2s ease both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  position: relative;
+  width: min(430px, 100vw);
+  max-height: 92dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 27px 27px 0 0;
+  box-shadow: 0 -24px 70px rgba(0, 0, 0, 0.45);
+  animation: sheetUp 0.3s cubic-bezier(0.2, 0.85, 0.25, 1) both;
+  overflow: hidden;
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(32px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-grab {
+  width: 40px;
+  height: 5px;
+  flex: none;
+  margin: 8px auto 0;
+  border-radius: 99px;
+  background: var(--line-soft);
+}
+
+.modal-head {
+  flex: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 18px 8px;
+}
+
+.modal-head .modal-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-head h2 {
+  margin-top: 2px;
+  font-size: 21px;
+  line-height: 1.12;
+  letter-spacing: -0.055em;
+  font-weight: 900;
+}
+
+.modal-head p {
+  margin-top: 3px;
+  color: var(--ink-3);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.modal-close {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 50%;
+  background: var(--paper-2);
+  color: var(--ink-2);
+}
+
+.modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 18px 18px;
+  scrollbar-width: none;
+}
+
+.modal-body::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-foot {
+  flex: none;
+  display: flex;
+  gap: 7px;
+  padding: 10px 18px calc(12px + var(--safe-bottom));
+  background: var(--paper);
+  border-top: 1px solid var(--line-soft);
+}
+
+.modal-foot .btn {
+  flex: 1;
+}
+
+.modal-foot .btn.danger-auto {
+  flex: 0 0 auto;
+}
+
+.btn.danger-text {
+  color: var(--red);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.btn.danger-text:active {
+  background: color-mix(in srgb, var(--red) 10%, transparent);
+  transform: none;
+  box-shadow: none;
+}
+
+.modal.alert {
+  max-width: 340px;
+  margin-bottom: 0;
+  border-radius: 23px;
+  animation: alertIn 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes alertIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal.alert .modal-head {
+  padding-top: 18px;
+}
+
+.modal.alert .modal-body {
+  overflow: visible;
+  padding-bottom: 14px;
+}
+
+.alert-art {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 10px;
+  background: var(--paper-2);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--shadow);
+  color: var(--red);
+}
+
+.modal.alert .modal-head,
+.modal.alert .modal-body {
+  text-align: center;
+}
+
+.modal.alert .modal-head p {
+  max-width: 270px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal.alert .modal-foot {
+  border-top: 0;
+  padding-top: 0;
+  flex-direction: column-reverse;
+}
+
+.modal.alert .modal-foot .btn {
+  flex: none;
+  width: 100%;
+}
+
+.modal.alert .alert-message {
+  margin: 0 auto;
+  max-width: 290px;
+  color: var(--ink-2);
+  font-size: 11px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.modal.alert .alert-message + .alert-message {
+  margin-top: 8px;
+}
+
+/* ---------- forms ---------- */
+
+.form-section {
+  margin-top: 14px;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 12px 1px 5px;
+  color: var(--ink-2);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.form-label .micro {
+  color: var(--ink-3);
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: 10px 11px;
+  border: 1.5px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--paper-2);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.4;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(30, 59, 219, 0.14);
+}
+
+.textarea {
+  min-height: 76px;
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.form-row.three {
+  grid-template-columns: 1.25fr 0.75fr;
+}
+
+.form-hint {
+  margin: 4px 1px 0;
+  color: var(--ink-3);
+  font-size: 8.5px;
+  line-height: 1.45;
+}
+
+.form-error {
+  display: none;
+  margin: 5px 1px 0;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: var(--tone-overdue-bg);
+  color: var(--tone-overdue-ink);
+  font-size: 9.5px;
+  line-height: 1.4;
+}
+
+.form-error.show {
+  display: block;
+}
+
+.choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.choice {
+  position: relative;
+}
+
+.choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.choice span {
+  display: inline-block;
+  padding: 7px 10px;
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 750;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.choice input:checked + span {
+  background: var(--blue);
+  border-color: var(--blue-deep);
+  color: #fff;
+  box-shadow: 1px 1px 0 rgba(12, 31, 122, 0.3);
+}
+
+.avatar-picker {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 2px 1px 5px;
+  scrollbar-width: none;
+}
+
+.avatar-picker::-webkit-scrollbar { display: none; }
+
+.avatar-option {
+  flex: none;
+  padding: 3px;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  background: transparent;
+}
+
+.avatar-option .avatar {
+  pointer-events: none;
+}
+
+.avatar-option.selected {
+  border-color: var(--blue);
+  background: color-mix(in srgb, var(--blue) 9%, transparent);
+}
+
+.field-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-edit-row {
+  padding: 8px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+}
+
+.field-edit-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.field-edit-top .label-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 31px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: var(--paper);
+  font-size: 10px;
+  font-weight: 850;
+  color: var(--ink-2);
+  outline: none;
+}
+
+.field-edit-top .label-input:focus {
+  border-color: var(--blue);
+}
+
+.field-edit-top .type-chip {
+  flex: none;
+  padding: 3px 5px;
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.07em;
+  border: 1px solid var(--line-soft);
+}
+
+.field-edit-top .icon-btn {
+  width: 27px;
+  height: 27px;
+  flex: none;
+  border-radius: 7px;
+}
+
+.field-value-input {
+  width: 100%;
+  min-height: 34px;
+  margin-top: 5px;
+  padding: 7px 8px;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 11px;
+  line-height: 1.4;
+  outline: none;
+}
+
+.field-value-input:focus {
+  border-color: var(--blue);
+}
+
+textarea.field-value-input {
+  min-height: 58px;
+  resize: vertical;
+}
+
+.add-field-box {
+  margin-top: 9px;
+  padding: 9px;
+  border: 1px dashed var(--line-soft);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+}
+
+.add-field-box .add-field-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: var(--ink-2);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.add-field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.add-field-grid .input,
+.add-field-grid .select {
+  min-height: 34px;
+  padding: 7px 8px;
+  font-size: 10.5px;
+}
+
+.add-field-actions {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.add-field-actions .select {
+  flex: 1;
+  min-height: 34px;
+  padding: 7px 8px;
+  font-size: 10.5px;
+}
+
+.add-field-actions .btn {
+  flex: none;
+  min-height: 34px;
+}
+
+.interval-note {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: var(--ink-3);
+  font-size: 8.5px;
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 10px;
+  margin-top: 9px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+}
+
+.switch-row span {
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.switch {
+  position: relative;
+  width: 42px;
+  height: 25px;
+  flex: none;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.switch i {
+  position: absolute;
+  inset: 0;
+  border-radius: 99px;
+  background: var(--line-soft);
+  transition: background 0.18s ease;
+}
+
+.switch i::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--paper-2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.18s ease;
+}
+
+.switch input:checked + i {
+  background: var(--blue);
+}
+
+.switch input:checked + i::after {
+  transform: translateX(17px);
+}
+
+/* ---------- toast ---------- */
+
+.toast-wrap {
+  position: absolute;
+  left: 50%;
+  bottom: calc(82px + var(--safe-bottom));
+  z-index: 200;
+  transform: translateX(-50%);
+  width: min(390px, calc(100% - 30px));
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 11px 10px 13px;
+  background: #0b1027;
+  color: #f6ecd9;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.42);
+  font-size: 10.5px;
+  line-height: 1.4;
+  animation: toastIn 0.24s cubic-bezier(0.2, 0.85, 0.25, 1) both;
+}
+
+@keyframes toastIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.toast .toast-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: #d7bf5d;
+  box-shadow: 0 0 0 3px rgba(215, 191, 93, 0.16);
+}
+
+.toast button {
+  margin-left: auto;
+  flex: none;
+  padding: 3px 0 3px 7px;
+  color: #aebcff;
+  font-size: 10.5px;
+  font-weight: 850;
+}
+
+/* ---------- misc ---------- */
+
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.rainbow-dash {
+  display: inline-block;
+  width: 34px;
+  height: 4px;
+  background: var(--rainbow);
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+@media (min-width: 700px) {
+  .modal-root {
+    align-items: center;
+  }
+
+  .modal {
+    border-radius: 26px;
+    margin-bottom: 22px;
+    max-height: min(840px, 88dvh);
+  }
+
+  .modal.alert {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 699px) {
+  .scene {
+    display: none;
+  }
+
+  body {
+    display: block;
+    padding: 0;
+    background: var(--bg);
+  }
+
+  .phone-shell {
+    width: 100vw;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .phone-screen::after {
+    opacity: 0.022;
+  }
+
+  .toast-wrap {
+    bottom: calc(76px + var(--safe-bottom));
+  }
+}
+
+@media (max-width: 365px) {
+  .screen {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .banner-bubble {
+    width: 172px;
+    left: 56px;
+  }
+
+  .banner-bubble strong {
+    font-size: 16px;
+  }
+
+  .banner-cat {
+    width: 68px;
+    height: 68px;
+    right: 12px;
+  }
+
+  .cat-hero .avatar.lg {
+    --size: 66px;
+  }
+
+  .cat-id h2 {
+    font-size: 22px;
+  }
+
+  .module-tile {
+    min-height: 116px;
+    padding: 8px;
+  }
+
+  .module-tile strong {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (display-mode: standalone) {
+  .statusbar {
+    display: none;
+  }
+
+  .rainbow-rule {
+    margin-top: env(safe-area-inset-top);
+  }
+}
+
+.home-fields {
+  margin: 10px 0 14px;
+}
+
+.home-fields .field {
+  min-height: 52px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="scene-rainbow"></div>
+    <div class="scene-rainbow second"></div>
+    <div class="scene-star s1"></div>
+    <div class="scene-star s2"></div>
+    <div class="scene-star s3"></div>
+    <div class="scene-star s4"></div>
+    <div class="scene-note">CAT CARE INTERFACE / V1.0</div>
+    <div class="scene-bubble"><small>HOW CAN I HELP?</small>今天要照顾<br>哪只小猫？</div>
+    <div class="scene-cat" data-scene-cat></div>
+    <div class="scene-system">
+      <div class="sys-top"><span>SYSTEM / 01</span><span>● REC</span></div>
+      <strong>MEOW<br>SYSTEM</strong>
+      <p>LOCAL ARCHIVE · JSON READY<br>DEWORM / VACCINE / NEUTER</p>
+    </div>
+    <div class="scene-label">MADE FOR CATS · 2026</div>
+  </div>
+
+  <div class="phone-shell">
+    <div class="phone-screen">
+      <div class="statusbar" aria-hidden="true">
+        <div class="sb-left">
+          <span id="clock">22:10</span>
+          <span class="sb-signal"><i></i><i></i><i></i><i></i></span>
+        </div>
+        <div class="sb-center">MEOW SYSTEM / 01</div>
+        <div class="sb-right">
+          <span>5G</span>
+          <span class="sb-battery"><i></i></span>
+        </div>
+      </div>
+      <div class="rainbow-rule" aria-hidden="true"></div>
+      <div id="app"></div>
+      <div class="toast-wrap" id="toast-wrap" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </div>
+
+  <div id="modal-root"></div>
+  <input id="import-file" type="file" accept="application/json,.json" class="sr-only" tabindex="-1">
+  <noscript>
+    <div style="position:fixed;inset:0;z-index:999;display:grid;place-items:center;background:#f1e7d5;color:#171c3a;font-family:sans-serif;padding:24px;text-align:center;">
+      喵档需要开启 JavaScript 才能运行。
+    </div>
+  </noscript>
+  <script>
+(() => {
+  'use strict';
+
+  /* =========================================================
+     Constants & tiny helpers
+     ========================================================= */
+
+  const STORAGE_KEY = 'meow-system-v1';
+  const APP_VERSION = '1.0.0';
+  const MAX_RECORDS = 400;
+
+  const AVATARS = ['pixel-1', 'pixel-2', 'pixel-3', '🐱', '🐈', '🐈‍⬛', '😺', '😻'];
+
+  const DEFAULT_FIELDS = [
+    { key: 'breed',   label: '品种',     type: 'text',    placeholder: '例如：布偶猫' },
+    { key: 'sex',     label: '性别',     type: 'sex',     placeholder: '' },
+    { key: 'birthday',label: '生日',     type: 'date',    placeholder: '' },
+    { key: 'arrival', label: '到家日',   type: 'date',    placeholder: '' },
+    { key: 'weight',  label: '体重',     type: 'text',    placeholder: '例如：4.8 kg' },
+    { key: 'color',   label: '毛色',     type: 'text',    placeholder: '例如：海豹双色' },
+    { key: 'source',  label: '来源',     type: 'text',    placeholder: '领养 / 猫舍 / 救助' },
+    { key: 'vet',     label: '常去医院', type: 'text',    placeholder: '医院名称' },
+    { key: 'notes',   label: '备注',     type: 'longtext',placeholder: '性格、习惯、过敏…' }
+  ];
+
+  const TYPE_LABEL = {
+    deworm: '驱虫',
+    vaccine: '疫苗',
+    neuter: '绝育'
+  };
+
+  const EN_LABEL = {
+    deworm: 'DEWORM',
+    vaccine: 'VACCINE',
+    neuter: 'NEUTER'
+  };
+
+  const FIELD_TYPE_LABEL = {
+    text: 'TEXT',
+    date: 'DATE',
+    longtext: 'NOTE',
+    sex: 'SELECT'
+  };
+
+  const REMINDER_TONE_PRIORITY = {
+    overdue: 0,
+    today: 1,
+    soon: 2,
+    later: 3,
+    plan: 4
+  };
+
+  const REMINDER_GROUP_TITLE = {
+    overdue: '逾期 / OVERDUE',
+    today: '今天 / TODAY',
+    soon: '7 天内 / SOON',
+    later: '之后 / LATER',
+    plan: '待安排 / PLANNED'
+  };
+
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+  function esc(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[ch]));
+  }
+
+  function pad2(value) {
+    return String(value).padStart(2, '0');
+  }
+
+  function uid(prefix = 'id') {
+    return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function cleanText(value) {
+    return String(value ?? '').replace(/\u0000/g, '').trim();
+  }
+
+  function cleanCost(value) {
+    return String(value ?? '').replace(/[^\d.,]/g, '').replace(/,/g, '').slice(0, 12);
+  }
+
+  /* =========================================================
+     Dates
+     ========================================================= */
+
+  function todayISO() {
+    const d = new Date();
+    return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+  }
+
+  function parseISO(iso) {
+    if (typeof iso !== 'string') return null;
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso.slice(0, 10));
+    if (!match) return null;
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    const date = new Date(year, month - 1, day, 12, 0, 0, 0);
+    if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+      return null;
+    }
+    return date;
+  }
+
+  function isoFromDate(date) {
+    return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+  }
+
+  function addDaysISO(iso, amount) {
+    const date = parseISO(iso);
+    if (!date) return '';
+    date.setDate(date.getDate() + Number(amount || 0));
+    return isoFromDate(date);
+  }
+
+  function addMonthsISO(iso, amount) {
+    const date = parseISO(iso);
+    if (!date) return '';
+    const day = date.getDate();
+    date.setDate(1);
+    date.setMonth(date.getMonth() + Number(amount || 0));
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    date.setDate(Math.min(day, lastDay));
+    return isoFromDate(date);
+  }
+
+  function daysBetween(fromISO, toISO) {
+    const from = parseISO(fromISO);
+    const to = parseISO(toISO);
+    if (!from || !to) return 0;
+    const a = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
+    const b = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
+    return Math.round((b - a) / 86400000);
+  }
+
+  function monthsBetweenISO(fromISO, toISO) {
+    const from = parseISO(fromISO);
+    const to = parseISO(toISO);
+    if (!from || !to) return 0;
+    let months = (to.getFullYear() - from.getFullYear()) * 12 + (to.getMonth() - from.getMonth());
+    if (to.getDate() < from.getDate()) months -= 1;
+    return Math.max(0, months);
+  }
+
+  function fmtDot(iso) {
+    const date = parseISO(iso);
+    if (!date) return '—';
+    return `${date.getFullYear()}.${pad2(date.getMonth() + 1)}.${pad2(date.getDate())}`;
+  }
+
+  function fmtShort(iso) {
+    const date = parseISO(iso);
+    if (!date) return '—';
+    return `${pad2(date.getMonth() + 1)}.${pad2(date.getDate())}`;
+  }
+
+  function fmtDay(iso) {
+    const date = parseISO(iso);
+    return date ? pad2(date.getDate()) : '—';
+  }
+
+  function fmtMonth(iso) {
+    const date = parseISO(iso);
+    return date ? `${date.getMonth() + 1}月` : '—';
+  }
+
+  function weekdayCN(iso) {
+    const date = parseISO(iso);
+    if (!date) return '';
+    return ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()];
+  }
+
+  function dueInfo(iso) {
+    if (!iso) return { tone: 'none', label: '未设置', diff: null };
+    const diff = daysBetween(todayISO(), iso);
+    if (diff < 0) return { tone: 'overdue', label: `逾期 ${Math.abs(diff)} 天`, diff };
+    if (diff === 0) return { tone: 'today', label: '今天', diff };
+    if (diff <= 7) return { tone: 'soon', label: `${diff} 天后`, diff };
+    return { tone: 'later', label: `${diff} 天后`, diff };
+  }
+
+  function ageText(birthday) {
+    const birth = parseISO(birthday);
+    if (!birth) return '年龄未知';
+    const now = new Date();
+    let months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+    if (now.getDate() < birth.getDate()) months -= 1;
+    if (months < 0) return '年龄未知';
+    if (months < 12) return `${months} 个月`;
+    const years = Math.floor(months / 12);
+    const rest = months % 12;
+    return rest ? `${years} 岁 ${rest} 个月` : `${years} 岁`;
+  }
+
+  function greeting() {
+    const hour = new Date().getHours();
+    if (hour < 5) return '凌晨好';
+    if (hour < 9) return '早上好';
+    if (hour < 12) return '上午好';
+    if (hour < 14) return '中午好';
+    if (hour < 18) return '下午好';
+    return '晚上好';
+  }
+
+  /* =========================================================
+     Icons
+     ========================================================= */
+
+  const ICONS = {
+    home: '<path d="M3 10.7 12 3l9 7.7"/><path d="M5.4 9.5V20h13.2V9.5"/><path d="M9.4 20v-5.2h5.2V20"/>',
+    bell: '<path d="M18 8.5a6 6 0 0 0-12 0c0 6.6-2.3 6.7-2.3 7.8h16.6c0-1.1-2.3-1.2-2.3-7.8Z"/><path d="M9.7 19.6a2.5 2.5 0 0 0 4.6 0"/>',
+    user: '<circle cx="12" cy="8.2" r="3.4"/><path d="M5.2 20c.7-3.4 3.3-5.4 6.8-5.4s6.1 2 6.8 5.4"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    back: '<path d="m14.5 5-7 7 7 7"/>',
+    edit: '<path d="m4 16.5-.8 4.3 4.3-.8L19 8.5a2.1 2.1 0 0 0-3-3L4 16.5Z"/><path d="m13.8 7.2 3 3"/>',
+    trash: '<path d="M4 7h16"/><path d="M9 7V4.8h6V7"/><path d="M7 7l.8 13h8.4L17 7"/><path d="M10 11v5M14 11v5"/>',
+    check: '<path d="m5 12.5 4.2 4.2L19 7"/>',
+    close: '<path d="m6 6 12 12M18 6 6 18"/>',
+    download: '<path d="M12 3v11"/><path d="m7.5 10 4.5 4.5 4.5-4.5"/><path d="M4 19.5h16"/>',
+    upload: '<path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4 19.5h16"/>',
+    refresh: '<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
+    database: '<ellipse cx="12" cy="5.5" rx="7.5" ry="3"/><path d="M4.5 5.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/><path d="M4.5 11.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/>',
+    shield: '<path d="M12 3 5 6v6c0 4.5 3 7.2 7 9 4-1.8 7-4.5 7-9V6l-7-3Z"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>',
+    moon: '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/>',
+    auto: '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17"/>',
+    pill: '<rect x="3.5" y="8.5" width="17" height="7" rx="3.5" transform="rotate(-35 12 12)"/><path d="m9.5 7.5 7 9"/>',
+    syringe: '<path d="m17 3 4 4"/><path d="m14 6 4 4"/><path d="m16 8-9.5 9.5L3 21l3.5-3.5L16 8Z"/><path d="m8 12 4 4M6 14l4 4"/>',
+    scissors: '<circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8.2 7.8 20 19M8.2 16.2 20 5"/>',
+    calendar: '<rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 10h17"/>',
+    chevronRight: '<path d="m9 5 7 7-7 7"/>',
+    chevronDown: '<path d="m5 9 7 7 7-7"/>',
+    star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/>',
+    sparkle: '<path d="M12 3v5M12 16v5M3 12h5M16 12h5"/><path d="m6 6 2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.7h.01"/>',
+    alert: '<path d="M12 3 2.7 20h18.6L12 3Z"/><path d="M12 9v5"/><path d="M12 17h.01"/>',
+    lock: '<rect x="4.5" y="10" width="15" height="10.5" rx="2"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/>',
+    settings: '<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+    arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>'
+  };
+
+  function icon(name, size = 20, strokeWidth = 1.75) {
+    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICONS[name] || ICONS.sparkle}</svg>`;
+  }
+
+  /* =========================================================
+     Pixel cat
+     ========================================================= */
+
+  const CAT_PALETTES = {
+    'pixel-1': {
+      base: '#f2e3c8',
+      shade: '#b9b8aa',
+      patch: '#8d9092',
+      dark: '#171b38',
+      nose: '#a83245',
+      inner: '#e9aba6'
+    },
+    'pixel-2': {
+      base: '#b5bac9',
+      shade: '#7b8295',
+      patch: '#4d536b',
+      dark: '#12172f',
+      nose: '#992c43',
+      inner: '#e7afb1'
+    },
+    'pixel-3': {
+      base: '#efd7b5',
+      shade: '#c98c5e',
+      patch: '#a45c3d',
+      dark: '#1a1929',
+      nose: '#8e2d3b',
+      inner: '#e6a49e'
+    }
+  };
+
+  function pixelCatSVG(variant = 'pixel-1') {
+    const p = CAT_PALETTES[variant] || CAT_PALETTES['pixel-1'];
+    return `<svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+      <rect x="5" y="3" width="4" height="4" fill="${p.base}"/>
+      <rect x="15" y="3" width="4" height="4" fill="${p.base}"/>
+      <rect x="6" y="4" width="2" height="2" fill="${p.inner}"/>
+      <rect x="16" y="4" width="2" height="2" fill="${p.inner}"/>
+      <rect x="4" y="6" width="16" height="10" fill="${p.base}"/>
+      <rect x="3" y="9" width="2" height="5" fill="${p.shade}"/>
+      <rect x="19" y="9" width="2" height="5" fill="${p.shade}"/>
+      <rect x="6" y="15" width="12" height="3" fill="${p.base}"/>
+      <rect x="4" y="6" width="5" height="3" fill="${p.patch}"/>
+      <rect x="16" y="12" width="4" height="5" fill="${p.shade}"/>
+      <rect x="10" y="4" width="4" height="2" fill="${p.patch}"/>
+      <rect x="5" y="9" width="5" height="3" fill="${p.patch}" opacity=".48"/>
+      <rect x="7" y="9" width="1" height="1" fill="${p.dark}"/>
+      <rect x="8" y="10" width="2" height="1" fill="${p.dark}"/>
+      <rect x="10" y="9" width="1" height="1" fill="${p.dark}"/>
+      <rect x="13" y="9" width="1" height="1" fill="${p.dark}"/>
+      <rect x="14" y="10" width="2" height="1" fill="${p.dark}"/>
+      <rect x="16" y="9" width="1" height="1" fill="${p.dark}"/>
+      <rect x="11" y="12" width="2" height="1" fill="${p.nose}"/>
+      <rect x="12" y="13" width="1" height="1" fill="${p.inner}"/>
+      <rect x="9" y="14" width="2" height="1" fill="${p.dark}"/>
+      <rect x="13" y="14" width="2" height="1" fill="${p.dark}"/>
+      <rect x="1" y="12" width="2" height="1" fill="${p.base}" opacity=".7"/>
+      <rect x="21" y="12" width="2" height="1" fill="${p.base}" opacity=".7"/>
+      <rect x="2" y="14" width="2" height="1" fill="${p.base}" opacity=".45"/>
+      <rect x="20" y="14" width="2" height="1" fill="${p.base}" opacity=".45"/>
+    </svg>`;
+  }
+
+  function avatarMarkup(avatar, size = 48, extraClass = '') {
+    const value = AVATARS.includes(avatar) ? avatar : 'pixel-1';
+    if (value.startsWith('pixel-')) {
+      return `<span class="avatar ${value} ${extraClass}" style="--size:${size}px" aria-hidden="true">${pixelCatSVG(value)}</span>`;
+    }
+    return `<span class="avatar emoji ${extraClass}" style="--size:${size}px" aria-hidden="true">${esc(value)}</span>`;
+  }
+
+  function avatarHTML(cat, size = 48, extraClass = '') {
+    return avatarMarkup(cat && cat.avatar, size, extraClass);
+  }
+
+  /* =========================================================
+     Data shape
+     ========================================================= */
+
+  function defaultFields(values = {}) {
+    return DEFAULT_FIELDS.map((field) => ({
+      id: uid('field'),
+      key: field.key,
+      label: field.label,
+      value: values[field.key] ?? '',
+      type: field.type,
+      placeholder: field.placeholder || ''
+    }));
+  }
+
+  function makeFields(values = {}, extra = []) {
+    const fields = DEFAULT_FIELDS.map((field) => ({
+      id: uid('field'),
+      key: field.key,
+      label: field.label,
+      value: values[field.key] ?? '',
+      type: field.type,
+      placeholder: field.placeholder || ''
+    }));
+    extra.forEach((field) => {
+      fields.push({
+        id: uid('field'),
+        key: `custom_${uid('key')}`,
+        label: field.label || '自定义字段',
+        value: field.value ?? '',
+        type: field.type || 'text',
+        placeholder: field.placeholder || ''
+      });
+    });
+    return fields;
+  }
+
+  function demoCats() {
+    const today = todayISO();
+    const now = Date.now();
+
+    return [
+      {
+        id: 'cat_nuomi',
+        name: '糯米',
+        avatar: 'pixel-1',
+        fields: makeFields({
+          breed: '布偶猫',
+          sex: '母',
+          birthday: '2022-03-18',
+          arrival: '2022-06-01',
+          weight: '4.8 kg',
+          color: '海豹双色',
+          chip: '985112000123456',
+          source: '好友家繁育',
+          vet: '喵星动物医院',
+          notes: '怕生，喜欢纸箱。听到冻干袋子的声音会立刻出现。'
+        }, [
+          { label: '过敏史', value: '暂无', type: 'text' },
+          { label: '保险', value: '平安宠物医保', type: 'text' }
+        ]),
+        dewormings: [
+          {
+            id: 'rec_nuomi_dew_1',
+            kind: '内外同驱',
+            date: addDaysISO(today, -95),
+            product: '大宠爱',
+            dose: '1 支（2.5–7.5kg）',
+            batch: '',
+            hospital: '喵星动物医院',
+            cost: '128',
+            intervalMonths: 3,
+            nextDate: addDaysISO(today, -4),
+            notes: '滴颈后 48 小时不要洗澡。',
+            createdAt: now - 900000
+          }
+        ],
+        vaccines: [
+          {
+            id: 'rec_nuomi_vac_1',
+            kind: '猫三联',
+            date: addDaysISO(today, -350),
+            product: '妙三多',
+            dose: '',
+            batch: 'M2025-118',
+            hospital: '喵星动物医院',
+            cost: '180',
+            intervalMonths: 12,
+            nextDate: addDaysISO(today, 15),
+            notes: '年度加强。',
+            createdAt: now - 800000
+          },
+          {
+            id: 'rec_nuomi_vac_2',
+            kind: '狂犬',
+            date: addDaysISO(today, -317),
+            product: '瑞比克',
+            dose: '',
+            batch: 'R2025-031',
+            hospital: '喵星动物医院',
+            cost: '120',
+            intervalMonths: 12,
+            nextDate: addDaysISO(today, 48),
+            notes: '',
+            createdAt: now - 790000
+          }
+        ],
+        neuter: {
+          status: '已绝育',
+          date: '2023-04-12',
+          hospital: '喵星动物医院',
+          cost: '1200',
+          precheck: true,
+          notes: '术后恢复良好，第二天就开始正常吃饭。'
+        },
+        createdAt: now - 2000000
+      },
+      {
+        id: 'cat_zhima',
+        name: '芝麻',
+        avatar: 'pixel-2',
+        fields: makeFields({
+          breed: '英国短毛猫',
+          sex: '公',
+          birthday: '2021-11-02',
+          arrival: '2022-01-15',
+          weight: '6.1 kg',
+          color: '蓝乳',
+          chip: '985112000654321',
+          source: '领养',
+          vet: '爪子诊所',
+          notes: '贪吃，需要控制体重。晚上会准时蹲在厨房门口。'
+        }, [
+          { label: '主粮', value: '皇家室内成猫', type: 'text' },
+          { label: '性格', value: '粘人但慢热', type: 'text' }
+        ]),
+        dewormings: [
+          {
+            id: 'rec_zhima_dew_1',
+            kind: '体外',
+            date: addDaysISO(today, -20),
+            product: '福来恩',
+            dose: '1 支',
+            batch: '',
+            hospital: '爪子诊所',
+            cost: '98',
+            intervalMonths: 1,
+            nextDate: addDaysISO(today, 10),
+            notes: '',
+            createdAt: now - 700000
+          }
+        ],
+        vaccines: [
+          {
+            id: 'rec_zhima_vac_1',
+            kind: '猫三联',
+            date: addDaysISO(today, -365),
+            product: '妙三多',
+            dose: '',
+            batch: 'M2025-077',
+            hospital: '爪子诊所',
+            cost: '160',
+            intervalMonths: 12,
+            nextDate: today,
+            notes: '今天该打年度加强。',
+            createdAt: now - 600000
+          },
+          {
+            id: 'rec_zhima_vac_2',
+            kind: '狂犬',
+            date: addDaysISO(today, -340),
+            product: '瑞比克',
+            dose: '',
+            batch: 'R2025-012',
+            hospital: '爪子诊所',
+            cost: '110',
+            intervalMonths: 12,
+            nextDate: addDaysISO(today, 25),
+            notes: '',
+            createdAt: now - 590000
+          }
+        ],
+        neuter: {
+          status: '计划中',
+          date: '',
+          hospital: '',
+          cost: '',
+          precheck: false,
+          notes: '计划 12 月安排术前检查，先控制体重。'
+        },
+        createdAt: now - 1900000
+      }
+    ];
+  }
+
+  function normaliseField(field, index) {
+    const type = ['text', 'date', 'longtext', 'sex'].includes(field && field.type) ? field.type : 'text';
+    return {
+      id: String((field && field.id) || uid('field')),
+      key: String((field && field.key) || `custom_${uid('key')}`),
+      label: cleanText(field && field.label) || `字段 ${index + 1}`,
+      value: field && field.value != null ? String(field.value) : '',
+      type,
+      placeholder: cleanText(field && field.placeholder)
+    };
+  }
+
+  function normaliseFields(fields) {
+    if (!Array.isArray(fields)) return defaultFields();
+    return fields
+      .map(normaliseField)
+      .filter((field) => !(field.key === 'chip' && !field.value.trim()));
+  }
+
+  function normaliseRecord(record) {
+    const date = parseISO(record && record.date) ? record.date : '';
+    const nextDate = parseISO(record && record.nextDate) ? record.nextDate : '';
+    const interval = Number.parseInt(record && record.intervalMonths, 10);
+    return {
+      id: String((record && record.id) || uid('rec')),
+      kind: cleanText(record && record.kind) || '其他',
+      date,
+      product: cleanText(record && record.product),
+      dose: cleanText(record && record.dose),
+      batch: cleanText(record && record.batch),
+      hospital: cleanText(record && record.hospital),
+      cost: cleanCost(record && record.cost),
+      intervalMonths: Number.isFinite(interval) ? clamp(interval, 0, 120) : 0,
+      nextDate,
+      notes: cleanText(record && record.notes),
+      createdAt: Number(record && record.createdAt) || Date.now()
+    };
+  }
+
+  function normaliseNeuter(neuter) {
+    if (!neuter || typeof neuter !== 'object') return null;
+    const status = ['未绝育', '计划中', '已绝育'].includes(neuter.status) ? neuter.status : '未绝育';
+    return {
+      status,
+      date: parseISO(neuter.date) ? neuter.date : '',
+      hospital: cleanText(neuter.hospital),
+      cost: cleanCost(neuter.cost),
+      precheck: Boolean(neuter.precheck),
+      notes: cleanText(neuter.notes)
+    };
+  }
+
+  function normaliseCat(cat) {
+    return {
+      id: String((cat && cat.id) || uid('cat')),
+      name: cleanText(cat && cat.name).slice(0, 30) || '未命名猫咪',
+      avatar: AVATARS.includes(cat && cat.avatar) ? cat.avatar : 'pixel-1',
+      fields: normaliseFields(cat && cat.fields),
+      dewormings: Array.isArray(cat && cat.dewormings) ? cat.dewormings.map(normaliseRecord).slice(0, MAX_RECORDS) : [],
+      vaccines: Array.isArray(cat && cat.vaccines) ? cat.vaccines.map(normaliseRecord).slice(0, MAX_RECORDS) : [],
+      neuter: normaliseNeuter(cat && cat.neuter),
+      createdAt: Number(cat && cat.createdAt) || Date.now()
+    };
+  }
+
+  function normaliseStore(raw) {
+    if (!raw || typeof raw !== 'object' || !Array.isArray(raw.cats)) {
+      throw new Error('文件格式不正确：缺少 cats 数组');
+    }
+    const cats = raw.cats.map(normaliseCat).filter((cat) => cat.name);
+    const theme = raw.settings && ['auto', 'light', 'dark'].includes(raw.settings.theme)
+      ? raw.settings.theme
+      : 'auto';
+    const updatedAt = Number(raw.updatedAt) || Date.parse(raw.updatedAt) || 0;
+    return {
+      version: 1,
+      cats,
+      settings: { theme },
+      updatedAt
+    };
+  }
+
+  function loadStore() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        return { version: 1, cats: demoCats(), settings: { theme: 'auto' }, updatedAt: 0 };
+      }
+      return normaliseStore(JSON.parse(raw));
+    } catch (error) {
+      console.warn('MEOW SYSTEM: 无法读取本地数据，使用示例数据。', error);
+      return { version: 1, cats: demoCats(), settings: { theme: 'auto' }, updatedAt: 0 };
+    }
+  }
+
+  function isDemoStore(value) {
+    if (!value || !Array.isArray(value.cats) || value.cats.length !== 2) return false;
+    const ids = value.cats.map((cat) => cat.id).sort().join('|');
+    if (ids !== ['cat_nuomi', 'cat_zhima'].sort().join('|')) return false;
+    const names = value.cats.map((cat) => cat.name).sort().join('|');
+    if (names !== ['糯米', '芝麻'].sort().join('|')) return false;
+    const recordIds = value.cats
+      .flatMap((cat) => [...cat.dewormings, ...cat.vaccines].map((record) => record.id))
+      .sort();
+    const demoRecordIds = [
+      'rec_nuomi_dew_1',
+      'rec_nuomi_vac_1',
+      'rec_nuomi_vac_2',
+      'rec_zhima_dew_1',
+      'rec_zhima_vac_1',
+      'rec_zhima_vac_2'
+    ].sort();
+    return recordIds.length === demoRecordIds.length
+      && recordIds.every((id, index) => id === demoRecordIds[index]);
+  }
+
+  let store = loadStore();
+  let storageWarningShown = false;
+  let serverAvailable = false;
+  let serverHasData = false;
+  let serverSaveTimer = null;
+  let serverSaveInFlight = false;
+  let serverSaveQueued = false;
+  let serverSaveErrorShown = false;
+
+  function writeLocalStore() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        version: 1,
+        cats: store.cats,
+        settings: store.settings,
+        updatedAt: Number(store.updatedAt) || 0
+      }));
+      return true;
+    } catch (error) {
+      console.warn('MEOW SYSTEM: 浏览器本地存储写入失败。', error);
+      return false;
+    }
+  }
+
+  function persist(showError = true) {
+    store.updatedAt = Date.now();
+    const localOk = writeLocalStore();
+    scheduleServerSave();
+
+    if (!localOk && !serverAvailable && showError && !storageWarningShown) {
+      storageWarningShown = true;
+      showToast('本地存储不可用，刷新后数据可能丢失');
+    }
+    return localOk || serverAvailable;
+  }
+
+  function scheduleServerSave(delay = 260) {
+    if (!serverAvailable) return;
+    if (serverSaveTimer) window.clearTimeout(serverSaveTimer);
+    serverSaveTimer = window.setTimeout(() => {
+      serverSaveTimer = null;
+      pushServerData();
+    }, delay);
+  }
+
+  async function pushServerData() {
+    if (!serverAvailable) return;
+    if (serverSaveInFlight) {
+      serverSaveQueued = true;
+      return;
+    }
+
+    serverSaveInFlight = true;
+    const payload = {
+      version: 1,
+      cats: store.cats,
+      settings: store.settings,
+      updatedAt: Number(store.updatedAt) || Date.now()
+    };
+
+    try {
+      const response = await fetch('/api/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const result = await response.json();
+      if (!result || result.ok !== true) {
+        throw new Error(result && result.error ? result.error : '保存失败');
+      }
+      serverHasData = true;
+    } catch (error) {
+      if (!serverSaveErrorShown) {
+        serverSaveErrorShown = true;
+        showToast('无法写入 data.json，当前数据已保存在浏览器');
+      }
+    } finally {
+      serverSaveInFlight = false;
+      if (serverSaveQueued) {
+        serverSaveQueued = false;
+        scheduleServerSave(0);
+      }
+    }
+  }
+
+  async function hydrateFromServer() {
+    if (location.protocol === 'file:') return false;
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 1200);
+    try {
+      const response = await fetch('/api/data', {
+        cache: 'no-store',
+        headers: { Accept: 'application/json' },
+        signal: controller.signal
+      });
+      const contentType = response.headers.get('content-type') || '';
+      if (!response.ok || !contentType.includes('application/json')) return false;
+      const result = await response.json();
+      if (!result || result.ok !== true) return false;
+
+      serverAvailable = true;
+      const serverData = result.data;
+
+      if (serverData && Array.isArray(serverData.cats)) {
+        let next;
+        try {
+          next = normaliseStore(serverData);
+        } catch (error) {
+          serverAvailable = false;
+          return false;
+        }
+        const localUpdated = Number(store.updatedAt) || 0;
+        const serverUpdated = Number(next.updatedAt) || 0;
+
+        if (localUpdated > serverUpdated && !isDemoStore(store)) {
+          store.updatedAt = localUpdated;
+          writeLocalStore();
+          scheduleServerSave(0);
+        } else {
+          store = next;
+          ensureSelection();
+          writeLocalStore();
+          serverHasData = true;
+        }
+      } else {
+        serverHasData = false;
+        if (!isDemoStore(store)) {
+          store.updatedAt = Date.now();
+          writeLocalStore();
+          scheduleServerSave(0);
+        }
+      }
+      return true;
+    } catch (error) {
+      return false;
+    } finally {
+      window.clearTimeout(timer);
+    }
+  }
+
+  const ui = {
+    tab: 'home',
+    view: 'tabs',
+    selectedCatId: store.cats[0] ? store.cats[0].id : null,
+    detailCatId: null,
+    filter: 'all',
+    pendingSection: null,
+    returnScroll: 0
+  };
+
+  function catById(id) {
+    return store.cats.find((cat) => cat.id === id) || null;
+  }
+
+  function ensureSelection() {
+    if (ui.selectedCatId && catById(ui.selectedCatId)) return;
+    ui.selectedCatId = store.cats[0] ? store.cats[0].id : null;
+  }
+
+  function selectedCat() {
+    ensureSelection();
+    return catById(ui.selectedCatId);
+  }
+
+  function getFieldValue(cat, key) {
+    const field = cat && cat.fields.find((item) => item.key === key);
+    return field ? String(field.value || '').trim() : '';
+  }
+
+  function fieldByKey(cat, key) {
+    return cat && cat.fields.find((item) => item.key === key) || null;
+  }
+
+  function allRecordCount() {
+    return store.cats.reduce((total, cat) => {
+      return total + cat.dewormings.length + cat.vaccines.length + (cat.neuter ? 1 : 0);
+    }, 0);
+  }
+
+  function storageKB() {
+    try {
+      return Math.max(0.1, Math.round(JSON.stringify(store).length / 1024 * 10) / 10);
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  /* =========================================================
+     Reminder engine
+     ========================================================= */
+
+  function compareRecord(a, b) {
+    const dateCompare = String(a.date || '').localeCompare(String(b.date || ''));
+    if (dateCompare !== 0) return dateCompare;
+    return (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0);
+  }
+
+  function sortRecordsDesc(a, b) {
+    const dateCompare = String(b.date || '').localeCompare(String(a.date || ''));
+    if (dateCompare !== 0) return dateCompare;
+    return (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0);
+  }
+
+  function latestRecordsByKind(records) {
+    const map = new Map();
+    records.forEach((record) => {
+      const kind = record.kind || '其他';
+      const previous = map.get(kind);
+      if (!previous || compareRecord(record, previous) > 0) {
+        map.set(kind, record);
+      }
+    });
+    return Array.from(map.entries()).map(([kind, record]) => ({ kind, record }));
+  }
+
+  function reminderFromRecord(cat, type, kind, record) {
+    const nextDate = record.nextDate || (record.intervalMonths ? addMonthsISO(record.date, record.intervalMonths) : '');
+    if (!nextDate) return null;
+    const due = dueInfo(nextDate);
+    return {
+      key: `${cat.id}:${type}:${record.id}`,
+      catId: cat.id,
+      cat,
+      type,
+      kind,
+      recordId: record.id,
+      dueDate: nextDate,
+      tone: due.tone,
+      dueLabel: due.label,
+      diff: due.diff,
+      title: kind,
+      subtitle: record.product || (type === 'deworm' ? '驱虫记录' : '疫苗记录')
+    };
+  }
+
+  function remindersForCat(cat) {
+    const reminders = [];
+    ['deworm', 'vaccine'].forEach((type) => {
+      const records = type === 'deworm' ? cat.dewormings : cat.vaccines;
+      latestRecordsByKind(records).forEach(({ kind, record }) => {
+        const reminder = reminderFromRecord(cat, type, kind, record);
+        if (reminder) reminders.push(reminder);
+      });
+    });
+
+    if (cat.neuter && cat.neuter.status === '计划中') {
+      reminders.push({
+        key: `${cat.id}:neuter:plan`,
+        catId: cat.id,
+        cat,
+        type: 'neuter',
+        kind: '绝育计划',
+        recordId: null,
+        dueDate: '',
+        tone: 'plan',
+        dueLabel: '待安排',
+        diff: null,
+        title: '绝育计划',
+        subtitle: cat.neuter.notes || '尚未安排手术日期'
+      });
+    }
+    return reminders;
+  }
+
+  function reminderPriority(reminder) {
+    return REMINDER_TONE_PRIORITY[reminder.tone] ?? 5;
+  }
+
+  function sortReminders(a, b) {
+    const priority = reminderPriority(a) - reminderPriority(b);
+    if (priority !== 0) return priority;
+    const dateCompare = String(a.dueDate || '9999-12-31').localeCompare(String(b.dueDate || '9999-12-31'));
+    if (dateCompare !== 0) return dateCompare;
+    return String(a.cat.name).localeCompare(String(b.cat.name), 'zh-CN');
+  }
+
+  function allReminders() {
+    return store.cats.flatMap(remindersForCat).sort(sortReminders);
+  }
+
+  function actionableReminders() {
+    return allReminders().filter((reminder) => (
+      reminder.type !== 'neuter' && ['overdue', 'today', 'soon'].includes(reminder.tone)
+    ));
+  }
+
+  function moduleDue(cat, type) {
+    if (type === 'neuter') {
+      const status = cat.neuter ? cat.neuter.status : '';
+      if (status === '已绝育') return { tone: 'soon', label: '已绝育', count: 1, first: null };
+      if (status === '计划中') return { tone: 'plan', label: '待安排', count: 1, first: null };
+      if (status === '未绝育') return { tone: 'later', label: '未绝育', count: 1, first: null };
+      return { tone: 'none', label: '未记录', count: 0, first: null };
+    }
+
+    const list = remindersForCat(cat).filter((reminder) => reminder.type === type).sort(sortReminders);
+    if (!list.length) {
+      const records = type === 'deworm' ? cat.dewormings : cat.vaccines;
+      return { tone: 'none', label: records.length ? '未设下次' : '未记录', count: 0, first: null };
+    }
+    const first = list[0];
+    return {
+      tone: first.tone,
+      label: list.length > 1 ? `${list.length} 项 · ${first.dueLabel}` : first.dueLabel,
+      count: list.length,
+      first
+    };
+  }
+
+  function neuterStatus(cat) {
+    return cat.neuter && cat.neuter.status ? cat.neuter.status : '未记录';
+  }
+
+  function neuterTone(cat) {
+    if (!cat.neuter) return 'none';
+    if (cat.neuter.status === '已绝育') return 'soon';
+    if (cat.neuter.status === '计划中') return 'plan';
+    if (cat.neuter.status === '未绝育') return 'later';
+    return 'none';
+  }
+
+  function catAge(cat) {
+    return ageText(getFieldValue(cat, 'birthday'));
+  }
+
+  function catWeight(cat) {
+    return getFieldValue(cat, 'weight') || '—';
+  }
+
+  function catTags(cat) {
+    const tags = [];
+    const sex = getFieldValue(cat, 'sex');
+    if (sex) {
+      tags.push({
+        label: sex === '公' ? '♂ 公' : sex === '母' ? '♀ 母' : sex,
+        cls: sex === '母' ? 'red' : sex === '公' ? 'blue' : ''
+      });
+    }
+    const breed = getFieldValue(cat, 'breed');
+    if (breed) tags.push({ label: breed, cls: '' });
+    const birthday = getFieldValue(cat, 'birthday');
+    if (birthday) tags.push({ label: ageText(birthday), cls: '' });
+    return tags;
+  }
+
+  function tagMarkup(tags) {
+    return tags.map((tag) => `<span class="tag ${tag.cls || ''}">${esc(tag.label)}</span>`).join('');
+  }
+
+  function catActivity(cat) {
+    const items = [];
+    cat.dewormings.forEach((record) => {
+      items.push({
+        type: 'deworm',
+        date: record.date,
+        createdAt: record.createdAt,
+        record
+      });
+    });
+    cat.vaccines.forEach((record) => {
+      items.push({
+        type: 'vaccine',
+        date: record.date,
+        createdAt: record.createdAt,
+        record
+      });
+    });
+    if (cat.neuter && cat.neuter.date) {
+      items.push({
+        type: 'neuter',
+        date: cat.neuter.date,
+        createdAt: 0,
+        record: cat.neuter
+      });
+    }
+    return items
+      .filter((item) => item.date)
+      .sort((a, b) => {
+        const dateCompare = String(b.date).localeCompare(String(a.date));
+        if (dateCompare !== 0) return dateCompare;
+        return (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0);
+      });
+  }
+
+  /* =========================================================
+     Render: shared
+     ========================================================= */
+
+  function renderTabbar() {
+    const count = actionableReminders().length;
+    const tabs = [
+      { id: 'home', label: '首页', icon: 'home' },
+      { id: 'reminders', label: '提醒', icon: 'bell' },
+      { id: 'settings', label: '我的', icon: 'user' }
+    ];
+
+    return `<nav class="tabbar" aria-label="主导航">
+      ${tabs.map((tab) => {
+        const active = ui.tab === tab.id;
+        const showBadge = tab.id === 'reminders' && count > 0;
+        return `<button type="button" class="tab ${active ? 'active' : ''}" data-action="tab" data-tab="${tab.id}" ${active ? 'aria-current="page"' : ''} aria-label="${tab.label}${showBadge ? `，${count} 项待办` : ''}">
+          ${icon(tab.icon, 21)}
+          <span>${tab.label}</span>
+          ${showBadge ? `<span class="tab-badge">${count > 9 ? '9+' : count}</span>` : ''}
+        </button>`;
+      }).join('')}
+    </nav>`;
+  }
+
+  function renderCollage() {
+    return `<section class="collage-banner">
+      <div class="banner-rainbow"></div>
+      <div class="banner-bubble">
+        <div class="micro">HOW CAN I HELP?</div>
+        <strong>今天要照顾<br>哪只小猫？</strong>
+      </div>
+      <div class="banner-cat">${pixelCatSVG('pixel-1')}</div>
+      <div class="banner-star"></div>
+      <div class="banner-meta"><span class="dot"></span> CAT CARE / DAILY LOG</div>
+    </section>`;
+  }
+
+  function renderCatSwitcher() {
+    const chips = store.cats.map((cat) => {
+      const active = cat.id === ui.selectedCatId;
+      const hasDue = remindersForCat(cat).some((reminder) => ['overdue', 'today', 'soon'].includes(reminder.tone));
+      return `<button type="button" class="cat-chip ${active ? 'active' : ''}" data-action="select-cat" data-id="${esc(cat.id)}" role="tab" aria-selected="${active}">
+        ${avatarMarkup(cat.avatar, 30)}
+        <span>${esc(cat.name)}</span>
+        ${hasDue ? '<span class="chip-dot" aria-label="有待办"></span>' : ''}
+      </button>`;
+    }).join('');
+
+    return `<div class="cat-switcher" role="tablist" aria-label="选择猫咪">
+      ${chips}
+      <button type="button" class="cat-chip add" data-action="add-cat">${icon('plus', 13)} 新猫</button>
+    </div>`;
+  }
+
+  function renderCatHero(cat) {
+    const deworm = moduleDue(cat, 'deworm');
+    const vaccine = moduleDue(cat, 'vaccine');
+    const neuter = moduleDue(cat, 'neuter');
+
+    return `<article class="cat-hero paper-card">
+      <div class="cat-hero-top">
+        ${avatarHTML(cat, 74, 'lg')}
+        <div class="cat-id">
+          <div class="micro">CAT FILE / ${String(store.cats.findIndex((item) => item.id === cat.id) + 1).padStart(2, '0')}</div>
+          <h2>${esc(cat.name)}</h2>
+          <div class="tag-row">${tagMarkup(catTags(cat))}</div>
+        </div>
+        <button type="button" class="round-btn small edit-corner" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑 ${esc(cat.name)} 的档案">${icon('edit', 14)}</button>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><span>WEIGHT</span><strong>${esc(catWeight(cat))}</strong></div>
+        <div class="stat"><span>NEUTER</span><strong>${esc(neuterStatus(cat))}</strong></div>
+        <div class="stat"><span>AGE</span><strong>${esc(catAge(cat))}</strong></div>
+      </div>
+      <div class="hero-due">
+        <button type="button" class="due-pill ${deworm.tone}" data-action="open-detail" data-id="${esc(cat.id)}" data-section="deworm"><span class="dot"></span>驱虫 · ${esc(deworm.count > 1 ? `${deworm.count} 项` : deworm.label)}</button>
+        <button type="button" class="due-pill ${vaccine.tone}" data-action="open-detail" data-id="${esc(cat.id)}" data-section="vaccine"><span class="dot"></span>疫苗 · ${esc(vaccine.count > 1 ? `${vaccine.count} 项` : vaccine.label)}</button>
+        <button type="button" class="due-pill ${neuter.tone}" data-action="open-detail" data-id="${esc(cat.id)}" data-section="neuter"><span class="dot"></span>绝育 · ${esc(neuter.label)}</button>
+      </div>
+    </article>`;
+  }
+
+  function moduleTile(cat, type) {
+    const due = moduleDue(cat, type);
+    const addAction = type === 'neuter' ? 'edit-neuter' : 'add-record';
+    const iconName = type === 'deworm' ? 'pill' : type === 'vaccine' ? 'syringe' : 'scissors';
+    return `<div class="module-tile ${type}" role="button" tabindex="0" data-action="open-detail" data-id="${esc(cat.id)}" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
+      <button type="button" class="module-add" data-action="${addAction}" data-type="${type}" data-cat="${esc(cat.id)}" aria-label="添加${TYPE_LABEL[type]}记录">${icon('plus', 13)}</button>
+      <div class="module-icon">${icon(iconName, 16)}</div>
+      <span class="module-label">${EN_LABEL[type]}</span>
+      <strong>${TYPE_LABEL[type]}</strong>
+      <span class="module-due ${due.tone}">${esc(due.label)}</span>
+    </div>`;
+  }
+
+  function renderModuleGrid(cat) {
+    return `<div class="module-grid">
+      ${moduleTile(cat, 'deworm')}
+      ${moduleTile(cat, 'vaccine')}
+      ${moduleTile(cat, 'neuter')}
+    </div>`;
+  }
+
+  function renderDueCard(reminder) {
+    const iconName = reminder.type === 'deworm' ? 'pill' : 'syringe';
+    const action = reminder.type === 'neuter'
+      ? `<button type="button" class="btn-complete ghost" data-action="edit-neuter" data-cat="${esc(reminder.catId)}">安排</button>`
+      : `<button type="button" class="btn-complete" data-action="complete-reminder" data-cat="${esc(reminder.catId)}" data-type="${reminder.type}" data-record="${esc(reminder.recordId)}">${icon('check', 11)}完成</button>`;
+
+    return `<div class="due-card ${reminder.tone}">
+      <div class="mini-icon">${icon(iconName, 15)}</div>
+      <div class="due-copy">
+        <strong>${esc(reminder.cat.name)} · ${esc(reminder.kind)}</strong>
+        <span>${esc(reminder.subtitle)}${reminder.dueDate ? ` · 下次 ${fmtDot(reminder.dueDate)}` : ''}</span>
+      </div>
+      <span class="due-badge ${reminder.tone}">${esc(reminder.dueLabel)}</span>
+      ${action}
+    </div>`;
+  }
+
+  function renderDueSection(reminders) {
+    return `<div class="section-head">
+      <div class="head-copy"><div class="micro">UP NEXT</div><h2>即将到期</h2></div>
+      <button type="button" class="link-btn" data-action="tab" data-tab="reminders">全部提醒 ${icon('chevronRight', 13)}</button>
+    </div>
+    ${reminders.length
+      ? `<div class="due-list">${reminders.map(renderDueCard).join('')}</div>`
+      : `<div class="empty"><strong>暂时没有临近的待办</strong><p>所有计划都还从容，去撸猫吧。</p></div>`}`;
+  }
+
+  function timelineItem(item) {
+    const record = item.record;
+    let title = '';
+    let meta = '';
+
+    if (item.type === 'neuter') {
+      title = '绝育手术';
+      meta = [record.hospital, record.status].filter(Boolean).join(' · ');
+    } else {
+      title = [record.product || record.kind, record.kind].filter(Boolean).join(' · ');
+      meta = [record.hospital, record.nextDate ? `下次 ${fmtDot(record.nextDate)}` : ''].filter(Boolean).join(' · ');
+    }
+
+    return `<div class="timeline-item ${item.type}">
+      <div class="t-date">${fmtDot(item.date)} · ${TYPE_LABEL[item.type]}</div>
+      <div class="t-title">${esc(title)}</div>
+      ${meta ? `<div class="t-meta">${esc(meta)}</div>` : ''}
+    </div>`;
+  }
+
+  function renderRecent(cat) {
+    const items = catActivity(cat).slice(0, 3);
+    return `<div class="section-head">
+      <div class="head-copy"><div class="micro">RECENT ACTIVITY</div><h2>最近动态</h2></div>
+      <button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}">完整档案 ${icon('chevronRight', 13)}</button>
+    </div>
+    ${items.length ? `<div class="timeline">${items.map(timelineItem).join('')}</div>` : `<div class="empty"><p>还没有健康记录。打开档案后可以添加驱虫、疫苗和绝育记录。</p></div>`}`;
+  }
+
+  function renderEmptyCats() {
+    return `<div class="empty">
+      <div class="empty-art">${pixelCatSVG('pixel-3')}</div>
+      <strong>还没有猫咪档案</strong>
+      <p>先添加第一只猫，再记录驱虫、疫苗和绝育。所有数据只保存在这台设备。</p>
+      <button type="button" class="btn primary" data-action="add-cat">${icon('plus', 14)} 添加第一只猫</button>
+    </div>`;
+  }
+
+  /* =========================================================
+     Render: tabs
+     ========================================================= */
+
+  function renderHome() {
+    const cat = selectedCat();
+    const badge = actionableReminders().length;
+    const due = allReminders()
+      .filter((reminder) => reminder.type !== 'neuter' && ['overdue', 'today', 'soon'].includes(reminder.tone))
+      .sort(sortReminders)
+      .slice(0, 3);
+
+    return `<header class="page-head">
+      <div>
+        <div class="eyebrow">${greeting()} · ${fmtDot(todayISO())}</div>
+        <h1>猫咪档案</h1>
+      </div>
+      <div class="head-actions">
+        <button type="button" class="round-btn" data-action="tab" data-tab="reminders" aria-label="查看提醒">
+          ${icon('bell', 18)}
+          ${badge ? `<span class="head-badge">${badge > 9 ? '9+' : badge}</span>` : ''}
+        </button>
+        <button type="button" class="round-btn blue" data-action="add-cat" aria-label="添加猫咪">${icon('plus', 18)}</button>
+      </div>
+    </header>
+    ${renderCollage()}
+    ${renderCatSwitcher()}
+    ${cat ? renderCatHero(cat) : renderEmptyCats()}
+    ${cat ? renderModuleGrid(cat) : ''}
+    ${cat ? renderHomeFields(cat) : ''}
+    ${renderDueSection(due)}
+    ${cat ? renderRecent(cat) : ''}
+    <div class="screen-footer">MEOW SYSTEM · LOCAL ONLY · ${fmtDot(todayISO())}</div>`;
+  }
+
+  function renderReminderCard(reminder) {
+    const cat = reminder.cat;
+    let action = '';
+
+    if (reminder.type === 'neuter') {
+      action = `<button type="button" class="btn-complete ghost" data-action="edit-neuter" data-cat="${esc(cat.id)}">安排</button>`;
+    } else if (reminder.tone === 'later') {
+      action = `<button type="button" class="btn-complete ghost" data-action="open-detail" data-id="${esc(cat.id)}" data-section="${reminder.type}">查看</button>`;
+    } else {
+      action = `<button type="button" class="btn-complete" data-action="complete-reminder" data-cat="${esc(cat.id)}" data-type="${reminder.type}" data-record="${esc(reminder.recordId)}">完成</button>`;
+    }
+
+    return `<div class="reminder-card ${reminder.tone}">
+      ${avatarHTML(cat, 38)}
+      <div class="r-copy">
+        <strong>${esc(cat.name)} · ${esc(reminder.kind)}</strong>
+        <span>${esc(reminder.subtitle)}${reminder.dueDate ? ` · ${fmtDot(reminder.dueDate)}` : ''}</span>
+      </div>
+      <div class="r-actions">
+        <span class="r-date">${esc(reminder.dueLabel)}</span>
+        ${action}
+      </div>
+    </div>`;
+  }
+
+  function renderReminders() {
+    const filters = [
+      { id: 'all', label: '全部' },
+      { id: 'deworm', label: '驱虫' },
+      { id: 'vaccine', label: '疫苗' },
+      { id: 'neuter', label: '绝育' }
+    ];
+
+    const all = allReminders().sort(sortReminders);
+    const filtered = ui.filter === 'all' ? all : all.filter((reminder) => reminder.type === ui.filter);
+    const actionable = filtered.filter((reminder) => (
+      reminder.type !== 'neuter' && ['overdue', 'today', 'soon'].includes(reminder.tone)
+    ));
+
+    const groups = { overdue: [], today: [], soon: [], later: [], plan: [] };
+    filtered.forEach((reminder) => {
+      if (!groups[reminder.tone]) groups[reminder.tone] = [];
+      groups[reminder.tone].push(reminder);
+    });
+
+    let groupMarkup = '';
+    ['overdue', 'today', 'soon', 'later', 'plan'].forEach((tone) => {
+      const items = groups[tone];
+      if (!items || !items.length) return;
+      groupMarkup += `<div class="reminder-group">
+        <div class="reminder-group-title">${REMINDER_GROUP_TITLE[tone]} · ${items.length}</div>
+        ${items.map(renderReminderCard).join('')}
+      </div>`;
+    });
+
+    const empty = `<div class="empty">
+      <div class="empty-art">${pixelCatSVG('pixel-2')}</div>
+      <strong>${all.length ? '这个分类还没有提醒' : '暂时没有提醒'}</strong>
+      <p>${all.length ? '切换到「全部」看看其他猫的计划。' : '添加驱虫或疫苗记录后，下次日期会自动出现在这里。'}</p>
+    </div>`;
+
+    return `<header class="page-head">
+      <div>
+        <div class="eyebrow">REMINDERS / ${String(filtered.length).padStart(2, '0')} ITEMS</div>
+        <h1>提醒</h1>
+      </div>
+      <div class="head-actions">
+        <button type="button" class="round-btn" data-action="tab" data-tab="home" aria-label="回到首页">${icon('home', 18)}</button>
+        <button type="button" class="round-btn blue" data-action="add-cat" aria-label="添加猫咪">${icon('plus', 18)}</button>
+      </div>
+    </header>
+
+    <div class="filter-chips" role="tablist" aria-label="筛选提醒">
+      ${filters.map((filter) => `<button type="button" class="filter-chip ${ui.filter === filter.id ? 'active' : ''}" data-action="filter-reminders" data-filter="${filter.id}" role="tab" aria-selected="${ui.filter === filter.id}">${filter.label}</button>`).join('')}
+    </div>
+
+    <div class="reminder-summary">
+      <div class="rs-copy">
+        <div class="micro light">SYSTEM CHECK</div>
+        <strong>${actionable.length ? `${actionable.length} 项需要处理` : '没有紧急待办'}</strong>
+        <span>${actionable.length ? '逾期优先 · 完成后会自动生成下次记录' : '可以提前看看之后的计划'}</span>
+      </div>
+      <div class="rs-count">${String(actionable.length).padStart(2, '0')}</div>
+    </div>
+
+    ${groupMarkup || empty}
+    <div class="screen-footer">REMINDERS SYNCED LOCALLY · ${fmtDot(todayISO())}</div>`;
+  }
+
+  function renderSettings() {
+    const theme = store.settings.theme || 'auto';
+    const themeOptions = [
+      { id: 'auto', label: '自动', icon: 'auto' },
+      { id: 'light', label: '浅色', icon: 'sun' },
+      { id: 'dark', label: '深色', icon: 'moon' }
+    ];
+    const records = allRecordCount();
+    const storageMode = serverAvailable ? 'data.json' : '浏览器';
+    const storageCopy = serverAvailable
+      ? '数据会写入这台电脑的 meow-system/data.json，Mac 和手机访问同一份，修改后自动保存。'
+      : '不用登录，也没有服务器。数据保存在当前浏览器里，记得偶尔导出一份 JSON 备份。';
+    const aboutCopy = serverAvailable
+      ? '本地优先的猫咪档案。数据写入电脑上的 data.json，手机和电脑共用；不会上传到互联网。'
+      : '单文件、本地优先的猫咪档案。数据只保存在当前浏览器，不会上传到任何服务器。';
+
+    return `<header class="page-head">
+      <div>
+        <div class="eyebrow">PERSONAL / SETTINGS</div>
+        <h1>我的</h1>
+      </div>
+      <div class="head-actions">
+        <button type="button" class="round-btn" data-action="tab" data-tab="home" aria-label="回到首页">${icon('home', 18)}</button>
+      </div>
+    </header>
+
+    <section class="system-panel">
+      <div class="sys-label"><span>SYSTEM / LOCAL ${serverAvailable ? 'FILE' : 'BROWSER'}</span><span>● READY</span></div>
+      <h2>只存本机<br>不上传。</h2>
+      <p>${storageCopy}</p>
+      <div class="sys-grid">
+        <div class="sys-mini"><span>CATS</span><strong>${store.cats.length} 只</strong></div>
+        <div class="sys-mini"><span>RECORDS</span><strong>${records} 条</strong></div>
+        <div class="sys-mini"><span>STORAGE</span><strong>${storageMode}</strong></div>
+        <div class="sys-mini"><span>BACKUP</span><strong>JSON</strong></div>
+      </div>
+    </section>
+
+    <div class="settings-group">
+      <div class="settings-group-title">APPEARANCE / 外观</div>
+      <div class="theme-segmented" role="group" aria-label="主题">
+        ${themeOptions.map((option) => `<button type="button" class="${theme === option.id ? 'active' : ''}" data-action="set-theme" data-theme="${option.id}" aria-pressed="${theme === option.id}">${icon(option.icon, 18)}<span>${option.label}</span></button>`).join('')}
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">DATA / 数据</div>
+      <div class="settings-card">
+        <button type="button" class="setting-row" data-action="export">
+          <span class="setting-icon">${icon('download', 16)}</span>
+          <span class="setting-copy"><strong>导出 JSON 备份</strong><span>下载完整数据文件，换设备时用得上</span></span>
+          <span class="chev">${icon('chevronRight', 14)}</span>
+        </button>
+        <button type="button" class="setting-row" data-action="import">
+          <span class="setting-icon">${icon('upload', 16)}</span>
+          <span class="setting-copy"><strong>导入 JSON 备份</strong><span>选择之前导出的文件，覆盖当前数据</span></span>
+          <span class="chev">${icon('chevronRight', 14)}</span>
+        </button>
+        <button type="button" class="setting-row" data-action="reset-demo">
+          <span class="setting-icon">${icon('refresh', 16)}</span>
+          <span class="setting-copy"><strong>恢复示例数据</strong><span>重新生成糯米和芝麻的演示档案</span></span>
+          <span class="chev">${icon('chevronRight', 14)}</span>
+        </button>
+        <button type="button" class="setting-row danger" data-action="clear-data">
+          <span class="setting-icon">${icon('trash', 16)}</span>
+          <span class="setting-copy"><strong>清空全部数据</strong><span>删除所有猫咪和健康记录</span></span>
+          <span class="chev">${icon('chevronRight', 14)}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-group-title">ABOUT / 关于</div>
+      <div class="about-card">
+        <div class="about-title"><strong>喵档</strong><span>MEOW SYSTEM</span></div>
+        <p>${aboutCopy}</p>
+        <div class="about-meta">
+          <span>V${APP_VERSION}</span>
+          <span>${store.cats.length} CATS</span>
+          <span>${records} RECORDS</span>
+          <span>${storageKB()} KB</span>
+          <span>${serverAvailable ? 'DATA.JSON' : 'LOCALSTORAGE'}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-footer">MEOW SYSTEM · MADE FOR CATS</div>`;
+  }
+
+  /* =========================================================
+     Render: cat detail
+     ========================================================= */
+
+  function renderDetailHero(cat) {
+    const deworm = moduleDue(cat, 'deworm');
+    const vaccine = moduleDue(cat, 'vaccine');
+    const neuter = moduleDue(cat, 'neuter');
+    const index = store.cats.findIndex((item) => item.id === cat.id) + 1;
+
+    return `<section class="detail-hero">
+      <div class="dh-top">
+        ${avatarHTML(cat, 88, 'xl')}
+        <div class="dh-id">
+          <div class="micro light">CAT FILE / ${String(index).padStart(2, '0')}</div>
+          <h1>${esc(cat.name)}</h1>
+          <div class="tag-row">${tagMarkup(catTags(cat))}</div>
+        </div>
+      </div>
+      <div class="dh-stats">
+        <div class="dh-stat"><span>WEIGHT</span><strong>${esc(catWeight(cat))}</strong></div>
+        <div class="dh-stat"><span>NEUTER</span><strong>${esc(neuterStatus(cat))}</strong></div>
+        <div class="dh-stat"><span>AGE</span><strong>${esc(catAge(cat))}</strong></div>
+      </div>
+      <div class="dh-due">
+        <button type="button" class="due-pill ${deworm.tone}" data-action="scroll-section" data-section="deworm"><span class="dot"></span>驱虫 · ${esc(deworm.count > 1 ? `${deworm.count} 项` : deworm.label)}</button>
+        <button type="button" class="due-pill ${vaccine.tone}" data-action="scroll-section" data-section="vaccine"><span class="dot"></span>疫苗 · ${esc(vaccine.count > 1 ? `${vaccine.count} 项` : vaccine.label)}</button>
+        <button type="button" class="due-pill ${neuter.tone}" data-action="scroll-section" data-section="neuter"><span class="dot"></span>绝育 · ${esc(neuter.label)}</button>
+      </div>
+    </section>`;
+  }
+
+  function fieldEntries(fields) {
+    const entries = fields.map((field) => {
+      const raw = String(field.value || '').trim();
+      return {
+        field,
+        display: field.type === 'date' ? fmtDot(raw) : raw,
+        empty: !raw,
+        span: field.type === 'longtext' || raw.length > 28
+      };
+    });
+
+    let column = 0;
+    entries.forEach((entry, index) => {
+      if (entry.span) {
+        if (column === 1 && index > 0) entries[index - 1].span = true;
+        column = 0;
+      } else {
+        column = (column + 1) % 2;
+      }
+    });
+    if (column === 1 && entries.length) entries[entries.length - 1].span = true;
+    return entries;
+  }
+
+  function renderFieldGrid(fields) {
+    const entries = fieldEntries(fields);
+    if (!entries.length) return '';
+    return `<div class="field-grid">
+      ${entries.map((entry) => `<div class="field ${entry.span ? 'span-2' : ''}">
+        <span>${esc(entry.field.label)}</span>
+        <strong class="${entry.empty ? 'muted' : ''}">${entry.empty ? '—' : esc(entry.display)}</strong>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  function renderInfoCard(cat) {
+    return `<section class="info-card">
+      <div class="section-head">
+        <div class="head-copy"><div class="micro">PROFILE / FIELDS</div><h2>基础档案</h2></div>
+        <button type="button" class="link-btn" data-action="edit-cat" data-id="${esc(cat.id)}">编辑字段</button>
+      </div>
+      ${cat.fields.length ? renderFieldGrid(cat.fields) : `<div class="empty"><p>还没有档案字段，点「编辑字段」添加品种、生日、体重等信息。</p></div>`}
+    </section>`;
+  }
+
+  function renderHomeFields(cat) {
+    const fields = cat.fields.filter((field) => String(field.value || '').trim() !== '');
+    return `<section class="info-card home-fields">
+      <div class="section-head">
+        <div class="head-copy"><div class="micro">PROFILE / ALL FIELDS</div><h2>档案速览</h2></div>
+        <button type="button" class="link-btn" data-action="edit-cat" data-id="${esc(cat.id)}">编辑字段</button>
+      </div>
+      ${fields.length ? renderFieldGrid(fields) : `<div class="empty"><p>还没有填写档案字段，点「编辑字段」补充品种、生日、体重等信息。</p></div>`}
+    </section>`;
+  }
+
+  function renderNextStrip(cat, type, reminder) {
+    return `<div class="next-strip ${reminder.tone}">
+      <div class="ns-copy">
+        <strong>${esc(reminder.kind)} · ${esc(reminder.dueLabel)}</strong>
+        <span>下次 ${fmtDot(reminder.dueDate)}${reminder.subtitle ? ` · ${esc(reminder.subtitle)}` : ''}</span>
+      </div>
+      <button type="button" class="btn-complete" data-action="complete-reminder" data-cat="${esc(cat.id)}" data-type="${type}" data-record="${esc(reminder.recordId)}">${icon('check', 11)}完成</button>
+    </div>`;
+  }
+
+  function renderRecordRow(cat, type, record, latest) {
+    const due = record.nextDate ? dueInfo(record.nextDate) : null;
+    const product = record.product || record.kind;
+    const meta = [];
+    if (record.kind) meta.push(record.kind);
+    if (type === 'deworm' && record.dose) meta.push(record.dose);
+    if (type === 'vaccine' && record.batch) meta.push(`批号 ${record.batch}`);
+    if (record.hospital) meta.push(record.hospital);
+
+    return `<div class="swipe-shell" data-open="0" data-record-id="${esc(record.id)}">
+      <button type="button" class="swipe-delete" data-action="delete-record" data-cat="${esc(cat.id)}" data-type="${type}" data-record="${esc(record.id)}" aria-label="删除这条记录">
+        ${icon('trash', 16)}
+        <span>删除</span>
+      </button>
+      <div class="swipe-content">
+        <div class="rec-date"><b>${fmtDay(record.date)}</b><span>${fmtMonth(record.date)}</span></div>
+        <div class="rec-copy">
+          <div class="rec-title">
+            <strong>${esc(product)}</strong>
+            ${latest ? '<span class="latest-tag">LATEST</span>' : ''}
+          </div>
+          <div class="rec-meta">${meta.map((item) => `<span>${esc(item)}</span>`).join('<span class="sep"></span>')}</div>
+          ${due ? `<span class="rec-next ${due.tone}">下次 ${fmtDot(record.nextDate)} · ${due.label}</span>` : ''}
+        </div>
+        <div class="rec-actions">
+          ${latest ? `<button type="button" class="icon-btn check" data-action="complete-record" data-cat="${esc(cat.id)}" data-type="${type}" data-record="${esc(record.id)}" title="完成并生成下次记录" aria-label="完成并生成下次记录">${icon('check', 14)}</button>` : ''}
+          <button type="button" class="icon-btn" data-action="edit-record" data-cat="${esc(cat.id)}" data-type="${type}" data-record="${esc(record.id)}" title="编辑记录" aria-label="编辑记录">${icon('edit', 13)}</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function renderModuleSection(cat, type) {
+    const records = type === 'deworm' ? cat.dewormings : cat.vaccines;
+    const sorted = records.slice().sort(sortRecordsDesc);
+    const latest = latestRecordsByKind(records);
+    const latestIds = new Set(latest.map((item) => item.record.id));
+    const reminders = remindersForCat(cat).filter((reminder) => reminder.type === type).sort(sortReminders);
+    const iconName = type === 'deworm' ? 'pill' : 'syringe';
+
+    return `<section class="record-section" id="section-${type}">
+      <div class="module-head">
+        <div class="module-icon ${type}">${icon(iconName, 17)}</div>
+        <div class="module-title">
+          <div class="micro">${EN_LABEL[type]} / HISTORY</div>
+          <h2>${TYPE_LABEL[type]}记录</h2>
+        </div>
+        <button type="button" class="btn small ghost" data-action="add-record" data-type="${type}" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
+      </div>
+      ${reminders.map((reminder) => renderNextStrip(cat, type, reminder)).join('')}
+      ${sorted.length ? `<div class="record-list">${sorted.map((record) => renderRecordRow(cat, type, record, latestIds.has(record.id))).join('')}</div>` : `<div class="empty"><p>还没有${TYPE_LABEL[type]}记录。添加一次，之后可以一键完成并生成下次。</p></div>`}
+    </section>`;
+  }
+
+  function renderNeuterSection(cat) {
+    const neuter = cat.neuter;
+    const status = neuter ? neuter.status : '未记录';
+    const badgeClass = !neuter ? 'none' : neuter.status === '已绝育' ? 'done' : neuter.status === '计划中' ? 'plan' : 'none';
+
+    return `<section class="record-section" id="section-neuter">
+      <div class="module-head">
+        <div class="module-icon neuter">${icon('scissors', 17)}</div>
+        <div class="module-title">
+          <div class="micro">NEUTER / SPAY</div>
+          <h2>绝育</h2>
+        </div>
+        <button type="button" class="btn small ghost" data-action="edit-neuter" data-cat="${esc(cat.id)}">${neuter ? '编辑' : '添加'}</button>
+      </div>
+      ${neuter ? `<div class="neuter-card">
+        <div class="neuter-top">
+          <div class="n-copy">
+            <strong>${esc(status)}</strong>
+            <span>${neuter.date ? `手术日期 ${fmtDot(neuter.date)}` : neuter.status === '计划中' ? '手术日期待安排' : '尚未记录手术日期'}</span>
+          </div>
+          <span class="status-badge ${badgeClass}">${esc(status)}</span>
+        </div>
+        <div class="neuter-meta">
+          <div class="nm"><span>DATE</span><strong>${neuter.date ? fmtDot(neuter.date) : '—'}</strong></div>
+          <div class="nm"><span>HOSPITAL</span><strong>${neuter.hospital ? esc(neuter.hospital) : '—'}</strong></div>
+          <div class="nm"><span>COST</span><strong>${neuter.cost ? `¥${esc(neuter.cost)}` : '—'}</strong></div>
+          <div class="nm"><span>PRE-CHECK</span><strong>${neuter.precheck ? '已做' : '未做'}</strong></div>
+        </div>
+        ${neuter.notes ? `<div class="neuter-notes">${esc(neuter.notes)}</div>` : ''}
+      </div>` : `<div class="empty"><p>还没有绝育记录。记录状态、手术日期和术后备注，方便以后查看。</p></div>`}
+    </section>`;
+  }
+
+  function renderDetail() {
+    const cat = catById(ui.detailCatId) || selectedCat();
+    if (!cat) {
+      return `<main class="screen"><div class="empty"><strong>找不到这只猫</strong><p>它可能已经被删除了。</p><button type="button" class="btn primary" data-action="back">回到首页</button></div></main>`;
+    }
+
+    return `<main class="screen detail-screen">
+      <div class="detail-nav">
+        <button type="button" class="round-btn small ghost" data-action="back" aria-label="返回">${icon('back', 18)}</button>
+        <div class="nav-title">CAT FILE / ${esc(cat.name)}</div>
+        <button type="button" class="round-btn small" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑档案">${icon('edit', 15)}</button>
+      </div>
+      ${renderDetailHero(cat)}
+      ${renderInfoCard(cat)}
+      ${renderModuleSection(cat, 'deworm')}
+      ${renderModuleSection(cat, 'vaccine')}
+      ${renderNeuterSection(cat)}
+      <div class="form-hint" style="text-align:center; margin-top:15px;">左滑记录可删除 · 点记录右侧的铅笔可以编辑</div>
+      <div class="danger-zone">
+        <button type="button" class="danger-link" data-action="delete-cat" data-id="${esc(cat.id)}">${icon('trash', 14)} 删除这只猫</button>
+      </div>
+    </main>`;
+  }
+
+  function renderTabs(animate) {
+    const content = ui.tab === 'home'
+      ? renderHome()
+      : ui.tab === 'reminders'
+        ? renderReminders()
+        : renderSettings();
+    return `<main class="screen ${animate ? 'enter' : ''}" data-screen="${ui.tab}">${content}</main>${renderTabbar()}`;
+  }
+
+  /* =========================================================
+     Modal system
+     ========================================================= */
+
+  const darkMedia = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  let modalReturnFocus = null;
+  let modalKeyHandler = null;
+  let toastTimer = null;
+
+  function trapFocus(event) {
+    const modal = $('#modal-root .modal');
+    if (!modal) return;
+    const focusables = $$('button:not([disabled]), input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [href], [tabindex]:not([tabindex="-1"])', modal)
+      .filter((element) => element.offsetParent !== null || element === document.activeElement);
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  function installModalKeys() {
+    if (modalKeyHandler) document.removeEventListener('keydown', modalKeyHandler);
+    modalKeyHandler = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+      if (event.key === 'Tab') trapFocus(event);
+    };
+    document.addEventListener('keydown', modalKeyHandler);
+  }
+
+  function closeModal(silent = false) {
+    const root = $('#modal-root');
+    if (!root) return;
+    const hadContent = root.innerHTML.trim().length > 0;
+    root.innerHTML = '';
+    if (modalKeyHandler) {
+      document.removeEventListener('keydown', modalKeyHandler);
+      modalKeyHandler = null;
+    }
+    if (!silent && hadContent && modalReturnFocus && modalReturnFocus.isConnected) {
+      try {
+        modalReturnFocus.focus({ preventScroll: true });
+      } catch (error) {
+        /* noop */
+      }
+    }
+    modalReturnFocus = null;
+  }
+
+  function openSheet(options) {
+    const previousFocus = document.activeElement;
+    closeModal(true);
+    modalReturnFocus = previousFocus;
+
+    const {
+      kicker = 'MEOW SYSTEM',
+      title = '',
+      subtitle = '',
+      body = '',
+      footer = null,
+      className = '',
+      submitLabel = '保存',
+      onSubmit = null,
+      onMount = null
+    } = options;
+
+    const footerHTML = footer === null
+      ? `<button type="button" class="btn" data-modal-close>取消</button><button type="submit" class="btn primary">${esc(submitLabel)}</button>`
+      : footer;
+
+    const root = $('#modal-root');
+    root.innerHTML = `<div class="modal-root">
+      <div class="modal-backdrop" data-modal-close></div>
+      <form class="modal ${className}" id="active-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-grab"></div>
+        <div class="modal-head">
+          <div class="modal-copy">
+            <div class="micro">${esc(kicker)}</div>
+            <h2 id="modal-title">${esc(title)}</h2>
+            ${subtitle ? `<p>${esc(subtitle)}</p>` : ''}
+          </div>
+          <button type="button" class="modal-close" data-modal-close aria-label="关闭">${icon('close', 15)}</button>
+        </div>
+        <div class="modal-body">${body}</div>
+        <div class="modal-foot">${footerHTML}</div>
+      </form>
+    </div>`;
+
+    const form = $('#active-modal', root);
+    installModalKeys();
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (typeof onSubmit === 'function') {
+        onSubmit(form, new FormData(form));
+      } else {
+        closeModal();
+      }
+    });
+
+    if (typeof onMount === 'function') {
+      onMount(form, root);
+    }
+
+    window.setTimeout(() => {
+      const target = root.querySelector('[data-autofocus]') || root.querySelector('.modal-close');
+      if (target) {
+        try {
+          target.focus({ preventScroll: true });
+        } catch (error) {
+          /* noop */
+        }
+      }
+    }, 40);
+  }
+
+  function openAlert(options) {
+    const {
+      title = '确认操作',
+      message = '',
+      confirmLabel = '确定',
+      cancelLabel = '取消',
+      danger = false,
+      tone = 'alert',
+      kicker = 'CONFIRM / SYSTEM',
+      onConfirm = null
+    } = options;
+
+    const previousFocus = document.activeElement;
+    closeModal(true);
+    modalReturnFocus = previousFocus;
+
+    const artIcon = tone === 'trash' ? 'trash' : tone === 'upload' ? 'upload' : tone === 'refresh' ? 'refresh' : tone === 'info' ? 'info' : tone === 'shield' ? 'shield' : 'alert';
+    const root = $('#modal-root');
+    root.innerHTML = `<div class="modal-root">
+      <div class="modal-backdrop" data-modal-close></div>
+      <div class="modal alert" role="alertdialog" aria-modal="true" aria-labelledby="alert-title">
+        <div class="modal-grab"></div>
+        <div class="modal-head">
+          <div class="modal-copy">
+            <div class="micro">${esc(kicker)}</div>
+            <h2 id="alert-title">${esc(title)}</h2>
+          </div>
+          <button type="button" class="modal-close" data-modal-close aria-label="关闭">${icon('close', 15)}</button>
+        </div>
+        <div class="modal-body">
+          <div class="alert-art">${icon(artIcon, 23)}</div>
+          <p class="alert-message">${esc(message)}</p>
+        </div>
+        <div class="modal-foot">
+          ${cancelLabel === null ? '' : `<button type="button" class="btn" data-modal-close>${esc(cancelLabel)}</button>`}
+          <button type="button" class="btn ${danger ? 'red' : 'primary'}" data-alert-confirm>${esc(confirmLabel)}</button>
+        </div>
+      </div>
+    </div>`;
+
+    installModalKeys();
+    const confirm = root.querySelector('[data-alert-confirm]');
+    confirm.addEventListener('click', () => {
+      closeModal();
+      if (typeof onConfirm === 'function') onConfirm();
+    });
+
+    window.setTimeout(() => {
+      try {
+        confirm.focus({ preventScroll: true });
+      } catch (error) {
+        /* noop */
+      }
+    }, 40);
+  }
+
+  /* =========================================================
+     Forms
+     ========================================================= */
+
+  function fieldRowHTML(field) {
+    const type = ['text', 'date', 'longtext', 'sex'].includes(field.type) ? field.type : 'text';
+    const value = field.value == null ? '' : String(field.value);
+    const placeholder = field.placeholder || '';
+    const commonAttrs = `data-field-value aria-label="${esc(field.label || '字段内容')}"`;
+
+    let control = '';
+    if (type === 'date') {
+      const dateValue = parseISO(value) ? value : '';
+      control = `<input class="field-value-input" ${commonAttrs} type="date" value="${esc(dateValue)}">`;
+    } else if (type === 'longtext') {
+      control = `<textarea class="field-value-input" ${commonAttrs} rows="2" placeholder="${esc(placeholder)}">${esc(value)}</textarea>`;
+    } else if (type === 'sex') {
+      control = `<select class="field-value-input" ${commonAttrs}>
+        ${['未填写', '公', '母', '未知'].map((option) => {
+          const optionValue = option === '未填写' ? '' : option;
+          return `<option value="${optionValue}" ${value === optionValue ? 'selected' : ''}>${option}</option>`;
+        }).join('')}
+      </select>`;
+    } else {
+      control = `<input class="field-value-input" ${commonAttrs} type="text" value="${esc(value)}" placeholder="${esc(placeholder)}" maxlength="80">`;
+    }
+
+    return `<div class="field-edit-row" data-field-row data-field-id="${esc(field.id || uid('field'))}" data-key="${esc(field.key || `custom_${uid('key')}`)}" data-type="${type}">
+      <div class="field-edit-top">
+        <input class="label-input" data-field-label value="${esc(field.label || '')}" placeholder="字段名" maxlength="20" aria-label="字段名">
+        <span class="type-chip">${FIELD_TYPE_LABEL[type] || 'TEXT'}</span>
+        <button type="button" class="icon-btn danger" data-remove-field aria-label="删除这个字段">${icon('trash', 12)}</button>
+      </div>
+      ${control}
+    </div>`;
+  }
+
+  function openCatForm(catId) {
+    const existing = catId ? catById(catId) : null;
+    const avatar = existing ? existing.avatar : 'pixel-1';
+    const fields = existing ? existing.fields : defaultFields();
+    const title = existing ? '编辑档案' : '添加猫咪';
+    const kicker = existing ? 'CAT PROFILE / EDIT' : 'CAT PROFILE / NEW';
+
+    const body = `<div class="form-label">头像 <span class="micro">AVATAR</span></div>
+      <div class="avatar-picker" role="group" aria-label="选择头像">
+        ${AVATARS.map((option) => `<button type="button" class="avatar-option ${avatar === option ? 'selected' : ''}" data-avatar-option="${esc(option)}" aria-label="选择头像 ${esc(option)}" aria-pressed="${avatar === option}">
+          ${avatarMarkup(option, 46)}
+        </button>`).join('')}
+      </div>
+      <input type="hidden" name="avatar" value="${esc(avatar)}">
+
+      <label class="form-label" for="cat-name">名字 <span class="micro">NAME</span></label>
+      <input class="input" id="cat-name" name="name" type="text" value="${esc(existing ? existing.name : '')}" placeholder="猫咪的名字" maxlength="30" required>
+
+      <div class="form-label">基础字段 <span class="micro">ADD / REMOVE</span></div>
+      <div class="form-hint">这些字段会显示在档案里。你可以删除不需要的字段，或添加自定义字段。</div>
+      <div class="field-editor">
+        ${fields.map(fieldRowHTML).join('')}
+      </div>
+
+      <div class="add-field-box">
+        <div class="add-field-title"><span>添加自定义字段</span><span class="micro">CUSTOM</span></div>
+        <div class="add-field-grid">
+          <input id="new-field-label" class="input" type="text" placeholder="字段名，例如：保险" maxlength="20" aria-label="新字段名">
+          <input id="new-field-value" class="input" type="text" placeholder="字段内容" maxlength="80" aria-label="新字段内容">
+        </div>
+        <div class="add-field-actions">
+          <select id="new-field-type" class="select" aria-label="新字段类型">
+            <option value="text">文本</option>
+            <option value="date">日期</option>
+            <option value="longtext">多行</option>
+          </select>
+          <button type="button" class="btn small" data-add-field>${icon('plus', 12)} 添加</button>
+        </div>
+      </div>
+
+      <div class="form-hint" style="margin-top:8px;">
+        <button type="button" class="btn small ghost" data-restore-defaults style="min-height:28px;">补齐默认字段</button>
+      </div>`;
+
+    openSheet({
+      kicker,
+      title,
+      subtitle: '名字必填；其他字段都可以按你的习惯增删。',
+      body,
+      submitLabel: existing ? '保存档案' : '创建档案',
+      onMount(form) {
+        const hiddenAvatar = form.elements.avatar;
+        const editor = form.querySelector('.field-editor');
+        const newLabel = form.querySelector('#new-field-label');
+        const newValue = form.querySelector('#new-field-value');
+        const newType = form.querySelector('#new-field-type');
+
+        form.addEventListener('click', (event) => {
+          const avatarOption = event.target.closest('[data-avatar-option]');
+          if (avatarOption) {
+            const value = avatarOption.dataset.avatarOption;
+            hiddenAvatar.value = value;
+            $$('.avatar-option', form).forEach((option) => {
+              const selected = option.dataset.avatarOption === value;
+              option.classList.toggle('selected', selected);
+              option.setAttribute('aria-pressed', String(selected));
+            });
+            return;
+          }
+
+          const removeButton = event.target.closest('[data-remove-field]');
+          if (removeButton) {
+            const row = removeButton.closest('[data-field-row]');
+            if (row) row.remove();
+            return;
+          }
+
+          const restoreButton = event.target.closest('[data-restore-defaults]');
+          if (restoreButton) {
+            const existingKeys = new Set($$('[data-field-row]', form).map((row) => row.dataset.key));
+            let added = 0;
+            DEFAULT_FIELDS.forEach((field) => {
+              if (!existingKeys.has(field.key)) {
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = fieldRowHTML({
+                  id: uid('field'),
+                  key: field.key,
+                  label: field.label,
+                  value: '',
+                  type: field.type,
+                  placeholder: field.placeholder || ''
+                }).trim();
+                const row = wrapper.firstElementChild;
+                if (row) {
+                  editor.appendChild(row);
+                  added += 1;
+                }
+              }
+            });
+            const original = restoreButton.textContent;
+            restoreButton.textContent = added ? `已补回 ${added} 个` : '默认字段已齐全';
+            window.setTimeout(() => {
+              if (restoreButton.isConnected) restoreButton.textContent = original;
+            }, 1600);
+            return;
+          }
+
+          if (event.target.closest('[data-add-field]')) {
+            addCustomField();
+          }
+        });
+
+        form.addEventListener('input', (event) => {
+          const target = event.target;
+          if (target && target.matches && target.matches('#cat-name, [data-field-label], #new-field-label')) {
+            target.setCustomValidity('');
+          }
+        });
+
+        newType.addEventListener('change', () => {
+          newValue.type = newType.value === 'date' ? 'date' : 'text';
+          newValue.value = '';
+        });
+
+        const addCustomField = () => {
+          const label = cleanText(newLabel.value);
+          if (!label) {
+            newLabel.setCustomValidity('请填写字段名');
+            newLabel.reportValidity();
+            newLabel.focus();
+            return;
+          }
+          newLabel.setCustomValidity('');
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = fieldRowHTML({
+            id: uid('field'),
+            key: `custom_${uid('key')}`,
+            label,
+            value: newValue.value,
+            type: newType.value,
+            placeholder: ''
+          }).trim();
+          const row = wrapper.firstElementChild;
+          if (row) {
+            editor.appendChild(row);
+            row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+          newLabel.value = '';
+          newValue.value = '';
+          newLabel.focus();
+        };
+
+        const handleAddEnter = (event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            addCustomField();
+          }
+        };
+        newLabel.addEventListener('keydown', handleAddEnter);
+        newValue.addEventListener('keydown', handleAddEnter);
+      },
+      onSubmit(form, data) {
+        const name = cleanText(data.get('name'));
+        if (!name) {
+          const nameInput = form.elements.name;
+          nameInput.setCustomValidity('请填写名字');
+          nameInput.reportValidity();
+          nameInput.focus();
+          return;
+        }
+
+        const rows = $$('[data-field-row]', form);
+        const fields = [];
+        for (const row of rows) {
+          const labelInput = row.querySelector('[data-field-label]');
+          const valueInput = row.querySelector('[data-field-value]');
+          const label = cleanText(labelInput.value);
+          if (!label) {
+            labelInput.setCustomValidity('请填写字段名');
+            labelInput.reportValidity();
+            labelInput.focus();
+            return;
+          }
+          fields.push({
+            id: row.dataset.fieldId,
+            key: row.dataset.key,
+            label,
+            value: valueInput.value,
+            type: row.dataset.type,
+            placeholder: valueInput.getAttribute('placeholder') || ''
+          });
+        }
+
+        const avatarValue = AVATARS.includes(data.get('avatar')) ? data.get('avatar') : 'pixel-1';
+        let savedCat;
+
+        if (existing) {
+          existing.name = name;
+          existing.avatar = avatarValue;
+          existing.fields = fields;
+          savedCat = existing;
+        } else {
+          savedCat = {
+            id: uid('cat'),
+            name,
+            avatar: avatarValue,
+            fields,
+            dewormings: [],
+            vaccines: [],
+            neuter: null,
+            createdAt: Date.now()
+          };
+          store.cats.push(savedCat);
+          ui.selectedCatId = savedCat.id;
+          ui.detailCatId = savedCat.id;
+          ui.view = 'detail';
+        }
+
+        persist();
+        closeModal();
+        ensureSelection();
+        render({ preserveScroll: existing ? true : false });
+        showToast(existing ? '档案已更新' : '档案已创建');
+      }
+    });
+  }
+
+  function openRecordForm(type, catId, recordId) {
+    const cat = catById(catId);
+    if (!cat) return;
+    const records = type === 'deworm' ? cat.dewormings : cat.vaccines;
+    const record = recordId ? records.find((item) => item.id === recordId) : null;
+    const kinds = type === 'deworm' ? ['体内', '体外', '内外同驱'] : ['猫三联', '狂犬', '其他'];
+    if (record && record.kind && !kinds.includes(record.kind)) kinds.push(record.kind);
+    const defaultKind = type === 'deworm' ? '内外同驱' : '猫三联';
+    const selectedKind = record ? record.kind : defaultKind;
+    const intervalDefault = record ? record.intervalMonths : (type === 'deworm' ? 3 : 12);
+    const date = record ? record.date : todayISO();
+    const nextDate = record ? record.nextDate : (date && intervalDefault ? addMonthsISO(date, intervalDefault) : '');
+    const isVaccine = type === 'vaccine';
+
+    const body = `<div class="form-label">类型 <span class="micro">TYPE</span></div>
+      <div class="choice-row">
+        ${kinds.map((kind) => `<label class="choice"><input type="radio" name="kind" value="${esc(kind)}" ${kind === selectedKind ? 'checked' : ''}><span>${esc(kind)}</span></label>`).join('')}
+      </div>
+
+      <div class="form-row" style="margin-top:12px;">
+        <div>
+          <label class="form-label" for="record-date">日期</label>
+          <input class="input" id="record-date" name="date" type="date" value="${esc(date)}" required>
+        </div>
+        <div>
+          <label class="form-label" for="record-interval">间隔（月）</label>
+          <input class="input" id="record-interval" name="interval" type="number" min="0" max="120" inputmode="numeric" value="${esc(intervalDefault)}">
+        </div>
+      </div>
+
+      <label class="form-label" for="record-next">下次日期 <span class="micro">AUTO / EDITABLE</span></label>
+      <input class="input" id="record-next" name="nextDate" type="date" value="${esc(nextDate)}">
+      <div class="form-hint">默认按「日期 + 间隔」自动推算，也可以直接修改。间隔填 0 表示不自动提醒。</div>
+
+      <label class="form-label" for="record-product">${isVaccine ? '疫苗名称' : '药名'} <span class="micro">${isVaccine ? 'VACCINE' : 'PRODUCT'}</span></label>
+      <input class="input" id="record-product" name="product" type="text" value="${esc(record ? record.product : '')}" placeholder="${isVaccine ? '例如：妙三多' : '例如：大宠爱'}" maxlength="40">
+
+      <div class="form-row">
+        <div>
+          <label class="form-label" for="record-extra">${isVaccine ? '批号' : '剂量'}</label>
+          <input class="input" id="record-extra" name="${isVaccine ? 'batch' : 'dose'}" type="text" value="${esc(record ? (isVaccine ? record.batch : record.dose) : '')}" placeholder="${isVaccine ? '例如：M2025-118' : '例如：1 支'}" maxlength="40">
+        </div>
+        <div>
+          <label class="form-label" for="record-cost">费用</label>
+          <input class="input" id="record-cost" name="cost" type="text" inputmode="decimal" value="${esc(record ? record.cost : '')}" placeholder="¥">
+        </div>
+      </div>
+
+      <label class="form-label" for="record-hospital">医院</label>
+      <input class="input" id="record-hospital" name="hospital" type="text" value="${esc(record ? record.hospital : getFieldValue(cat, 'vet'))}" placeholder="医院名称" maxlength="40">
+
+      <label class="form-label" for="record-notes">备注</label>
+      <textarea class="textarea" id="record-notes" name="notes" rows="3" placeholder="剂量、反应、下次注意事项…" maxlength="240">${esc(record ? record.notes : '')}</textarea>`;
+
+    const footer = record
+      ? `<button type="button" class="btn danger-auto danger-text" data-delete-record>${icon('trash', 12)} 删除</button><button type="button" class="btn" data-modal-close>取消</button><button type="submit" class="btn primary">保存记录</button>`
+      : null;
+
+    openSheet({
+      kicker: isVaccine ? 'HEALTH LOG / VACCINE' : 'HEALTH LOG / DEWORM',
+      title: `${record ? '编辑' : '添加'}${isVaccine ? '疫苗' : '驱虫'}记录`,
+      subtitle: '保存后，下次日期会自动出现在提醒里。',
+      body,
+      footer,
+      submitLabel: record ? '保存记录' : '添加记录',
+      onMount(form) {
+        const dateEl = form.elements.date;
+        const intervalEl = form.elements.interval;
+        const nextEl = form.elements.nextDate;
+        let nextTouched = false;
+
+        const recalc = () => {
+          if (nextTouched) return;
+          const months = Number.parseInt(intervalEl.value, 10) || 0;
+          nextEl.value = dateEl.value && months ? addMonthsISO(dateEl.value, months) : '';
+        };
+
+        dateEl.addEventListener('change', recalc);
+        intervalEl.addEventListener('input', recalc);
+        nextEl.addEventListener('input', () => {
+          nextTouched = true;
+        });
+
+        const deleteButton = form.querySelector('[data-delete-record]');
+        if (deleteButton) {
+          deleteButton.addEventListener('click', () => {
+            closeModal();
+            deleteRecord(cat.id, type, record.id);
+          });
+        }
+      },
+      onSubmit(form, data) {
+        const recordDate = data.get('date');
+        if (!parseISO(recordDate)) {
+          form.elements.date.focus();
+          return;
+        }
+        const interval = clamp(Number.parseInt(data.get('interval'), 10) || 0, 0, 120);
+        const next = data.get('nextDate') || (interval ? addMonthsISO(recordDate, interval) : '');
+        const payload = {
+          kind: cleanText(data.get('kind')) || defaultKind,
+          date: recordDate,
+          product: cleanText(data.get('product')),
+          dose: isVaccine ? (record ? record.dose : '') : cleanText(data.get('dose')),
+          batch: isVaccine ? cleanText(data.get('batch')) : (record ? record.batch : ''),
+          hospital: cleanText(data.get('hospital')),
+          cost: cleanCost(data.get('cost')),
+          intervalMonths: interval,
+          nextDate: parseISO(next) ? next : '',
+          notes: cleanText(data.get('notes'))
+        };
+
+        if (record) {
+          Object.assign(record, payload);
+        } else {
+          records.push({
+            id: uid('rec'),
+            ...payload,
+            createdAt: Date.now()
+          });
+        }
+
+        persist();
+        closeModal();
+        render({ preserveScroll: true });
+        showToast(record ? '记录已更新' : '记录已添加');
+      }
+    });
+  }
+
+  function openNeuterForm(catId) {
+    const cat = catById(catId);
+    if (!cat) return;
+    const neuter = cat.neuter || {
+      status: '未绝育',
+      date: '',
+      hospital: '',
+      cost: '',
+      precheck: false,
+      notes: ''
+    };
+    const statuses = ['未绝育', '计划中', '已绝育'];
+
+    const body = `<div class="form-label">状态 <span class="micro">STATUS</span></div>
+      <div class="choice-row">
+        ${statuses.map((status) => `<label class="choice"><input type="radio" name="status" value="${status}" ${neuter.status === status ? 'checked' : ''}><span>${status}</span></label>`).join('')}
+      </div>
+
+      <div class="form-row" style="margin-top:12px;">
+        <div>
+          <label class="form-label" for="neuter-date">手术日期</label>
+          <input class="input" id="neuter-date" name="date" type="date" value="${esc(neuter.date)}">
+        </div>
+        <div>
+          <label class="form-label" for="neuter-cost">费用</label>
+          <input class="input" id="neuter-cost" name="cost" type="text" inputmode="decimal" value="${esc(neuter.cost)}" placeholder="¥">
+        </div>
+      </div>
+
+      <label class="form-label" for="neuter-hospital">医院</label>
+      <input class="input" id="neuter-hospital" name="hospital" type="text" value="${esc(neuter.hospital || getFieldValue(cat, 'vet'))}" placeholder="医院名称" maxlength="40">
+
+      <div class="switch-row">
+        <span>已完成术前检查</span>
+        <label class="switch">
+          <input type="checkbox" name="precheck" ${neuter.precheck ? 'checked' : ''}>
+          <i></i>
+        </label>
+      </div>
+
+      <label class="form-label" for="neuter-notes">备注</label>
+      <textarea class="textarea" id="neuter-notes" name="notes" rows="3" placeholder="术前检查、术后恢复、注意事项…" maxlength="240">${esc(neuter.notes)}</textarea>`;
+
+    openSheet({
+      kicker: 'HEALTH LOG / NEUTER',
+      title: cat.neuter ? '编辑绝育记录' : '添加绝育记录',
+      subtitle: '计划中的绝育会出现在提醒列表里。',
+      body,
+      submitLabel: '保存记录',
+      onSubmit(form, data) {
+        cat.neuter = {
+          status: cleanText(data.get('status')) || '未绝育',
+          date: parseISO(data.get('date')) ? data.get('date') : '',
+          hospital: cleanText(data.get('hospital')),
+          cost: cleanCost(data.get('cost')),
+          precheck: data.get('precheck') === 'on',
+          notes: cleanText(data.get('notes'))
+        };
+        persist();
+        closeModal();
+        render({ preserveScroll: true });
+        showToast('绝育记录已更新');
+      }
+    });
+  }
+
+  /* =========================================================
+     Actions
+     ========================================================= */
+
+  function resetFilters() {
+    ui.filter = 'all';
+  }
+
+  function openDetail(catId, section) {
+    const screen = $('.screen');
+    ui.returnScroll = screen ? screen.scrollTop : 0;
+    ui.detailCatId = catId || ui.selectedCatId;
+    ui.selectedCatId = ui.detailCatId;
+    ui.view = 'detail';
+    ui.pendingSection = section || null;
+    render({ animate: true });
+  }
+
+  function backToTabs() {
+    const scrollTop = ui.returnScroll || 0;
+    ui.view = 'tabs';
+    ui.detailCatId = null;
+    ui.pendingSection = null;
+    render({ animate: true, scrollTop });
+  }
+
+  function completeRecord(catId, type, recordId) {
+    if (!['deworm', 'vaccine'].includes(type)) return;
+    const cat = catById(catId);
+    if (!cat) return;
+    const records = type === 'deworm' ? cat.dewormings : cat.vaccines;
+    const record = records.find((item) => item.id === recordId);
+    if (!record) return;
+
+    const fallbackInterval = type === 'deworm' ? 3 : 12;
+    let interval = Number(record.intervalMonths);
+    if (!Number.isFinite(interval) || interval < 0) interval = fallbackInterval;
+    if (interval === 0 && record.date && record.nextDate) {
+      interval = monthsBetweenISO(record.date, record.nextDate) || fallbackInterval;
+    }
+    const date = todayISO();
+    const nextDate = interval > 0 ? addMonthsISO(date, interval) : '';
+    const newRecord = {
+      id: uid('rec'),
+      kind: record.kind,
+      date,
+      product: record.product,
+      dose: record.dose,
+      batch: record.batch,
+      hospital: record.hospital,
+      cost: record.cost,
+      intervalMonths: interval,
+      nextDate,
+      notes: '',
+      createdAt: Date.now()
+    };
+    records.push(newRecord);
+    persist();
+    render({ preserveScroll: true });
+    showToast(
+      nextDate
+        ? `已记录「${newRecord.product || newRecord.kind}」，下次 ${fmtDot(nextDate)}`
+        : `已记录「${newRecord.product || newRecord.kind}」，未设置下次提醒`,
+      '撤销',
+      () => {
+        const index = records.indexOf(newRecord);
+        if (index >= 0) records.splice(index, 1);
+        persist();
+        render({ preserveScroll: true });
+      }
+    );
+  }
+
+  function deleteRecord(catId, type, recordId) {
+    if (!['deworm', 'vaccine'].includes(type)) return;
+    const cat = catById(catId);
+    if (!cat) return;
+    const records = type === 'deworm' ? cat.dewormings : cat.vaccines;
+    const index = records.findIndex((item) => item.id === recordId);
+    if (index < 0) return;
+    const removed = records.splice(index, 1)[0];
+    persist();
+    render({ preserveScroll: true });
+    showToast(`已删除「${removed.product || removed.kind}」`, '撤销', () => {
+      records.splice(index, 0, removed);
+      persist();
+      render({ preserveScroll: true });
+    });
+  }
+
+  function confirmDeleteCat(catId) {
+    const cat = catById(catId);
+    if (!cat) return;
+    const recordCount = cat.dewormings.length + cat.vaccines.length + (cat.neuter ? 1 : 0);
+    openAlert({
+      title: '删除猫咪档案？',
+      message: `「${cat.name}」的档案、${recordCount} 条健康记录都会一起删除。\n这个操作可以从提示里撤销。`,
+      confirmLabel: '删除',
+      cancelLabel: '取消',
+      danger: true,
+      tone: 'trash',
+      kicker: 'DELETE / CAT',
+      onConfirm() {
+        const index = store.cats.findIndex((item) => item.id === cat.id);
+        if (index < 0) return;
+        const removed = store.cats.splice(index, 1)[0];
+        if (ui.detailCatId === removed.id) {
+          ui.view = 'tabs';
+          ui.detailCatId = null;
+          ui.tab = 'home';
+        }
+        ensureSelection();
+        persist();
+        render({ animate: true });
+        showToast(`已删除「${removed.name}」`, '撤销', () => {
+          store.cats.splice(index, 0, removed);
+          ui.selectedCatId = removed.id;
+          persist();
+          render({ preserveScroll: true });
+        });
+      }
+    });
+  }
+
+  function confirmClearData() {
+    const catCount = store.cats.length;
+    const recordCount = allRecordCount();
+    openAlert({
+      title: '清空全部数据？',
+      message: `将删除 ${catCount} 只猫、${recordCount} 条健康记录。\n清空后可以用提示里的「撤销」恢复。`,
+      confirmLabel: '全部清空',
+      cancelLabel: '取消',
+      danger: true,
+      tone: 'trash',
+      kicker: 'RESET / ALL DATA',
+      onConfirm() {
+        const backup = store.cats;
+        store.cats = [];
+        ui.selectedCatId = null;
+        ui.detailCatId = null;
+        ui.view = 'tabs';
+        ui.tab = 'home';
+        resetFilters();
+        persist();
+        render({ animate: true });
+        showToast('全部数据已清空', '撤销', () => {
+          store.cats = backup;
+          ensureSelection();
+          persist();
+          render({ preserveScroll: true });
+        });
+      }
+    });
+  }
+
+  function confirmResetDemo() {
+    openAlert({
+      title: '恢复示例数据？',
+      message: '会用「糯米」和「芝麻」两只示例猫替换当前所有档案。当前数据会丢失。',
+      confirmLabel: '恢复示例',
+      cancelLabel: '取消',
+      danger: true,
+      tone: 'refresh',
+      kicker: 'DEMO / RESET',
+      onConfirm() {
+        store.cats = demoCats();
+        ui.selectedCatId = store.cats[0].id;
+        ui.detailCatId = null;
+        ui.view = 'tabs';
+        ui.tab = 'home';
+        resetFilters();
+        persist();
+        render({ animate: true });
+        showToast('示例数据已恢复');
+      }
+    });
+  }
+
+  function exportData() {
+    const payload = {
+      app: 'meow-system',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      settings: store.settings,
+      cats: store.cats
+    };
+    const text = JSON.stringify(payload, null, 2);
+    const blob = new Blob([text], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `meow-system-${todayISO()}.json`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1200);
+    showToast('JSON 备份已导出');
+  }
+
+  function handleImportFile(event) {
+    const input = event.target;
+    const file = input.files && input.files[0];
+    input.value = '';
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result || ''));
+        const next = normaliseStore(parsed);
+        const records = next.cats.reduce((total, cat) => (
+          total + cat.dewormings.length + cat.vaccines.length + (cat.neuter ? 1 : 0)
+        ), 0);
+
+        openAlert({
+          title: '覆盖导入？',
+          message: `检测到 ${next.cats.length} 只猫、${records} 条健康记录。\n导入会替换当前所有数据，建议先导出备份。`,
+          confirmLabel: '覆盖导入',
+          cancelLabel: '取消',
+          tone: 'upload',
+          kicker: 'IMPORT / JSON',
+          onConfirm() {
+            store = next;
+            ui.selectedCatId = store.cats[0] ? store.cats[0].id : null;
+            ui.detailCatId = null;
+            ui.view = 'tabs';
+            ui.tab = 'home';
+            resetFilters();
+            applyTheme();
+            persist();
+            render({ animate: true });
+            showToast('备份已导入');
+          }
+        });
+      } catch (error) {
+        openAlert({
+          title: '无法导入',
+          message: error && error.message ? error.message : '文件不是有效的喵档 JSON 备份。',
+          confirmLabel: '知道了',
+          cancelLabel: null,
+          tone: 'info',
+          kicker: 'IMPORT / ERROR'
+        });
+      }
+    };
+    reader.onerror = () => {
+      openAlert({
+        title: '读取失败',
+        message: '无法读取这个文件，请换一个 JSON 备份再试。',
+        confirmLabel: '知道了',
+        cancelLabel: null,
+        tone: 'info',
+        kicker: 'IMPORT / ERROR'
+      });
+    };
+    reader.readAsText(file);
+  }
+
+  function applyTheme() {
+    const theme = store.settings.theme || 'auto';
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+    updateThemeMeta();
+  }
+
+  function updateThemeMeta() {
+    const theme = store.settings.theme || 'auto';
+    const dark = theme === 'dark' || (theme === 'auto' && darkMedia && darkMedia.matches);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', dark ? '#0c1128' : '#f1e7d5');
+  }
+
+  function setTheme(theme) {
+    if (!['auto', 'light', 'dark'].includes(theme)) return;
+    store.settings.theme = theme;
+    persist();
+    applyTheme();
+    render({ preserveScroll: true });
+  }
+
+  function showToast(message, actionLabel, action) {
+    const wrap = $('#toast-wrap');
+    if (!wrap) return;
+    if (toastTimer) window.clearTimeout(toastTimer);
+    wrap.innerHTML = `<div class="toast">
+      <span class="toast-dot"></span>
+      <span>${esc(message)}</span>
+      ${actionLabel ? `<button type="button">${esc(actionLabel)}</button>` : ''}
+    </div>`;
+    const button = wrap.querySelector('.toast button');
+    if (button && typeof action === 'function') {
+      button.addEventListener('click', () => {
+        hideToast();
+        action();
+      });
+    }
+    toastTimer = window.setTimeout(() => {
+      hideToast();
+    }, 5200);
+  }
+
+  function hideToast() {
+    const wrap = $('#toast-wrap');
+    if (toastTimer) {
+      window.clearTimeout(toastTimer);
+      toastTimer = null;
+    }
+    if (wrap) wrap.innerHTML = '';
+  }
+
+  function updateClock() {
+    const target = $('#clock');
+    if (!target) return;
+    const now = new Date();
+    target.textContent = `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+  }
+
+  /* =========================================================
+     Render orchestration / swipe
+     ========================================================= */
+
+  function render(options = {}) {
+    ensureSelection();
+    if (ui.view === 'detail' && !catById(ui.detailCatId)) {
+      ui.view = 'tabs';
+      ui.detailCatId = null;
+    }
+
+    const oldScreen = $('.screen');
+    const oldScroll = oldScreen ? oldScreen.scrollTop : 0;
+    const app = $('#app');
+
+    if (ui.view === 'detail') {
+      app.innerHTML = renderDetail();
+      if (options.animate) {
+        const screen = $('.screen');
+        if (screen) screen.classList.add('enter');
+      }
+    } else {
+      app.innerHTML = renderTabs(Boolean(options.animate));
+    }
+
+    initSwipes();
+    updateClock();
+
+    window.requestAnimationFrame(() => {
+      const screen = $('.screen');
+      if (!screen) return;
+      if (ui.pendingSection) {
+        const section = document.getElementById(`section-${ui.pendingSection}`);
+        if (section) section.scrollIntoView({ block: 'start' });
+        ui.pendingSection = null;
+      } else if (options.scrollTop != null) {
+        screen.scrollTop = options.scrollTop;
+      } else if (options.preserveScroll) {
+        screen.scrollTop = oldScroll;
+      } else {
+        screen.scrollTop = 0;
+      }
+    });
+  }
+
+  function closeAllSwipes(except = null) {
+    $$('.swipe-shell[data-open="1"]').forEach((shell) => {
+      if (shell === except) return;
+      shell.dataset.open = '0';
+      const content = shell.querySelector('.swipe-content');
+      if (content) content.style.transform = 'translateX(0)';
+    });
+  }
+
+  function initSwipes() {
+    $$('.swipe-shell').forEach((shell) => {
+      const content = shell.querySelector('.swipe-content');
+      const deleteButton = shell.querySelector('.swipe-delete');
+      if (!content || !deleteButton) return;
+
+      const openWidth = 84;
+      let startX = 0;
+      let startY = 0;
+      let startOffset = 0;
+      let offset = 0;
+      let dragging = false;
+      let horizontal = false;
+      let pointerId = null;
+
+      const setX = (value) => {
+        offset = value;
+        content.style.transform = `translateX(${value}px)`;
+      };
+
+      content.addEventListener('pointerdown', (event) => {
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        closeAllSwipes(shell);
+        delete shell.dataset.swiped;
+        pointerId = event.pointerId;
+        startX = event.clientX;
+        startY = event.clientY;
+        startOffset = shell.dataset.open === '1' ? -openWidth : 0;
+        offset = startOffset;
+        dragging = true;
+        horizontal = false;
+        content.classList.add('swiping');
+      });
+
+      content.addEventListener('pointermove', (event) => {
+        if (!dragging || event.pointerId !== pointerId) return;
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+
+        if (!horizontal) {
+          if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+          if (Math.abs(dy) > Math.abs(dx) * 1.1) {
+            dragging = false;
+            horizontal = false;
+            content.classList.remove('swiping');
+            setX(startOffset);
+            return;
+          }
+          horizontal = true;
+          try {
+            if (!content.hasPointerCapture(event.pointerId)) {
+              content.setPointerCapture(event.pointerId);
+            }
+          } catch (error) {
+            /* noop */
+          }
+        }
+
+        event.preventDefault();
+        shell.dataset.swiped = '1';
+        setX(clamp(startOffset + dx, -openWidth, 0));
+      });
+
+      const finish = (event) => {
+        if (!dragging) return;
+        dragging = false;
+        content.classList.remove('swiping');
+        if (event.pointerId !== pointerId) return;
+        const shouldOpen = offset < -openWidth / 2;
+        setX(shouldOpen ? -openWidth : 0);
+        shell.dataset.open = shouldOpen ? '1' : '0';
+        try {
+          if (content.hasPointerCapture(event.pointerId)) {
+            content.releasePointerCapture(event.pointerId);
+          }
+        } catch (error) {
+          /* noop */
+        }
+      };
+
+      content.addEventListener('pointerup', finish);
+      content.addEventListener('pointercancel', finish);
+      content.addEventListener('dragstart', (event) => event.preventDefault());
+
+      content.addEventListener('click', (event) => {
+        if (shell.dataset.swiped === '1') {
+          event.preventDefault();
+          event.stopPropagation();
+          delete shell.dataset.swiped;
+          return;
+        }
+        if (shell.dataset.open === '1') {
+          event.preventDefault();
+          event.stopPropagation();
+          shell.dataset.open = '0';
+          setX(0);
+        }
+      }, true);
+    });
+  }
+
+  /* =========================================================
+     Event delegation
+     ========================================================= */
+
+  function handleAppClick(event) {
+    const actionElement = event.target.closest('[data-action]');
+    if (!actionElement) return;
+    const action = actionElement.dataset.action;
+    if (!action) return;
+
+    switch (action) {
+      case 'tab': {
+        ui.tab = actionElement.dataset.tab || 'home';
+        ui.view = 'tabs';
+        ui.detailCatId = null;
+        ui.pendingSection = null;
+        render({ animate: true, scrollTop: 0 });
+        break;
+      }
+      case 'select-cat': {
+        ui.selectedCatId = actionElement.dataset.id;
+        ensureSelection();
+        render({ preserveScroll: true });
+        break;
+      }
+      case 'open-detail': {
+        openDetail(actionElement.dataset.id, actionElement.dataset.section || null);
+        break;
+      }
+      case 'back': {
+        backToTabs();
+        break;
+      }
+      case 'scroll-section': {
+        const section = document.getElementById(`section-${actionElement.dataset.section}`);
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        break;
+      }
+      case 'add-cat': {
+        openCatForm(null);
+        break;
+      }
+      case 'edit-cat': {
+        openCatForm(actionElement.dataset.id || ui.selectedCatId);
+        break;
+      }
+      case 'add-record': {
+        openRecordForm(actionElement.dataset.type, actionElement.dataset.cat || ui.selectedCatId);
+        break;
+      }
+      case 'edit-record': {
+        openRecordForm(actionElement.dataset.type, actionElement.dataset.cat || ui.selectedCatId, actionElement.dataset.record);
+        break;
+      }
+      case 'complete-record': {
+        completeRecord(actionElement.dataset.cat, actionElement.dataset.type, actionElement.dataset.record);
+        break;
+      }
+      case 'delete-record': {
+        deleteRecord(actionElement.dataset.cat, actionElement.dataset.type, actionElement.dataset.record);
+        break;
+      }
+      case 'complete-reminder': {
+        completeRecord(actionElement.dataset.cat, actionElement.dataset.type, actionElement.dataset.record);
+        break;
+      }
+      case 'edit-neuter': {
+        openNeuterForm(actionElement.dataset.cat || ui.selectedCatId);
+        break;
+      }
+      case 'delete-cat': {
+        confirmDeleteCat(actionElement.dataset.id);
+        break;
+      }
+      case 'filter-reminders': {
+        ui.filter = actionElement.dataset.filter || 'all';
+        render({ preserveScroll: true });
+        break;
+      }
+      case 'set-theme': {
+        setTheme(actionElement.dataset.theme);
+        break;
+      }
+      case 'export': {
+        exportData();
+        break;
+      }
+      case 'import': {
+        const input = $('#import-file');
+        if (input) input.click();
+        break;
+      }
+      case 'reset-demo': {
+        confirmResetDemo();
+        break;
+      }
+      case 'clear-data': {
+        confirmClearData();
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  function handleAppKeydown(event) {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    if (event.target.closest('button, a, input, select, textarea, [contenteditable="true"]')) return;
+    const target = event.target.closest('[role="button"][data-action]');
+    if (!target) return;
+    event.preventDefault();
+    target.click();
+  }
+
+  /* =========================================================
+     Init
+     ========================================================= */
+
+  async function init() {
+    const sceneCat = $('[data-scene-cat]');
+    if (sceneCat) sceneCat.innerHTML = pixelCatSVG('pixel-1');
+
+    const app = $('#app');
+    if (app) {
+      app.innerHTML = `<main class="screen"><div class="empty">
+        <div class="empty-art">${pixelCatSVG('pixel-1')}</div>
+        <strong>正在读取本地档案…</strong>
+        <p>${location.protocol === 'file:' ? '浏览器本地存储' : 'data.json / 浏览器存储'}</p>
+      </div></main>`;
+    }
+
+    ensureSelection();
+    await hydrateFromServer();
+    ensureSelection();
+    applyTheme();
+    writeLocalStore();
+    render();
+    updateClock();
+    window.setInterval(updateClock, 30000);
+
+    app.addEventListener('click', handleAppClick);
+    app.addEventListener('keydown', handleAppKeydown);
+
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.swipe-shell')) closeAllSwipes();
+    });
+
+    const modalRoot = $('#modal-root');
+    if (modalRoot) {
+      modalRoot.addEventListener('click', (event) => {
+        if (event.target.closest('[data-modal-close]')) closeModal();
+      });
+    }
+
+    const importFile = $('#import-file');
+    if (importFile) importFile.addEventListener('change', handleImportFile);
+
+    if (darkMedia) {
+      if (typeof darkMedia.addEventListener === 'function') {
+        darkMedia.addEventListener('change', updateThemeMeta);
+      } else if (typeof darkMedia.addListener === 'function') {
+        darkMedia.addListener(updateThemeMeta);
+      }
+    }
+
+    window.addEventListener('storage', (event) => {
+      if (event.key !== STORAGE_KEY || !event.newValue) return;
+      try {
+        store = normaliseStore(JSON.parse(event.newValue));
+        ensureSelection();
+        render({ preserveScroll: true });
+      } catch (error) {
+        /* ignore malformed external writes */
+      }
+    });
+
+    if (new URLSearchParams(window.location.search).has('debug')) {
+      window.__MEOW_DEBUG__ = {
+        get store() { return store; },
+        ui,
+        render,
+        normaliseStore,
+        demoCats
+      };
+    }
+  }
+
+  function start() {
+    init().catch((error) => {
+      console.error('MEOW SYSTEM: 初始化失败。', error);
+      try {
+        render();
+      } catch (renderError) {
+        console.error('MEOW SYSTEM: 渲染失败。', renderError);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
+})();
+
+  </script>
+</body>
+</html>

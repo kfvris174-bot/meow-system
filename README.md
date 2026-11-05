@@ -5,6 +5,7 @@ iOS 风格 + Y2K 拼贴的猫咪档案 App。App 本身仍是单文件 HTML；�
 整个项目都保存在 `meow-system/` 文件夹里，不会和其他文件混在一起。
 
 ![首页](screens/home-light.png)
+![首页 · 深色](screens/home-dark.png)
 
 ## 现有页面
 
@@ -167,8 +168,7 @@ sudo firewall-cmd --reload
 - `start-phone.sh` — Linux / 通用终端启动器
 - `data.json` — 自动生成的数据文件（不入库）
 - `screens/` — 界面截图
-- `src/app.js`、`src/styles.css`、`src/shell.html` — 可维护源码
-- `src/assets/` — 拼贴背景等图片资源（SVG + datauri）
+- `src/app.js`、`src/styles.css`、`src/shell.html` — 可维护源码（拼贴背景与像素猫全部是内联 SVG，无外链图片）
 - `build.mjs` — 把源码内联成单文件
 - `.deploy/` — systemd / nginx / logrotate 部署模板
 - `logs/` — 运行日志（不入库）

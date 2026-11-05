@@ -1298,8 +1298,13 @@ svg {
 .module-tile {
   position: relative;
   min-height: 0;
-  padding: 10px 10px 9px;
-  text-align: left;
+  padding: 9px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -1320,6 +1325,7 @@ svg {
 .module-row {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
 }
 
@@ -1350,7 +1356,9 @@ svg {
 
 .module-tile .module-due {
   display: inline-block;
-  margin-top: 7px;
+  margin-top: 0;
+  align-self: center;
+  text-align: center;
   max-width: 100%;
   padding: 3px 5px;
   border-radius: 5px;
@@ -1373,16 +1381,17 @@ svg {
 
 .module-add {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 24px;
-  height: 24px;
+  top: 5px;
+  right: 5px;
+  width: 18px;
+  height: 18px;
   display: grid;
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 50%;
   background: var(--paper-2);
   color: var(--ink-2);
+  opacity: 0.8;
   z-index: 2;
   transition: transform 0.12s ease;
 }

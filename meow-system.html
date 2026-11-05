@@ -1124,6 +1124,35 @@ svg {
 
 /* ---------- cat hero card ---------- */
 
+.home-card {
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.home-card .cat-hero.paper-card,
+.home-card .module-grid {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.home-card .cat-hero {
+  margin-bottom: 0;
+  padding: 15px 15px 13px;
+  overflow: visible;
+}
+
+.home-card .cat-hero::after {
+  display: none;
+}
+
+.home-card .module-grid {
+  margin: 0;
+  border-top: 1.5px solid var(--line-soft);
+  overflow: hidden;
+}
+
 .cat-hero {
   padding: 15px;
   margin-bottom: 13px;
@@ -4950,11 +4979,17 @@ textarea.field-value-input {
     </header>
     ${renderCollage()}
     ${renderCatSwitcher()}
-    ${cat ? renderCatHero(cat) : renderEmptyCats()}
-    ${cat ? renderModuleGrid(cat) : ''}
+    ${cat ? renderHomeCard(cat) : renderEmptyCats()}
     ${cat ? renderEvents(cat) : ''}
     ${cat ? renderRecent(cat) : ''}
     <div class="screen-footer">本地档案 · ${fmtDot(todayISO())}</div>`;
+  }
+
+  function renderHomeCard(cat) {
+    return `<div class="home-card paper-card">
+      ${renderCatHero(cat)}
+      ${renderModuleGrid(cat)}
+    </div>`;
   }
 
   function renderReminderCard(reminder) {

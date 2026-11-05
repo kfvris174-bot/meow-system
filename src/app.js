@@ -1226,11 +1226,17 @@
     </header>
     ${renderCollage()}
     ${renderCatSwitcher()}
-    ${cat ? renderCatHero(cat) : renderEmptyCats()}
-    ${cat ? renderModuleGrid(cat) : ''}
+    ${cat ? renderHomeCard(cat) : renderEmptyCats()}
     ${cat ? renderEvents(cat) : ''}
     ${cat ? renderRecent(cat) : ''}
     <div class="screen-footer">本地档案 · ${fmtDot(todayISO())}</div>`;
+  }
+
+  function renderHomeCard(cat) {
+    return `<div class="home-card paper-card">
+      ${renderCatHero(cat)}
+      ${renderModuleGrid(cat)}
+    </div>`;
   }
 
   function renderReminderCard(reminder) {

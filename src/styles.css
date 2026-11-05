@@ -1110,6 +1110,35 @@ svg {
 
 /* ---------- cat hero card ---------- */
 
+.home-card {
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.home-card .cat-hero.paper-card,
+.home-card .module-grid {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.home-card .cat-hero {
+  margin-bottom: 0;
+  padding: 15px 15px 13px;
+  overflow: visible;
+}
+
+.home-card .cat-hero::after {
+  display: none;
+}
+
+.home-card .module-grid {
+  margin: 0;
+  border-top: 1.5px solid var(--line-soft);
+  overflow: hidden;
+}
+
 .cat-hero {
   padding: 15px;
   margin-bottom: 13px;

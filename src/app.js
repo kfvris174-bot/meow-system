@@ -989,7 +989,7 @@
     const birthday = getFieldValue(cat, 'birthday');
     if (birthday) tags.push({ label: ageText(birthday), cls: '' });
     const weight = getFieldValue(cat, 'weight');
-    if (weight) tags.push({ label: `体重 ${weight}`, cls: 'weight' });
+    if (weight) tags.push({ label: `体重 ${weight}`, cls: '' });
     return tags;
   }
 
@@ -1095,10 +1095,10 @@
           <h2>${esc(cat.name)}</h2>
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
         </div>
-        <button type="button" class="round-btn small edit-corner" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑 ${esc(cat.name)} 的档案">${icon('edit', 14)}</button>
-      </div>
-      <div class="cat-hero-foot">
-        <button type="button" class="link-btn hero-full-link" data-action="open-detail" data-id="${esc(cat.id)}">查看完整档案 ${icon('chevronRight', 13)}</button>
+        <div class="hero-actions">
+          <button type="button" class="link-btn hero-full-link" data-action="open-detail" data-id="${esc(cat.id)}">完整档案 ${icon('chevronRight', 13)}</button>
+          <button type="button" class="round-btn small edit-corner" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑 ${esc(cat.name)} 的档案">${icon('edit', 14)}</button>
+        </div>
       </div>
     </article>`;
   }
@@ -1125,33 +1125,6 @@
     </div>`;
   }
 
-  function renderDueCard(reminder) {
-    const iconName = reminder.type === 'deworm' ? 'pill' : 'syringe';
-    const action = reminder.type === 'neuter'
-      ? `<button type="button" class="btn-complete ghost" data-action="edit-neuter" data-cat="${esc(reminder.catId)}">安排</button>`
-      : `<button type="button" class="btn-complete" data-action="complete-reminder" data-cat="${esc(reminder.catId)}" data-type="${reminder.type}" data-record="${esc(reminder.recordId)}">${icon('check', 11)}完成</button>`;
-
-    return `<div class="due-card ${reminder.tone}">
-      <div class="mini-icon">${icon(iconName, 15)}</div>
-      <div class="due-copy">
-        <strong>${esc(reminder.cat.name)} · ${esc(reminder.kind)}</strong>
-        <span>${esc(reminder.subtitle)}${reminder.dueDate ? ` · 下次 ${fmtDot(reminder.dueDate)}` : ''}</span>
-      </div>
-      <span class="due-badge ${reminder.tone}">${esc(reminder.dueLabel)}</span>
-      ${action}
-    </div>`;
-  }
-
-  function renderDueSection(reminders) {
-    return `<div class="section-head">
-      <div class="head-copy"><h2>即将到期</h2></div>
-      <button type="button" class="link-btn" data-action="tab" data-tab="reminders">全部提醒 ${icon('chevronRight', 13)}</button>
-    </div>
-    ${reminders.length
-      ? `<div class="due-list">${reminders.map(renderDueCard).join('')}</div>`
-      : `<div class="empty"><strong>暂时没有临近的待办</strong><p>所有计划都还从容，去撸猫吧。</p></div>`}`;
-  }
-
   function timelineItem(item) {
     const record = item.record;
     let title = '';
@@ -1176,7 +1149,7 @@
     const items = catActivity(cat).slice(0, 3);
     return `<div class="section-head">
       <div class="head-copy"><h2>最近动态</h2></div>
-      <button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}">完整档案 ${icon('chevronRight', 13)}</button>
+      <button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}" data-section="deworm">完整动态 ${icon('chevronRight', 13)}</button>
     </div>
     ${items.length ? `<div class="timeline">${items.map(timelineItem).join('')}</div>` : `<div class="empty"><p>还没有健康记录。打开档案后可以添加驱虫、疫苗和绝育记录。</p></div>`}`;
   }
@@ -1205,7 +1178,7 @@
       <div class="head-copy"><h2>猫咪事件记录</h2></div>
       <div class="head-actions-inline">
         <button type="button" class="link-btn" data-action="add-event" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
-        ${events.length ? `<button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}" data-section="deworm">完整记录 ${icon('chevronRight', 13)}</button>` : ''}
+        ${events.length ? `<button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}" data-section="events">完整记录 ${icon('chevronRight', 13)}</button>` : ''}
       </div>
     </div>
     ${shown.length ? `<div class="event-list">${shown.map((event) => renderEventRow(cat, event)).join('')}</div>` : `<div class="empty"><p>还没有事件记录。可以记下洗澡、剪指甲、看医生、打翻花瓶……任何值得留下的事。</p></div>`}`;
@@ -1243,10 +1216,6 @@
   function renderHome() {
     const cat = selectedCat();
     const badge = actionableReminders().length;
-    const due = allReminders()
-      .filter((reminder) => reminder.type !== 'neuter' && ['overdue', 'today', 'soon'].includes(reminder.tone))
-      .sort(sortReminders)
-      .slice(0, 3);
 
     return `<header class="page-head">
       <div>
@@ -1267,7 +1236,6 @@
     ${cat ? renderModuleGrid(cat) : ''}
     ${cat ? renderEvents(cat) : ''}
     ${cat ? renderRecent(cat) : ''}
-    ${renderDueSection(due)}
     <div class="screen-footer">本地档案 · ${fmtDot(todayISO())}</div>`;
   }
 
@@ -1453,8 +1421,6 @@
      ========================================================= */
 
   function renderDetailHero(cat) {
-    const deworm = moduleDue(cat, 'deworm');
-    const vaccine = moduleDue(cat, 'vaccine');
     const neuter = moduleDue(cat, 'neuter');
     const index = store.cats.findIndex((item) => item.id === cat.id) + 1;
 
@@ -1471,11 +1437,6 @@
         <div class="dh-stat"><span>体重</span><strong>${esc(catWeight(cat))}</strong></div>
         <div class="dh-stat"><span>绝育</span><strong>${esc(neuterStatus(cat))}</strong></div>
         <div class="dh-stat"><span>年龄</span><strong>${esc(catAge(cat))}</strong></div>
-      </div>
-      <div class="dh-due">
-        <button type="button" class="due-pill ${deworm.tone}" data-action="scroll-section" data-section="deworm"><span class="dot"></span>驱虫 · ${esc(deworm.count > 1 ? `${deworm.count} 项` : deworm.label)}</button>
-        <button type="button" class="due-pill ${vaccine.tone}" data-action="scroll-section" data-section="vaccine"><span class="dot"></span>疫苗 · ${esc(vaccine.count > 1 ? `${vaccine.count} 项` : vaccine.label)}</button>
-        <button type="button" class="due-pill ${neuter.tone}" data-action="scroll-section" data-section="neuter"><span class="dot"></span>绝育 · ${esc(neuter.label)}</button>
       </div>
     </section>`;
   }

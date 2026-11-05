@@ -1140,7 +1140,7 @@ svg {
 .cat-id {
   flex: 1;
   min-width: 0;
-  padding-right: 23px;
+  padding-right: 0;
 }
 
 .cat-id h2 {
@@ -1201,16 +1201,18 @@ svg {
 
 .tag.weight {
   background: var(--paper-2);
-  border-color: var(--line);
-  font-weight: 850;
+  border-color: var(--line-soft);
+  color: var(--ink-2);
+  font-weight: 750;
 }
 
-.cat-hero-foot {
+.hero-actions {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
+  align-items: center;
+  gap: 6px;
   position: relative;
   z-index: 1;
+  flex: none;
 }
 
 .hero-full-link {
@@ -1223,40 +1225,10 @@ svg {
 }
 
 .cat-hero .edit-corner {
-  position: absolute;
-  right: 13px;
-  top: 13px;
+  position: static;
+  right: auto;
+  top: auto;
 }
-
-.due-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 8px;
-  background: var(--paper-2);
-  border: 1px solid var(--line-soft);
-  border-radius: 999px;
-  color: var(--ink-2);
-  font-size: 9px;
-  font-weight: 750;
-}
-
-.due-pill .dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--green);
-  flex: none;
-}
-
-.due-pill.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); border-color: transparent; }
-.due-pill.overdue .dot { background: var(--tone-overdue-ink); }
-.due-pill.today { background: var(--tone-today-bg); color: var(--tone-today-ink); border-color: transparent; }
-.due-pill.today .dot { background: var(--tone-today-ink); }
-.due-pill.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); border-color: transparent; }
-.due-pill.soon .dot { background: var(--tone-soon-ink); }
-.due-pill.later { background: var(--tone-later-bg); color: var(--tone-later-ink); border-color: transparent; }
-.due-pill.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); border-color: transparent; }
 
 /* ---------- quick modules ---------- */
 
@@ -2117,24 +2089,6 @@ svg {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.detail-hero .dh-due {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 10px;
-}
-
-.detail-hero .due-pill {
-  background: rgba(255, 250, 240, 0.09);
-  border-color: rgba(255, 250, 240, 0.2);
-  color: #e8dfcd;
-}
-
-.detail-hero .due-pill.overdue { background: #7b1928; color: #ffe2e5; border-color: transparent; }
-.detail-hero .due-pill.today { background: #6d4f13; color: #ffe9b8; border-color: transparent; }
-.detail-hero .due-pill.soon { background: #3f5220; color: #e6f1c7; border-color: transparent; }
-.detail-hero .due-pill.plan { background: #49376a; color: #e9dffa; border-color: transparent; }
 
 /* ---------- info card ---------- */
 

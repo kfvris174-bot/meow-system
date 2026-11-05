@@ -1228,7 +1228,6 @@
     ${renderCatSwitcher()}
     ${cat ? renderCatHero(cat) : renderEmptyCats()}
     ${cat ? renderModuleGrid(cat) : ''}
-    ${cat ? renderHomeFields(cat) : ''}
     ${cat ? renderEvents(cat) : ''}
     ${cat ? renderRecent(cat) : ''}
     <div class="screen-footer">本地档案 · ${fmtDot(todayISO())}</div>`;
@@ -1451,21 +1450,6 @@
         <strong class="${entry.empty ? 'muted' : ''}">${entry.empty ? '—' : esc(entry.display)}</strong>
       </div>`).join('')}
     </div>`;
-  }
-
-  function renderHomeFields(cat) {
-    const fields = cat.fields.filter((field) => String(field.value || '').trim() !== '');
-    return `<section class="home-fields folder archive">
-      <div class="folder-art" aria-hidden="true">
-        <span class="fa-rainbow"></span>
-        <span class="fa-star"></span>
-        <span class="fa-clip"></span>
-        <span class="fa-band"></span>
-      </div>
-      <div class="folder-tab"><h2>档案速览</h2></div>
-      <button type="button" class="link-btn folder-edit" data-action="edit-cat" data-id="${esc(cat.id)}">编辑字段</button>
-      ${fields.length ? renderFieldGrid(fields) : `<div class="empty"><p>还没有填写档案字段，点「编辑字段」补充品种、生日、体重等信息。</p></div>`}
-    </section>`;
   }
 
   function renderInfoCard(cat) {

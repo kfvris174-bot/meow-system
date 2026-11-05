@@ -1257,41 +1257,36 @@ svg {
 .module-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 0;
   margin: 0 0 5px;
-}
-
-.module-tile {
-  position: relative;
-  min-height: 0;
-  padding: 9px 9px 8px;
-  text-align: left;
   background: var(--paper);
   border: 1.5px solid var(--line);
   border-radius: 17px;
   box-shadow: 3px 3px 0 var(--shadow);
   overflow: hidden;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.module-tile {
+  position: relative;
+  min-height: 0;
+  padding: 10px 10px 9px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  transition: background 0.15s ease;
   cursor: pointer;
 }
 
+.module-tile + .module-tile {
+  border-left: 1.5px solid var(--line-soft);
+}
+
 .module-tile:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 var(--shadow);
+  background: var(--paper-2);
 }
-
-.module-tile::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 4px;
-  background: var(--blue);
-}
-
-.module-tile.vaccine::after { background: var(--red); }
-.module-tile.neuter::after { background: var(--green); }
 
 .module-row {
   display: flex;

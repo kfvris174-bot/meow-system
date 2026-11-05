@@ -51,6 +51,7 @@
   --tab-bg: rgba(251, 244, 229, 0.91);
   --tab-line: rgba(27, 33, 66, 0.16);
 
+
   --chrome: linear-gradient(135deg,
       #ffffff 0%,
       #dfe5f4 12%,
@@ -876,10 +877,10 @@ svg {
 .banner-bubble {
   position: absolute;
   left: 61px;
-  top: 18px;
+  top: 16px;
   z-index: 4;
-  width: 196px;
-  padding: 10px 12px 11px;
+  width: 212px;
+  padding: 13px 13px 14px;
   background: #fbf4e5;
   color: #0c1f7a;
   border: 1.5px solid #0b1027;
@@ -901,18 +902,12 @@ svg {
   transform: rotate(45deg);
 }
 
-.banner-bubble .micro {
-  color: var(--red);
-  font-size: 8px;
-  letter-spacing: 0.12em;
-}
-
 .banner-bubble strong {
   display: block;
-  margin-top: 3px;
-  font-size: 18px;
-  line-height: 1.16;
-  letter-spacing: -0.04em;
+  margin: 0;
+  font-size: 23px;
+  line-height: 1.18;
+  letter-spacing: -0.045em;
   font-weight: 900;
 }
 
@@ -1204,58 +1199,33 @@ svg {
   color: #fff;
 }
 
+.tag.weight {
+  background: var(--paper-2);
+  border-color: var(--line);
+  font-weight: 850;
+}
+
+.cat-hero-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-full-link {
+  gap: 2px;
+  padding: 5px 9px 5px 10px;
+  font-size: 11px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: var(--paper-2);
+}
+
 .cat-hero .edit-corner {
   position: absolute;
   right: 13px;
   top: 13px;
-}
-
-.stat-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  margin-top: 14px;
-  overflow: hidden;
-  border: 1px solid var(--line-soft);
-  border-radius: 13px;
-  background: var(--line-soft);
-  position: relative;
-  z-index: 1;
-}
-
-.stat {
-  min-width: 0;
-  padding: 9px 9px 8px;
-  background: var(--paper-2);
-}
-
-.stat span {
-  display: block;
-  margin-bottom: 3px;
-  color: var(--ink-3);
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.stat strong {
-  display: block;
-  font-size: 13px;
-  line-height: 1.25;
-  font-weight: 850;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hero-due {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 9px;
-  position: relative;
-  z-index: 1;
 }
 
 .due-pill {
@@ -1299,8 +1269,8 @@ svg {
 
 .module-tile {
   position: relative;
-  min-height: 122px;
-  padding: 10px 9px 9px;
+  min-height: 0;
+  padding: 9px 9px 8px;
   text-align: left;
   background: var(--paper);
   border: 1.5px solid var(--line);
@@ -1329,9 +1299,25 @@ svg {
 .module-tile.vaccine::after { background: var(--red); }
 .module-tile.neuter::after { background: var(--green); }
 
+.module-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.module-row strong {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
 .module-icon {
-  width: 31px;
-  height: 31px;
+  flex: none;
+  width: 26px;
+  height: 26px;
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
@@ -1344,28 +1330,9 @@ svg {
 .module-tile.vaccine .module-icon { background: var(--red); }
 .module-tile.neuter .module-icon { background: var(--green); }
 
-.module-tile .module-label {
-  display: block;
-  margin-top: 8px;
-  font-size: 9px;
-  font-family: var(--font-mono);
-  letter-spacing: 0.11em;
-  color: var(--ink-3);
-  text-transform: uppercase;
-}
-
-.module-tile strong {
-  display: block;
-  margin-top: 1px;
-  font-size: 15px;
-  line-height: 1.1;
-  letter-spacing: -0.04em;
-  font-weight: 850;
-}
-
 .module-tile .module-due {
   display: inline-block;
-  margin-top: 8px;
+  margin-top: 7px;
   max-width: 100%;
   padding: 3px 5px;
   border-radius: 5px;
@@ -1514,6 +1481,77 @@ svg {
 }
 
 /* ---------- timeline / recent ---------- */
+
+/* ---------- event log ---------- */
+
+.head-actions-inline {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: none;
+}
+
+.head-actions-inline .link-btn {
+  white-space: nowrap;
+}
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.event-row {
+  padding: 9px 10px;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--blue);
+  border-radius: 4px 10px 10px 4px;
+}
+
+.event-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.event-date {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+
+.event-row .icon-btn.tiny {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-3);
+}
+
+.event-title {
+  margin-top: 1px;
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+}
+
+.event-text {
+  margin-top: 3px;
+  font-size: 10.5px;
+  color: var(--ink-2);
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.event-list.all .event-row {
+  padding: 10px 11px;
+}
 
 .timeline {
   position: relative;
@@ -3023,6 +3061,45 @@ svg {
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+/* 所有日期框与文本框同宽同高 */
+input.input[type="date"],
+select.input[type="date"],
+.input[type="date"] {
+  display: block;
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  padding: 0 11px;
+  border: 1.5px solid var(--line-soft);
+  border-radius: 10px;
+  background: var(--paper-2);
+  font-size: 13px;
+  line-height: 38px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input[type="date"]:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(30, 59, 219, 0.14);
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  margin-left: auto;
+  padding: 0;
+  opacity: 0.42;
+  filter: grayscale(1);
+}
+
+.form-row > div {
+  min-width: 0;
+}
+
 .input:focus,
 .select:focus,
 .textarea:focus {
@@ -3133,70 +3210,60 @@ svg {
 .field-editor {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-
-.field-edit-row {
-  padding: 8px;
-  background: var(--paper-2);
-  border: 1px solid var(--line-soft);
-  border-radius: 10px;
-}
-
-.field-edit-top {
-  display: flex;
-  align-items: center;
   gap: 5px;
 }
 
-.field-edit-top .label-input {
-  flex: 1;
+.field-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-softer);
+  border-radius: 0;
+}
+
+.field-edit-row:last-child {
+  border-bottom: none;
+}
+
+.field-edit-row .label-input {
+  flex: 0 0 auto;
+  width: 4.6em;
   min-width: 0;
-  min-height: 31px;
-  padding: 6px 8px;
-  border: 1px solid transparent;
-  border-radius: 7px;
-  background: var(--paper);
-  font-size: 10px;
-  font-weight: 850;
-  color: var(--ink-2);
-  outline: none;
-}
-
-.field-edit-top .label-input:focus {
-  border-color: var(--blue);
-}
-
-.field-edit-top .type-chip {
-  flex: none;
-  padding: 3px 5px;
-  border-radius: 4px;
-  background: var(--paper);
+  min-height: 30px;
+  padding: 6px 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
   color: var(--ink-3);
-  font-family: var(--font-mono);
-  font-size: 7px;
-  letter-spacing: 0.07em;
-  border: 1px solid var(--line-soft);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  outline: none;
+  text-overflow: ellipsis;
 }
 
-.field-edit-top .icon-btn {
-  width: 27px;
-  height: 27px;
-  flex: none;
-  border-radius: 7px;
+.field-edit-row .label-input:focus {
+  color: var(--blue);
+  box-shadow: inset 0 -1.5px 0 var(--blue);
 }
 
 .field-value-input {
-  width: 100%;
-  min-height: 34px;
-  margin-top: 5px;
-  padding: 7px 8px;
-  border: 1px solid var(--line-soft);
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  max-width: 62%;
+  min-height: 30px;
+  margin-top: 0;
+  padding: 5px 8px;
+  border: 1px solid var(--line-softer);
   border-radius: 7px;
   background: var(--paper);
   color: var(--ink);
-  font-size: 11px;
-  line-height: 1.4;
+  font-size: 11.5px;
+  line-height: 1.35;
   outline: none;
 }
 
@@ -3205,8 +3272,23 @@ svg {
 }
 
 textarea.field-value-input {
-  min-height: 58px;
+  min-height: 46px;
   resize: vertical;
+}
+
+.field-edit-row .icon-btn.danger {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border-radius: 6px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--ink-3);
+  opacity: 0.75;
+}
+
+.field-edit-row .icon-btn.danger:active {
+  color: var(--red);
 }
 
 .add-field-box {
@@ -3456,12 +3538,12 @@ textarea.field-value-input {
   }
 
   .banner-bubble {
-    width: 172px;
+    width: 188px;
     left: 56px;
   }
 
   .banner-bubble strong {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   .banner-cat {
@@ -3479,12 +3561,11 @@ textarea.field-value-input {
   }
 
   .module-tile {
-    min-height: 116px;
     padding: 8px;
   }
 
-  .module-tile strong {
-    font-size: 14px;
+  .module-row strong {
+    font-size: 13px;
   }
 }
 
@@ -3509,10 +3590,154 @@ textarea.field-value-input {
   }
 }
 
-.home-fields {
-  margin: 10px 0 14px;
+/* ---------- 表单：档案表格化 ---------- */
+
+.field-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--line-softer);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--line-softer);
 }
 
-.home-fields .field {
-  min-height: 52px;
+.field-editor.single {
+  margin: 2px 0 14px;
+  border: 1px solid var(--line-softer);
+  border-radius: 9px;
+  background: var(--line-softer);
+  overflow: hidden;
+}
+
+.field-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  background: var(--paper);
+  border: none;
+  border-bottom: 1px solid var(--line-softer);
+  border-radius: 0;
+}
+
+.field-edit-row:last-child {
+  border-bottom: none;
+}
+
+.field-edit-row .label-input,
+.field-edit-row .label-static {
+  align-self: stretch;
+  flex: 0 0 6.2em;
+  width: 6.2em;
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 8px;
+  border: none;
+  border-right: 1px solid var(--line-softer);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--paper-3) 72%, transparent);
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  outline: none;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+}
+
+.field-edit-row .label-input:focus {
+  color: var(--blue);
+  background: color-mix(in srgb, var(--blue) 8%, var(--paper-3));
+}
+
+.field-value-input {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  min-height: 34px;
+  margin-top: 0;
+  padding: 7px 9px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.field-value-input:focus {
+  background: color-mix(in srgb, var(--blue) 7%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--blue);
+}
+
+/* 日期框：与文本行同宽同高，去掉 iOS/Safari 的默认内边距差异 */
+input.field-value-input[type="date"] {
+  display: block;
+  height: 34px;
+  min-height: 34px;
+  max-height: 34px;
+  padding: 0 9px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 32px;
+}
+
+input.field-value-input[type="date"]:focus {
+  background: color-mix(in srgb, var(--blue) 7%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--blue);
+}
+
+input.field-value-input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+input.field-value-input[type="date"]::-webkit-calendar-picker-indicator {
+  margin-left: auto;
+  padding: 0;
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
+select.field-value-input {
+  display: flex;
+  align-items: center;
+}
+
+textarea.field-value-input {
+  min-height: 46px;
+  resize: vertical;
+  padding-top: 8px;
+}
+
+.field-edit-row .icon-btn.danger {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  margin-right: 4px;
+  border-radius: 6px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--ink-3);
+  opacity: 0.6;
+}
+
+.field-edit-row .icon-btn.danger:active {
+  color: var(--red);
+}
+
+/* 名字行：与档案表格完全同构 */
+.field-editor.single .field-edit-row {
+  border: none;
 }

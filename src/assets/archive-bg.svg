@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 400" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#fefaf0"/>
+      <stop offset="0.38" stop-color="#f7edda"/>
+      <stop offset="0.7" stop-color="#efe2c9"/>
+      <stop offset="1" stop-color="#e9d9c8"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.16" stop-color="#e2e8f6"/>
+      <stop offset="0.32" stop-color="#9aa6c6"/>
+      <stop offset="0.46" stop-color="#616d92"/>
+      <stop offset="0.58" stop-color="#f8fbff"/>
+      <stop offset="0.72" stop-color="#aeb9d6"/>
+      <stop offset="0.86" stop-color="#5f6b90"/>
+      <stop offset="1" stop-color="#c8d1e6"/>
+    </linearGradient>
+    <linearGradient id="rainbow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b23a4b"/>
+      <stop offset="0.18" stop-color="#d18047"/>
+      <stop offset="0.36" stop-color="#d7bf5d"/>
+      <stop offset="0.54" stop-color="#6d9870"/>
+      <stop offset="0.72" stop-color="#405fd6"/>
+      <stop offset="0.88" stop-color="#8c6ab4"/>
+      <stop offset="1" stop-color="#b23a4b"/>
+    </linearGradient>
+    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M10 0H0V10" fill="none" stroke="#1b2142" stroke-opacity="0.035" stroke-width="1"/>
+    </pattern>
+    <clipPath id="cardClip">
+      <rect x="6" y="6" width="428" height="388" rx="18" ry="18"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#cardClip)">
+    <rect x="0" y="0" width="440" height="400" fill="url(#paper)"/>
+    <rect x="0" y="0" width="440" height="400" fill="url(#grid)"/>
+
+    <!-- 左上白色高光 -->
+    <path d="M-60 120 L150 -70 L260 -70 L-60 190 Z" fill="#ffffff" opacity="0.42"/>
+    <!-- 右上彩虹折角 -->
+    <path d="M330 -30 L470 20 L470 44 L330 -6 Z" fill="url(#rainbow)" opacity="0.6"/>
+    <!-- 右下淡色斜块 -->
+    <path d="M470 250 L470 400 L250 400 Z" fill="#a793c9" opacity="0.10"/>
+
+    <!-- 纤维横线 -->
+    <path d="M0 318 H440" stroke="#1b2142" stroke-opacity="0.10" stroke-dasharray="5 9"/>
+    <path d="M0 344 H440" stroke="#1b2142" stroke-opacity="0.06" stroke-dasharray="2 12"/>
+
+    <!-- 回形针 -->
+    <g transform="translate(300 -2) rotate(11)" fill="none" stroke="#5c688d" stroke-opacity="0.34" stroke-width="2">
+      <path d="M0 8 v20 a7.5 7.5 0 0 0 15 0 V4 a4.6 4.6 0 0 0 -9.2 0 v24"/>
+    </g>
+
+    <!-- chrome 星 -->
+    <g transform="translate(18 252) rotate(-9)">
+      <path d="M26 0 32 18 51 18.6 36 30 41.5 48 26 37 10.5 48 16 30 1 18.6 20 18Z" fill="url(#chrome)" opacity="0.92"/>
+    </g>
+
+    <!-- chrome 气泡 -->
+    <circle cx="410" cy="300" r="17" fill="url(#chrome)" opacity="0.5"/>
+    <circle cx="410" cy="300" r="10" fill="none" stroke="#ffffff" stroke-opacity="0.7" stroke-width="1.4"/>
+
+    <!-- 底部彩色细带 -->
+    <rect x="0" y="382" width="440" height="18" fill="url(#rainbow)" opacity="0.34"/>
+
+    <!-- 水印文字 -->
+    <text x="222" y="212" text-anchor="middle" transform="rotate(-13 222 212)"
+          font-family="Menlo, monospace" font-size="50" font-weight="600"
+          fill="#1e3bdb" fill-opacity="0.035" letter-spacing="4">CAT FILE</text>
+  </g>
+
+  <rect x="6.5" y="6.5" width="427" height="387" rx="18" ry="18"
+        fill="none" stroke="#1b2142" stroke-opacity="0.5" stroke-width="1.4"/>
+</svg>

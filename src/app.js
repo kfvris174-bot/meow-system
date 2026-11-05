@@ -29,19 +29,6 @@
     neuter: '绝育'
   };
 
-  const EN_LABEL = {
-    deworm: 'DEWORM',
-    vaccine: 'VACCINE',
-    neuter: 'NEUTER'
-  };
-
-  const FIELD_TYPE_LABEL = {
-    text: 'TEXT',
-    date: 'DATE',
-    longtext: 'NOTE',
-    sex: 'SELECT'
-  };
-
   const REMINDER_TONE_PRIORITY = {
     overdue: 0,
     today: 1,
@@ -51,11 +38,11 @@
   };
 
   const REMINDER_GROUP_TITLE = {
-    overdue: '逾期 / OVERDUE',
-    today: '今天 / TODAY',
-    soon: '7 天内 / SOON',
-    later: '之后 / LATER',
-    plan: '待安排 / PLANNED'
+    overdue: '逾期',
+    today: '今天',
+    soon: '7 天内',
+    later: '之后',
+    plan: '待安排'
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -240,6 +227,7 @@
     syringe: '<path d="m17 3 4 4"/><path d="m14 6 4 4"/><path d="m16 8-9.5 9.5L3 21l3.5-3.5L16 8Z"/><path d="m8 12 4 4M6 14l4 4"/>',
     scissors: '<circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8.2 7.8 20 19M8.2 16.2 20 5"/>',
     calendar: '<rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 10h17"/>',
+    note: '<path d="M5 3.8h9.5L19 8.3V20.2H5V3.8Z"/><path d="M14.2 3.9v4.5h4.6"/><path d="M8 12.5h8M8 16h5"/>',
     chevronRight: '<path d="m9 5 7 7-7 7"/>',
     chevronDown: '<path d="m5 9 7 7 7-7"/>',
     star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/>',
@@ -577,6 +565,20 @@
     };
   }
 
+  function normaliseEvent(event) {
+    if (!event || typeof event !== 'object') return null;
+    const title = cleanText(event.title);
+    const text = cleanText(event.text);
+    if (!title && !text) return null;
+    return {
+      id: String(event.id || uid('event')),
+      date: parseISO(event.date) ? event.date : todayISO(),
+      title: title.slice(0, 40) || '事件记录',
+      text: text.slice(0, 400),
+      createdAt: Number(event.createdAt) || Date.now()
+    };
+  }
+
   function normaliseCat(cat) {
     return {
       id: String((cat && cat.id) || uid('cat')),
@@ -585,6 +587,7 @@
       fields: normaliseFields(cat && cat.fields),
       dewormings: Array.isArray(cat && cat.dewormings) ? cat.dewormings.map(normaliseRecord).slice(0, MAX_RECORDS) : [],
       vaccines: Array.isArray(cat && cat.vaccines) ? cat.vaccines.map(normaliseRecord).slice(0, MAX_RECORDS) : [],
+      events: Array.isArray(cat && cat.events) ? cat.events.map(normaliseEvent).filter(Boolean).slice(0, MAX_RECORDS) : [],
       neuter: normaliseNeuter(cat && cat.neuter),
       createdAt: Number(cat && cat.createdAt) || Date.now()
     };
@@ -985,6 +988,8 @@
     if (breed) tags.push({ label: breed, cls: '' });
     const birthday = getFieldValue(cat, 'birthday');
     if (birthday) tags.push({ label: ageText(birthday), cls: '' });
+    const weight = getFieldValue(cat, 'weight');
+    if (weight) tags.push({ label: `体重 ${weight}`, cls: 'weight' });
     return tags;
   }
 
@@ -1056,12 +1061,11 @@
     return `<section class="collage-banner">
       <div class="banner-rainbow"></div>
       <div class="banner-bubble">
-        <div class="micro">HOW CAN I HELP?</div>
         <strong>今天要照顾<br>哪只小猫？</strong>
       </div>
       <div class="banner-cat">${pixelCatSVG('pixel-1')}</div>
       <div class="banner-star"></div>
-      <div class="banner-meta"><span class="dot"></span> CAT CARE / DAILY LOG</div>
+      <div class="banner-meta"><span class="dot"></span> 猫咪照护 · 每日记录</div>
     </section>`;
   }
 
@@ -1083,29 +1087,18 @@
   }
 
   function renderCatHero(cat) {
-    const deworm = moduleDue(cat, 'deworm');
-    const vaccine = moduleDue(cat, 'vaccine');
-    const neuter = moduleDue(cat, 'neuter');
-
     return `<article class="cat-hero paper-card">
       <div class="cat-hero-top">
         ${avatarHTML(cat, 74, 'lg')}
         <div class="cat-id">
-          <div class="micro">CAT FILE / ${String(store.cats.findIndex((item) => item.id === cat.id) + 1).padStart(2, '0')}</div>
+          <div class="micro">档案 ${String(store.cats.findIndex((item) => item.id === cat.id) + 1).padStart(2, '0')}</div>
           <h2>${esc(cat.name)}</h2>
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
         </div>
         <button type="button" class="round-btn small edit-corner" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑 ${esc(cat.name)} 的档案">${icon('edit', 14)}</button>
       </div>
-      <div class="stat-strip">
-        <div class="stat"><span>WEIGHT</span><strong>${esc(catWeight(cat))}</strong></div>
-        <div class="stat"><span>NEUTER</span><strong>${esc(neuterStatus(cat))}</strong></div>
-        <div class="stat"><span>AGE</span><strong>${esc(catAge(cat))}</strong></div>
-      </div>
-      <div class="hero-due">
-        <button type="button" class="due-pill ${deworm.tone}" data-action="open-detail" data-id="${esc(cat.id)}" data-section="deworm"><span class="dot"></span>驱虫 · ${esc(deworm.count > 1 ? `${deworm.count} 项` : deworm.label)}</button>
-        <button type="button" class="due-pill ${vaccine.tone}" data-action="open-detail" data-id="${esc(cat.id)}" data-section="vaccine"><span class="dot"></span>疫苗 · ${esc(vaccine.count > 1 ? `${vaccine.count} 项` : vaccine.label)}</button>
-        <button type="button" class="due-pill ${neuter.tone}" data-action="open-detail" data-id="${esc(cat.id)}" data-section="neuter"><span class="dot"></span>绝育 · ${esc(neuter.label)}</button>
+      <div class="cat-hero-foot">
+        <button type="button" class="link-btn hero-full-link" data-action="open-detail" data-id="${esc(cat.id)}">查看完整档案 ${icon('chevronRight', 13)}</button>
       </div>
     </article>`;
   }
@@ -1116,9 +1109,10 @@
     const iconName = type === 'deworm' ? 'pill' : type === 'vaccine' ? 'syringe' : 'scissors';
     return `<div class="module-tile ${type}" role="button" tabindex="0" data-action="open-detail" data-id="${esc(cat.id)}" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
       <button type="button" class="module-add" data-action="${addAction}" data-type="${type}" data-cat="${esc(cat.id)}" aria-label="添加${TYPE_LABEL[type]}记录">${icon('plus', 13)}</button>
-      <div class="module-icon">${icon(iconName, 16)}</div>
-      <span class="module-label">${EN_LABEL[type]}</span>
-      <strong>${TYPE_LABEL[type]}</strong>
+      <div class="module-row">
+        <div class="module-icon">${icon(iconName, 16)}</div>
+        <strong>${TYPE_LABEL[type]}</strong>
+      </div>
       <span class="module-due ${due.tone}">${esc(due.label)}</span>
     </div>`;
   }
@@ -1150,7 +1144,7 @@
 
   function renderDueSection(reminders) {
     return `<div class="section-head">
-      <div class="head-copy"><div class="micro">UP NEXT</div><h2>即将到期</h2></div>
+      <div class="head-copy"><h2>即将到期</h2></div>
       <button type="button" class="link-btn" data-action="tab" data-tab="reminders">全部提醒 ${icon('chevronRight', 13)}</button>
     </div>
     ${reminders.length
@@ -1181,10 +1175,56 @@
   function renderRecent(cat) {
     const items = catActivity(cat).slice(0, 3);
     return `<div class="section-head">
-      <div class="head-copy"><div class="micro">RECENT ACTIVITY</div><h2>最近动态</h2></div>
+      <div class="head-copy"><h2>最近动态</h2></div>
       <button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}">完整档案 ${icon('chevronRight', 13)}</button>
     </div>
     ${items.length ? `<div class="timeline">${items.map(timelineItem).join('')}</div>` : `<div class="empty"><p>还没有健康记录。打开档案后可以添加驱虫、疫苗和绝育记录。</p></div>`}`;
+  }
+
+  function sortEventsDesc(a, b) {
+    const dateCompare = String(b.date).localeCompare(String(a.date));
+    if (dateCompare !== 0) return dateCompare;
+    return (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0);
+  }
+
+  function renderEventRow(cat, event) {
+    return `<div class="event-row">
+      <div class="event-top">
+        <span class="event-date">${fmtDot(event.date)}</span>
+        <button type="button" class="icon-btn tiny" data-action="edit-event" data-cat="${esc(cat.id)}" data-event="${esc(event.id)}" aria-label="编辑这条事件">${icon('edit', 12)}</button>
+      </div>
+      <div class="event-title">${esc(event.title)}</div>
+      ${event.text ? `<div class="event-text">${esc(event.text)}</div>` : ''}
+    </div>`;
+  }
+
+  function renderEvents(cat, limit = 3) {
+    const events = (cat.events || []).slice().sort(sortEventsDesc);
+    const shown = limit ? events.slice(0, limit) : events;
+    return `<div class="section-head">
+      <div class="head-copy"><h2>猫咪事件记录</h2></div>
+      <div class="head-actions-inline">
+        <button type="button" class="link-btn" data-action="add-event" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
+        ${events.length ? `<button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}" data-section="deworm">完整记录 ${icon('chevronRight', 13)}</button>` : ''}
+      </div>
+    </div>
+    ${shown.length ? `<div class="event-list">${shown.map((event) => renderEventRow(cat, event)).join('')}</div>` : `<div class="empty"><p>还没有事件记录。可以记下洗澡、剪指甲、看医生、打翻花瓶……任何值得留下的事。</p></div>`}`;
+  }
+
+  function renderEventSection(cat) {
+    const events = (cat.events || []).slice().sort(sortEventsDesc);
+    return `<section class="record-section" id="section-events">
+      <div class="module-head">
+        <div class="module-icon events">${icon('note', 17)}</div>
+        <div class="module-title">
+          <h2>猫咪事件记录</h2>
+        </div>
+        <button type="button" class="btn small ghost" data-action="add-event" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
+      </div>
+      ${events.length
+        ? `<div class="event-list all">${events.map((event) => renderEventRow(cat, event)).join('')}</div>`
+        : `<div class="empty"><p>还没有事件记录。添加一件事，记下时间、标题和经过。</p></div>`}
+    </section>`;
   }
 
   function renderEmptyCats() {
@@ -1225,10 +1265,10 @@
     ${renderCatSwitcher()}
     ${cat ? renderCatHero(cat) : renderEmptyCats()}
     ${cat ? renderModuleGrid(cat) : ''}
-    ${cat ? renderHomeFields(cat) : ''}
-    ${renderDueSection(due)}
+    ${cat ? renderEvents(cat) : ''}
     ${cat ? renderRecent(cat) : ''}
-    <div class="screen-footer">MEOW SYSTEM · LOCAL ONLY · ${fmtDot(todayISO())}</div>`;
+    ${renderDueSection(due)}
+    <div class="screen-footer">本地档案 · ${fmtDot(todayISO())}</div>`;
   }
 
   function renderReminderCard(reminder) {
@@ -1294,7 +1334,7 @@
 
     return `<header class="page-head">
       <div>
-        <div class="eyebrow">REMINDERS / ${String(filtered.length).padStart(2, '0')} ITEMS</div>
+        <div class="eyebrow">提醒 · ${String(filtered.length).padStart(2, '0')} 项</div>
         <h1>提醒</h1>
       </div>
       <div class="head-actions">
@@ -1309,7 +1349,7 @@
 
     <div class="reminder-summary">
       <div class="rs-copy">
-        <div class="micro light">SYSTEM CHECK</div>
+        <div class="micro light">系统检查</div>
         <strong>${actionable.length ? `${actionable.length} 项需要处理` : '没有紧急待办'}</strong>
         <span>${actionable.length ? '逾期优先 · 完成后会自动生成下次记录' : '可以提前看看之后的计划'}</span>
       </div>
@@ -1317,7 +1357,7 @@
     </div>
 
     ${groupMarkup || empty}
-    <div class="screen-footer">REMINDERS SYNCED LOCALLY · ${fmtDot(todayISO())}</div>`;
+    <div class="screen-footer">提醒已同步 · ${fmtDot(todayISO())}</div>`;
   }
 
   function renderSettings() {
@@ -1338,7 +1378,7 @@
 
     return `<header class="page-head">
       <div>
-        <div class="eyebrow">PERSONAL / SETTINGS</div>
+        <div class="eyebrow">我的 · 设置</div>
         <h1>我的</h1>
       </div>
       <div class="head-actions">
@@ -1347,25 +1387,25 @@
     </header>
 
     <section class="system-panel">
-      <div class="sys-label"><span>SYSTEM / LOCAL ${serverAvailable ? 'FILE' : 'BROWSER'}</span><span>● READY</span></div>
+      <div class="sys-label"><span>系统 · 本地${serverAvailable ? '文件' : '浏览器'}</span><span>● 就绪</span></div>
       ${storageCopy ? `<p>${storageCopy}</p>` : ''}
       <div class="sys-grid">
-        <div class="sys-mini"><span>CATS</span><strong>${store.cats.length} 只</strong></div>
-        <div class="sys-mini"><span>RECORDS</span><strong>${records} 条</strong></div>
-        <div class="sys-mini"><span>STORAGE</span><strong>${storageMode}</strong></div>
-        <div class="sys-mini"><span>BACKUP</span><strong>JSON</strong></div>
+        <div class="sys-mini"><span>猫咪</span><strong>${store.cats.length} 只</strong></div>
+        <div class="sys-mini"><span>记录</span><strong>${records} 条</strong></div>
+        <div class="sys-mini"><span>存储</span><strong>${storageMode}</strong></div>
+        <div class="sys-mini"><span>备份</span><strong>JSON</strong></div>
       </div>
     </section>
 
     <div class="settings-group">
-      <div class="settings-group-title">APPEARANCE / 外观</div>
+      <div class="settings-group-title">外观</div>
       <div class="theme-segmented" role="group" aria-label="主题">
         ${themeOptions.map((option) => `<button type="button" class="${theme === option.id ? 'active' : ''}" data-action="set-theme" data-theme="${option.id}" aria-pressed="${theme === option.id}">${icon(option.icon, 18)}<span>${option.label}</span></button>`).join('')}
       </div>
     </div>
 
     <div class="settings-group">
-      <div class="settings-group-title">DATA / 数据</div>
+      <div class="settings-group-title">数据</div>
       <div class="settings-card">
         <button type="button" class="setting-row" data-action="export">
           <span class="setting-icon">${icon('download', 16)}</span>
@@ -1391,21 +1431,21 @@
     </div>
 
     <div class="settings-group">
-      <div class="settings-group-title">ABOUT / 关于</div>
+      <div class="settings-group-title">关于</div>
       <div class="about-card">
-        <div class="about-title"><strong>喵档</strong><span>MEOW SYSTEM</span></div>
+        <div class="about-title"><strong>喵档</strong><span>本地档案</span></div>
         <p>${aboutCopy}</p>
         <div class="about-meta">
           <span>V${APP_VERSION}</span>
-          <span>${store.cats.length} CATS</span>
-          <span>${records} RECORDS</span>
+          <span>${store.cats.length} 只猫</span>
+          <span>${records} 条记录</span>
           <span>${storageKB()} KB</span>
-          <span>${serverAvailable ? 'DATA.JSON' : 'LOCALSTORAGE'}</span>
+          <span>${serverAvailable ? 'data.json' : '本地存储'}</span>
         </div>
       </div>
     </div>
 
-    <div class="screen-footer">MEOW SYSTEM · MADE FOR CATS</div>`;
+    <div class="screen-footer">喵档 · 为猫而生</div>`;
   }
 
   /* =========================================================
@@ -1422,15 +1462,15 @@
       <div class="dh-top">
         ${avatarHTML(cat, 88, 'xl')}
         <div class="dh-id">
-          <div class="micro light">CAT FILE / ${String(index).padStart(2, '0')}</div>
+          <div class="micro light">档案 ${String(index).padStart(2, '0')}</div>
           <h1>${esc(cat.name)}</h1>
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
         </div>
       </div>
       <div class="dh-stats">
-        <div class="dh-stat"><span>WEIGHT</span><strong>${esc(catWeight(cat))}</strong></div>
-        <div class="dh-stat"><span>NEUTER</span><strong>${esc(neuterStatus(cat))}</strong></div>
-        <div class="dh-stat"><span>AGE</span><strong>${esc(catAge(cat))}</strong></div>
+        <div class="dh-stat"><span>体重</span><strong>${esc(catWeight(cat))}</strong></div>
+        <div class="dh-stat"><span>绝育</span><strong>${esc(neuterStatus(cat))}</strong></div>
+        <div class="dh-stat"><span>年龄</span><strong>${esc(catAge(cat))}</strong></div>
       </div>
       <div class="dh-due">
         <button type="button" class="due-pill ${deworm.tone}" data-action="scroll-section" data-section="deworm"><span class="dot"></span>驱虫 · ${esc(deworm.count > 1 ? `${deworm.count} 项` : deworm.label)}</button>
@@ -1478,21 +1518,10 @@
   function renderInfoCard(cat) {
     return `<section class="info-card">
       <div class="section-head">
-        <div class="head-copy"><div class="micro">PROFILE / FIELDS</div><h2>基础档案</h2></div>
+        <div class="head-copy"><h2>基础档案</h2></div>
         <button type="button" class="link-btn" data-action="edit-cat" data-id="${esc(cat.id)}">编辑字段</button>
       </div>
       ${cat.fields.length ? renderFieldGrid(cat.fields) : `<div class="empty"><p>还没有档案字段，点「编辑字段」添加品种、生日、体重等信息。</p></div>`}
-    </section>`;
-  }
-
-  function renderHomeFields(cat) {
-    const fields = cat.fields.filter((field) => String(field.value || '').trim() !== '');
-    return `<section class="info-card home-fields">
-      <div class="section-head">
-        <div class="head-copy"><div class="micro">PROFILE / ALL FIELDS</div><h2>档案速览</h2></div>
-        <button type="button" class="link-btn" data-action="edit-cat" data-id="${esc(cat.id)}">编辑字段</button>
-      </div>
-      ${fields.length ? renderFieldGrid(fields) : `<div class="empty"><p>还没有填写档案字段，点「编辑字段」补充品种、生日、体重等信息。</p></div>`}
     </section>`;
   }
 
@@ -1525,7 +1554,7 @@
         <div class="rec-copy">
           <div class="rec-title">
             <strong>${esc(product)}</strong>
-            ${latest ? '<span class="latest-tag">LATEST</span>' : ''}
+            ${latest ? '<span class="latest-tag">最新</span>' : ''}
           </div>
           <div class="rec-meta">${meta.map((item) => `<span>${esc(item)}</span>`).join('<span class="sep"></span>')}</div>
           ${due ? `<span class="rec-next ${due.tone}">下次 ${fmtDot(record.nextDate)} · ${due.label}</span>` : ''}
@@ -1550,7 +1579,6 @@
       <div class="module-head">
         <div class="module-icon ${type}">${icon(iconName, 17)}</div>
         <div class="module-title">
-          <div class="micro">${EN_LABEL[type]} / HISTORY</div>
           <h2>${TYPE_LABEL[type]}记录</h2>
         </div>
         <button type="button" class="btn small ghost" data-action="add-record" data-type="${type}" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
@@ -1569,7 +1597,7 @@
       <div class="module-head">
         <div class="module-icon neuter">${icon('scissors', 17)}</div>
         <div class="module-title">
-          <div class="micro">NEUTER / SPAY</div>
+          
           <h2>绝育</h2>
         </div>
         <button type="button" class="btn small ghost" data-action="edit-neuter" data-cat="${esc(cat.id)}">${neuter ? '编辑' : '添加'}</button>
@@ -1583,10 +1611,10 @@
           <span class="status-badge ${badgeClass}">${esc(status)}</span>
         </div>
         <div class="neuter-meta">
-          <div class="nm"><span>DATE</span><strong>${neuter.date ? fmtDot(neuter.date) : '—'}</strong></div>
-          <div class="nm"><span>HOSPITAL</span><strong>${neuter.hospital ? esc(neuter.hospital) : '—'}</strong></div>
-          <div class="nm"><span>COST</span><strong>${neuter.cost ? `¥${esc(neuter.cost)}` : '—'}</strong></div>
-          <div class="nm"><span>PRE-CHECK</span><strong>${neuter.precheck ? '已做' : '未做'}</strong></div>
+          <div class="nm"><span>日期</span><strong>${neuter.date ? fmtDot(neuter.date) : '—'}</strong></div>
+          <div class="nm"><span>医院</span><strong>${neuter.hospital ? esc(neuter.hospital) : '—'}</strong></div>
+          <div class="nm"><span>费用</span><strong>${neuter.cost ? `¥${esc(neuter.cost)}` : '—'}</strong></div>
+          <div class="nm"><span>术前检查</span><strong>${neuter.precheck ? '已做' : '未做'}</strong></div>
         </div>
         ${neuter.notes ? `<div class="neuter-notes">${esc(neuter.notes)}</div>` : ''}
       </div>` : `<div class="empty"><p>还没有绝育记录。记录状态、手术日期和术后备注，方便以后查看。</p></div>`}
@@ -1602,11 +1630,12 @@
     return `<main class="screen detail-screen">
       <div class="detail-nav">
         <button type="button" class="round-btn small ghost" data-action="back" aria-label="返回">${icon('back', 18)}</button>
-        <div class="nav-title">CAT FILE / ${esc(cat.name)}</div>
+        <div class="nav-title">档案 · ${esc(cat.name)}</div>
         <button type="button" class="round-btn small" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑档案">${icon('edit', 15)}</button>
       </div>
       ${renderDetailHero(cat)}
       ${renderInfoCard(cat)}
+      ${renderEventSection(cat)}
       ${renderModuleSection(cat, 'deworm')}
       ${renderModuleSection(cat, 'vaccine')}
       ${renderNeuterSection(cat)}
@@ -1759,7 +1788,7 @@
       cancelLabel = '取消',
       danger = false,
       tone = 'alert',
-      kicker = 'CONFIRM / SYSTEM',
+      kicker = '确认操作',
       onConfirm = null
     } = options;
 
@@ -1822,7 +1851,7 @@
       const dateValue = parseISO(value) ? value : '';
       control = `<input class="field-value-input" ${commonAttrs} type="date" value="${esc(dateValue)}">`;
     } else if (type === 'longtext') {
-      control = `<textarea class="field-value-input" ${commonAttrs} rows="2" placeholder="${esc(placeholder)}">${esc(value)}</textarea>`;
+      control = `<textarea class="field-value-input" ${commonAttrs} rows="1" placeholder="${esc(placeholder)}">${esc(value)}</textarea>`;
     } else if (type === 'sex') {
       control = `<select class="field-value-input" ${commonAttrs}>
         ${['未填写', '公', '母', '未知'].map((option) => {
@@ -1835,12 +1864,9 @@
     }
 
     return `<div class="field-edit-row" data-field-row data-field-id="${esc(field.id || uid('field'))}" data-key="${esc(field.key || `custom_${uid('key')}`)}" data-type="${type}">
-      <div class="field-edit-top">
-        <input class="label-input" data-field-label value="${esc(field.label || '')}" placeholder="字段名" maxlength="20" aria-label="字段名">
-        <span class="type-chip">${FIELD_TYPE_LABEL[type] || 'TEXT'}</span>
-        <button type="button" class="icon-btn danger" data-remove-field aria-label="删除这个字段">${icon('trash', 12)}</button>
-      </div>
+      <input class="label-input" data-field-label value="${esc(field.label || '')}" placeholder="字段名" maxlength="20" aria-label="字段名">
       ${control}
+      <button type="button" class="icon-btn danger" data-remove-field aria-label="删除这个字段">${icon('trash', 12)}</button>
     </div>`;
   }
 
@@ -1849,9 +1875,9 @@
     const avatar = existing ? existing.avatar : 'pixel-1';
     const fields = existing ? existing.fields : defaultFields();
     const title = existing ? '编辑档案' : '添加猫咪';
-    const kicker = existing ? 'CAT PROFILE / EDIT' : 'CAT PROFILE / NEW';
+    const kicker = '猫咪档案';
 
-    const body = `<div class="form-label">头像 <span class="micro">AVATAR</span></div>
+    const body = `<div class="form-label">头像</div>
       <div class="avatar-picker" role="group" aria-label="选择头像">
         ${AVATARS.map((option) => `<button type="button" class="avatar-option ${avatar === option ? 'selected' : ''}" data-avatar-option="${esc(option)}" aria-label="选择头像 ${esc(option)}" aria-pressed="${avatar === option}">
           ${avatarMarkup(option, 46)}
@@ -1859,17 +1885,21 @@
       </div>
       <input type="hidden" name="avatar" value="${esc(avatar)}">
 
-      <label class="form-label" for="cat-name">名字 <span class="micro">NAME</span></label>
-      <input class="input" id="cat-name" name="name" type="text" value="${esc(existing ? existing.name : '')}" placeholder="猫咪的名字" maxlength="30" required>
+      <div class="field-editor single">
+        <div class="field-edit-row name-row">
+          <label class="label-static" for="cat-name">名字</label>
+          <input class="field-value-input" id="cat-name" name="name" type="text" value="${esc(existing ? existing.name : '')}" placeholder="猫咪的名字" maxlength="30" required>
+        </div>
+      </div>
 
-      <div class="form-label">基础字段 <span class="micro">ADD / REMOVE</span></div>
+      <div class="form-label">基础字段</div>
       <div class="form-hint">这些字段会显示在档案里。你可以删除不需要的字段，或添加自定义字段。</div>
       <div class="field-editor">
         ${fields.map(fieldRowHTML).join('')}
       </div>
 
       <div class="add-field-box">
-        <div class="add-field-title"><span>添加自定义字段</span><span class="micro">CUSTOM</span></div>
+        <div class="add-field-title"><span>添加自定义字段</span></div>
         <div class="add-field-grid">
           <input id="new-field-label" class="input" type="text" placeholder="字段名，例如：保险" maxlength="20" aria-label="新字段名">
           <input id="new-field-value" class="input" type="text" placeholder="字段内容" maxlength="80" aria-label="新字段内容">
@@ -2053,6 +2083,7 @@
             fields,
             dewormings: [],
             vaccines: [],
+            events: [],
             neuter: null,
             createdAt: Date.now()
           };
@@ -2085,7 +2116,7 @@
     const nextDate = record ? record.nextDate : (date && intervalDefault ? addMonthsISO(date, intervalDefault) : '');
     const isVaccine = type === 'vaccine';
 
-    const body = `<div class="form-label">类型 <span class="micro">TYPE</span></div>
+    const body = `<div class="form-label">类型</div>
       <div class="choice-row">
         ${kinds.map((kind) => `<label class="choice"><input type="radio" name="kind" value="${esc(kind)}" ${kind === selectedKind ? 'checked' : ''}><span>${esc(kind)}</span></label>`).join('')}
       </div>
@@ -2101,11 +2132,11 @@
         </div>
       </div>
 
-      <label class="form-label" for="record-next">下次日期 <span class="micro">AUTO / EDITABLE</span></label>
+      <label class="form-label" for="record-next">下次日期</label>
       <input class="input" id="record-next" name="nextDate" type="date" value="${esc(nextDate)}">
       <div class="form-hint">默认按「日期 + 间隔」自动推算，也可以直接修改。间隔填 0 表示不自动提醒。</div>
 
-      <label class="form-label" for="record-product">${isVaccine ? '疫苗名称' : '药名'} <span class="micro">${isVaccine ? 'VACCINE' : 'PRODUCT'}</span></label>
+      <label class="form-label" for="record-product">${isVaccine ? '疫苗名称' : '药名'}</label>
       <input class="input" id="record-product" name="product" type="text" value="${esc(record ? record.product : '')}" placeholder="${isVaccine ? '例如：妙三多' : '例如：大宠爱'}" maxlength="40">
 
       <div class="form-row">
@@ -2130,7 +2161,7 @@
       : null;
 
     openSheet({
-      kicker: isVaccine ? 'HEALTH LOG / VACCINE' : 'HEALTH LOG / DEWORM',
+      kicker: isVaccine ? '健康记录 · 疫苗' : '健康记录 · 驱虫',
       title: `${record ? '编辑' : '添加'}${isVaccine ? '疫苗' : '驱虫'}记录`,
       subtitle: '保存后，下次日期会自动出现在提醒里。',
       body,
@@ -2214,7 +2245,7 @@
     };
     const statuses = ['未绝育', '计划中', '已绝育'];
 
-    const body = `<div class="form-label">状态 <span class="micro">STATUS</span></div>
+    const body = `<div class="form-label">状态</div>
       <div class="choice-row">
         ${statuses.map((status) => `<label class="choice"><input type="radio" name="status" value="${status}" ${neuter.status === status ? 'checked' : ''}><span>${status}</span></label>`).join('')}
       </div>
@@ -2245,7 +2276,7 @@
       <textarea class="textarea" id="neuter-notes" name="notes" rows="3" placeholder="术前检查、术后恢复、注意事项…" maxlength="240">${esc(neuter.notes)}</textarea>`;
 
     openSheet({
-      kicker: 'HEALTH LOG / NEUTER',
+      kicker: '健康记录 · 绝育',
       title: cat.neuter ? '编辑绝育记录' : '添加绝育记录',
       subtitle: '计划中的绝育会出现在提醒列表里。',
       body,
@@ -2264,6 +2295,91 @@
         render({ preserveScroll: true });
         showToast('绝育记录已更新');
       }
+    });
+  }
+
+  function openEventForm(catId, eventId) {
+    const cat = catById(catId);
+    if (!cat) return;
+    if (!Array.isArray(cat.events)) cat.events = [];
+    const existing = eventId ? cat.events.find((item) => item.id === eventId) : null;
+    const event = existing || { date: todayISO(), title: '', text: '' };
+
+    const body = `<label class="form-label" for="event-date">日期</label>
+      <input class="input" id="event-date" name="date" type="date" value="${esc(event.date)}" required>
+
+      <label class="form-label" for="event-title">标题</label>
+      <input class="input" id="event-title" name="title" type="text" value="${esc(event.title)}" placeholder="例如：第一次洗澡" maxlength="40" required>
+
+      <label class="form-label" for="event-text">记录</label>
+      <textarea class="textarea" id="event-text" name="text" rows="3" placeholder="发生了什么？有什么想记住的细节？" maxlength="400">${esc(event.text)}</textarea>`;
+
+    const footer = existing
+      ? `<button type="button" class="btn danger-auto danger-text" data-delete-event>${icon('trash', 12)} 删除</button><button type="button" class="btn" data-modal-close>取消</button><button type="submit" class="btn primary">保存记录</button>`
+      : null;
+
+    openSheet({
+      kicker: '猫咪事件记录',
+      title: existing ? '编辑事件记录' : '添加事件记录',
+      subtitle: '记下时间、标题和经过，之后可以随时回看。',
+      body,
+      footer,
+      submitLabel: existing ? '保存记录' : '添加记录',
+      onMount(form) {
+        const deleteButton = form.querySelector('[data-delete-event]');
+        if (deleteButton) {
+          deleteButton.addEventListener('click', () => {
+            closeModal();
+            deleteEvent(cat.id, event.id);
+          });
+        }
+      },
+      onSubmit(form, data) {
+        const title = cleanText(data.get('title'));
+        if (!title) {
+          const titleInput = form.elements.title;
+          titleInput.setCustomValidity('请填写标题');
+          titleInput.reportValidity();
+          titleInput.focus();
+          return;
+        }
+        const payload = {
+          date: parseISO(data.get('date')) ? data.get('date') : todayISO(),
+          title: title.slice(0, 40),
+          text: cleanText(data.get('text')).slice(0, 400)
+        };
+
+        if (existing) {
+          Object.assign(existing, payload);
+        } else {
+          cat.events.push({
+            id: uid('event'),
+            ...payload,
+            createdAt: Date.now()
+          });
+        }
+        cat.events = cat.events.slice().sort(sortEventsDesc).slice(0, MAX_RECORDS);
+
+        persist();
+        closeModal();
+        render({ preserveScroll: true });
+        showToast(existing ? '事件已更新' : '事件已记录');
+      }
+    });
+  }
+
+  function deleteEvent(catId, eventId) {
+    const cat = catById(catId);
+    if (!cat || !Array.isArray(cat.events)) return;
+    const index = cat.events.findIndex((item) => item.id === eventId);
+    if (index < 0) return;
+    const removed = cat.events.splice(index, 1)[0];
+    persist();
+    render({ preserveScroll: true });
+    showToast(`已删除「${removed.title}」`, '撤销', () => {
+      cat.events.splice(index, 0, removed);
+      persist();
+      render({ preserveScroll: true });
     });
   }
 
@@ -2368,7 +2484,7 @@
       cancelLabel: '取消',
       danger: true,
       tone: 'trash',
-      kicker: 'DELETE / CAT',
+      kicker: '删除猫咪',
       onConfirm() {
         const index = store.cats.findIndex((item) => item.id === cat.id);
         if (index < 0) return;
@@ -2401,7 +2517,7 @@
       cancelLabel: '取消',
       danger: true,
       tone: 'trash',
-      kicker: 'RESET / ALL DATA',
+      kicker: '清空全部数据',
       onConfirm() {
         const backup = store.cats;
         store.cats = [];
@@ -2430,7 +2546,7 @@
       cancelLabel: '取消',
       danger: true,
       tone: 'refresh',
-      kicker: 'DEMO / RESET',
+      kicker: '恢复示例数据',
       onConfirm() {
         store.cats = demoCats();
         ui.selectedCatId = store.cats[0].id;
@@ -2487,7 +2603,7 @@
           confirmLabel: '覆盖导入',
           cancelLabel: '取消',
           tone: 'upload',
-          kicker: 'IMPORT / JSON',
+          kicker: '导入备份',
           onConfirm() {
             store = next;
             ui.selectedCatId = store.cats[0] ? store.cats[0].id : null;
@@ -2508,7 +2624,7 @@
           confirmLabel: '知道了',
           cancelLabel: null,
           tone: 'info',
-          kicker: 'IMPORT / ERROR'
+          kicker: '导入失败'
         });
       }
     };
@@ -2810,6 +2926,14 @@
       }
       case 'edit-neuter': {
         openNeuterForm(actionElement.dataset.cat || ui.selectedCatId);
+        break;
+      }
+      case 'add-event': {
+        openEventForm(actionElement.dataset.cat || ui.selectedCatId);
+        break;
+      }
+      case 'edit-event': {
+        openEventForm(actionElement.dataset.cat || ui.selectedCatId, actionElement.dataset.event);
         break;
       }
       case 'delete-cat': {

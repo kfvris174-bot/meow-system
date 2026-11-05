@@ -1065,7 +1065,7 @@
       </div>
       <div class="banner-cat">${pixelCatSVG('pixel-1')}</div>
       <div class="banner-star"></div>
-      <div class="banner-meta"><span class="dot"></span> 猫咪照护 · 每日记录</div>
+      <div class="banner-meta"><span class="dot"></span> 猫咪信息 · 事项记录</div>
     </section>`;
   }
 
@@ -1092,12 +1092,14 @@
         ${avatarHTML(cat, 74, 'lg')}
         <div class="cat-id">
           <div class="micro">档案 ${String(store.cats.findIndex((item) => item.id === cat.id) + 1).padStart(2, '0')}</div>
-          <h2>${esc(cat.name)}</h2>
+          <div class="cat-name-row">
+            <h2>${esc(cat.name)}</h2>
+            <div class="hero-actions">
+              <button type="button" class="link-btn hero-full-link" data-action="open-detail" data-id="${esc(cat.id)}">完整档案 ${icon('chevronRight', 12)}</button>
+              <button type="button" class="round-btn small edit-corner" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑 ${esc(cat.name)} 的档案">${icon('edit', 13)}</button>
+            </div>
+          </div>
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
-        </div>
-        <div class="hero-actions">
-          <button type="button" class="link-btn hero-full-link" data-action="open-detail" data-id="${esc(cat.id)}">完整档案 ${icon('chevronRight', 13)}</button>
-          <button type="button" class="round-btn small edit-corner" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑 ${esc(cat.name)} 的档案">${icon('edit', 14)}</button>
         </div>
       </div>
     </article>`;
@@ -1178,7 +1180,7 @@
       <div class="head-copy"><h2>猫咪事件记录</h2></div>
       <div class="head-actions-inline">
         <button type="button" class="link-btn" data-action="add-event" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
-        ${events.length ? `<button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}" data-section="events">完整记录 ${icon('chevronRight', 13)}</button>` : ''}
+        <button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}" data-section="events">完整记录 ${icon('chevronRight', 13)}</button>
       </div>
     </div>
     ${shown.length ? `<div class="event-list">${shown.map((event) => renderEventRow(cat, event)).join('')}</div>` : `<div class="empty"><p>还没有事件记录。可以记下洗澡、剪指甲、看医生、打翻花瓶……任何值得留下的事。</p></div>`}`;
@@ -1215,25 +1217,18 @@
 
   function renderHome() {
     const cat = selectedCat();
-    const badge = actionableReminders().length;
 
     return `<header class="page-head">
       <div>
         <div class="eyebrow">${greeting()} · ${fmtDot(todayISO())}</div>
         <h1>猫咪档案</h1>
       </div>
-      <div class="head-actions">
-        <button type="button" class="round-btn" data-action="tab" data-tab="reminders" aria-label="查看提醒">
-          ${icon('bell', 18)}
-          ${badge ? `<span class="head-badge">${badge > 9 ? '9+' : badge}</span>` : ''}
-        </button>
-        <button type="button" class="round-btn blue" data-action="add-cat" aria-label="添加猫咪">${icon('plus', 18)}</button>
-      </div>
     </header>
     ${renderCollage()}
     ${renderCatSwitcher()}
     ${cat ? renderCatHero(cat) : renderEmptyCats()}
     ${cat ? renderModuleGrid(cat) : ''}
+    ${cat ? renderHomeFields(cat) : ''}
     ${cat ? renderEvents(cat) : ''}
     ${cat ? renderRecent(cat) : ''}
     <div class="screen-footer">本地档案 · ${fmtDot(todayISO())}</div>`;
@@ -1340,9 +1335,6 @@
     const storageCopy = serverAvailable
       ? ''
       : '不用登录，也没有服务器。数据保存在当前浏览器里，记得偶尔导出一份 JSON 备份。';
-    const aboutCopy = serverAvailable
-      ? '本地优先的猫咪档案。数据写入电脑上的 data.json，手机和电脑共用；不会上传到互联网。'
-      : '单文件、本地优先的猫咪档案。数据只保存在当前浏览器，不会上传到任何服务器。';
 
     return `<header class="page-head">
       <div>
@@ -1395,21 +1387,6 @@
           <span class="setting-copy"><strong>清空全部数据</strong><span>删除所有猫咪和健康记录</span></span>
           <span class="chev">${icon('chevronRight', 14)}</span>
         </button>
-      </div>
-    </div>
-
-    <div class="settings-group">
-      <div class="settings-group-title">关于</div>
-      <div class="about-card">
-        <div class="about-title"><strong>喵档</strong><span>本地档案</span></div>
-        <p>${aboutCopy}</p>
-        <div class="about-meta">
-          <span>V${APP_VERSION}</span>
-          <span>${store.cats.length} 只猫</span>
-          <span>${records} 条记录</span>
-          <span>${storageKB()} KB</span>
-          <span>${serverAvailable ? 'data.json' : '本地存储'}</span>
-        </div>
       </div>
     </div>
 
@@ -1474,6 +1451,21 @@
         <strong class="${entry.empty ? 'muted' : ''}">${entry.empty ? '—' : esc(entry.display)}</strong>
       </div>`).join('')}
     </div>`;
+  }
+
+  function renderHomeFields(cat) {
+    const fields = cat.fields.filter((field) => String(field.value || '').trim() !== '');
+    return `<section class="home-fields folder archive">
+      <div class="folder-art" aria-hidden="true">
+        <span class="fa-rainbow"></span>
+        <span class="fa-star"></span>
+        <span class="fa-clip"></span>
+        <span class="fa-band"></span>
+      </div>
+      <div class="folder-tab"><h2>档案速览</h2></div>
+      <button type="button" class="link-btn folder-edit" data-action="edit-cat" data-id="${esc(cat.id)}">编辑字段</button>
+      ${fields.length ? renderFieldGrid(fields) : `<div class="empty"><p>还没有填写档案字段，点「编辑字段」补充品种、生日、体重等信息。</p></div>`}
+    </section>`;
   }
 
   function renderInfoCard(cat) {

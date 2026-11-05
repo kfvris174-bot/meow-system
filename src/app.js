@@ -1330,7 +1330,7 @@
     const records = allRecordCount();
     const storageMode = serverAvailable ? 'data.json' : '浏览器';
     const storageCopy = serverAvailable
-      ? '数据会写入这台电脑的 meow-system/data.json，Mac 和手机访问同一份，修改后自动保存。'
+      ? ''
       : '不用登录，也没有服务器。数据保存在当前浏览器里，记得偶尔导出一份 JSON 备份。';
     const aboutCopy = serverAvailable
       ? '本地优先的猫咪档案。数据写入电脑上的 data.json，手机和电脑共用；不会上传到互联网。'
@@ -1348,8 +1348,7 @@
 
     <section class="system-panel">
       <div class="sys-label"><span>SYSTEM / LOCAL ${serverAvailable ? 'FILE' : 'BROWSER'}</span><span>● READY</span></div>
-      <h2>只存本机<br>不上传。</h2>
-      <p>${storageCopy}</p>
+      ${storageCopy ? `<p>${storageCopy}</p>` : ''}
       <div class="sys-grid">
         <div class="sys-mini"><span>CATS</span><strong>${store.cats.length} 只</strong></div>
         <div class="sys-mini"><span>RECORDS</span><strong>${records} 条</strong></div>

@@ -40,7 +40,18 @@ class MeowHandler(SimpleHTTPRequestHandler):
         if parsed.path == "/api/data":
             self._read_data()
             return
+        # 根路径直接进 App，避免列出项目目录
+        if parsed.path in ("", "/"):
+            self.send_response(HTTPStatus.FOUND)
+            self.send_header("Location", "/meow-system.html")
+            self.end_headers()
+            return
         super().do_GET()
+
+    def list_directory(self, path):
+        # 关闭目录浏览，任何目录请求都不返回文件清单
+        self.send_error(HTTPStatus.NOT_FOUND, "Not found")
+        return None
 
     def do_POST(self):
         parsed = urlparse(self.path)
@@ -158,7 +169,8 @@ def main():
         except ValueError:
             pass
 
-    server = MeowServer(("0.0.0.0", port), MeowHandler)
+    host = os.environ.get("MEOW_HOST", "0.0.0.0")
+    server = MeowServer((host, port), MeowHandler)
     print("")
     print("MEOW SYSTEM local server")
     print(f"  app:  http://127.0.0.1:{port}/meow-system.html")

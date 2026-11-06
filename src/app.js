@@ -2978,6 +2978,13 @@
     if (wrap) wrap.innerHTML = '';
   }
 
+  function updateClock() {
+    const target = $('#clock');
+    if (!target) return;
+    const now = new Date();
+    target.textContent = `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+  }
+
   /* =========================================================
      Render orchestration / swipe
      ========================================================= */
@@ -3004,6 +3011,8 @@
     }
 
     initSwipes();
+
+    updateClock();
 
     window.requestAnimationFrame(() => {
       const screen = $('.screen');
@@ -3316,6 +3325,8 @@
     applyLook();
     writeLocalStore();
     render();
+    updateClock();
+    window.setInterval(updateClock, 30000);
 
     app.addEventListener('click', handleAppClick);
     app.addEventListener('keydown', handleAppKeydown);

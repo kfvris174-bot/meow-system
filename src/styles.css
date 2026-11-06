@@ -50,6 +50,8 @@
   --tone-plan-ink: #49376a;
 
 
+  --status-bg: #0a0f26;
+  --status-ink: #f2e8d4;
   --tab-bg: rgba(251, 244, 229, 0.82);
   --tab-line: rgba(27, 33, 66, 0.16);
 
@@ -427,6 +429,103 @@ svg {
   mix-blend-mode: multiply;
 }
 
+/* ---------- system bar ---------- */
+
+.statusbar {
+  position: relative;
+  z-index: 30;
+  flex: none;
+  height: calc(31px + var(--safe-top));
+  padding: var(--safe-top) 17px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--status-bg);
+  color: var(--status-ink);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  overflow: hidden;
+}
+
+.statusbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0 1px, transparent 1px 3px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.statusbar > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sb-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 78px;
+}
+
+.sb-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 78px;
+}
+
+.sb-signal {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 9px;
+}
+
+.sb-signal i {
+  display: block;
+  width: 2px;
+  background: currentColor;
+  border-radius: 0;
+}
+
+.sb-signal i:nth-child(1) { height: 4px; }
+.sb-signal i:nth-child(2) { height: 6px; }
+.sb-signal i:nth-child(3) { height: 8px; }
+.sb-signal i:nth-child(4) { height: 9px; opacity: 0.35; }
+
+.sb-battery {
+  position: relative;
+  width: 19px;
+  height: 9px;
+  border: 1px solid currentColor;
+  border-radius: 0;
+  padding: 1px;
+}
+
+.sb-battery::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 2px;
+  width: 2px;
+  height: 3px;
+  background: currentColor;
+  border-radius: 0;
+}
+
+.sb-battery i {
+  display: block;
+  width: 74%;
+  height: 100%;
+  background: currentColor;
+  border-radius: 0;
+}
+
 /* ---------- app + screens ---------- */
 
 #app {
@@ -445,7 +544,7 @@ svg {
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: calc(17px + var(--safe-top)) 16px calc(26px + var(--safe-bottom));
+  padding: 17px 16px calc(26px + var(--safe-bottom));
   background: transparent;
   position: relative;
   z-index: 1;

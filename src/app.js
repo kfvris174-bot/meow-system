@@ -1127,7 +1127,9 @@
     </div>`;
   }
 
-  function renderCatHero(cat) {
+  function renderCatHero(cat, options) {
+    const opts = options || {};
+    const withActions = opts.actions !== false;
     return `<article class="cat-hero paper-card">
       <div class="cat-hero-top">
         ${avatarHTML(cat, 74, 'lg')}
@@ -1135,10 +1137,10 @@
           <div class="micro">档案 ${String(store.cats.findIndex((item) => item.id === cat.id) + 1).padStart(2, '0')}</div>
           <div class="cat-name-row">
             <h2>${esc(cat.name)}</h2>
-            <div class="hero-actions">
+            ${withActions ? `<div class="hero-actions">
               <button type="button" class="link-btn hero-full-link" data-action="open-detail" data-id="${esc(cat.id)}">完整档案 ${icon('chevronRight', 12)}</button>
               <button type="button" class="round-btn small edit-corner" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑 ${esc(cat.name)} 的档案">${icon('edit', 13)}</button>
-            </div>
+            </div>` : ''}
           </div>
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
         </div>
@@ -1454,19 +1456,10 @@
      ========================================================= */
 
   function renderDetailHero(cat) {
-    const index = store.cats.findIndex((item) => item.id === cat.id) + 1;
-
-    return `<section class="detail-hero">
-      <div class="dh-top">
-        ${avatarHTML(cat, 88, 'xl')}
-        <div class="dh-id">
-          <div class="micro light">档案 ${String(index).padStart(2, '0')}</div>
-          <h1>${esc(cat.name)}</h1>
-          <div class="tag-row">${tagMarkup(catTags(cat))}</div>
-        </div>
-      </div>
-      ${renderModuleGrid(cat, { add: false, inDetail: true, className: 'detail-modules' })}
-    </section>`;
+    return `<div class="home-card paper-card detail-summary">
+      ${renderCatHero(cat, { actions: false })}
+      ${renderModuleGrid(cat, { add: false, inDetail: true })}
+    </div>`;
   }
 
   function fieldEntries(fields) {
@@ -1496,11 +1489,33 @@
   function renderFieldGrid(fields) {
     const entries = fieldEntries(fields);
     if (!entries.length) return '';
-    return `<div class="field-grid">
-      ${entries.map((entry) => `<div class="field ${entry.span ? 'span-2' : ''}">
+
+    // 拆成显式的行：整行字段独占一行，其余两两成行。
+    // 这样每行边界由 CSS 的 border-bottom 绘制，格子本身可以保持透明。
+    const rows = [];
+    let pending = null;
+    entries.forEach((entry) => {
+      if (entry.span) {
+        if (pending) { rows.push([pending]); pending = null; }
+        rows.push([entry, null]);
+        return;
+      }
+      if (!pending) { pending = entry; return; }
+      rows.push([pending, entry]);
+      pending = null;
+    });
+    if (pending) rows.push([pending, null]);
+
+    const cell = (entry) => {
+      if (!entry) return '<div class="field field-empty" aria-hidden="true"></div>';
+      return `<div class="field">
         <span>${esc(entry.field.label)}</span>
         <strong class="${entry.empty ? 'muted' : ''}">${entry.empty ? '—' : esc(entry.display)}</strong>
-      </div>`).join('')}
+      </div>`;
+    };
+
+    return `<div class="field-grid">
+      ${rows.map((row) => `<div class="field-row${row[1] === null ? ' single' : ''}">${cell(row[0])}${row[1] === null ? '' : cell(row[1])}</div>`).join('')}
     </div>`;
   }
 

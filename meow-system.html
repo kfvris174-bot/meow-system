@@ -700,7 +700,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 50%;
-  background: var(--paper);
+  background: transparent;
   color: var(--ink);
   position: relative;
   transition: transform 0.15s ease;
@@ -753,7 +753,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink-2);
   transition: transform 0.12s ease, background 0.12s ease;
 }
@@ -812,7 +812,7 @@ svg {
 }
 
 .paper-card {
-  background: var(--paper);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
   position: relative;
@@ -991,7 +991,7 @@ svg {
   gap: 7px;
   height: 42px;
   padding: 4px 12px 4px 4px;
-  background: var(--paper);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   color: var(--ink-2);
@@ -1194,7 +1194,7 @@ svg {
   padding: 3px 7px;
   border: 1px solid var(--line-soft);
   border-radius: 6px;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink-2);
   font-size: 9px;
   line-height: 1.2;
@@ -1221,7 +1221,7 @@ svg {
 }
 
 .tag.weight {
-  background: var(--paper-2);
+  background: transparent;
   border-color: var(--line-soft);
   color: var(--ink-2);
   font-weight: 750;
@@ -1243,7 +1243,7 @@ svg {
   font-size: 10.5px;
   border: 1px solid var(--line-soft);
   border-radius: 999px;
-  background: var(--paper-2);
+  background: transparent;
   white-space: nowrap;
 }
 
@@ -1340,7 +1340,7 @@ svg {
   max-width: 100%;
   padding: 3px 5px;
   border-radius: 5px;
-  background: var(--paper-2);
+  background: transparent;
   border: 1px solid var(--line-soft);
   color: var(--ink-2);
   font-size: 9px;
@@ -1367,7 +1367,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 50%;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink-2);
   opacity: 0.8;
   z-index: 2;
@@ -1391,7 +1391,7 @@ svg {
   align-items: center;
   gap: 9px;
   padding: 9px 10px;
-  background: var(--paper);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
   border-radius: 13px;
@@ -1410,7 +1410,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 9px;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink-2);
 }
 
@@ -1447,7 +1447,7 @@ svg {
   line-height: 1.2;
   font-weight: 800;
   color: var(--ink-2);
-  background: var(--paper-2);
+  background: transparent;
   border: 1px solid var(--line-soft);
 }
 
@@ -1477,7 +1477,7 @@ svg {
 }
 
 .btn-complete.ghost {
-  background: var(--paper-2);
+  background: transparent;
   color: var(--blue);
   border-color: var(--line-soft);
 }
@@ -1505,7 +1505,7 @@ svg {
 
 .event-row {
   padding: 9px 10px;
-  background: var(--paper);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
   border-radius: 4px 10px 10px 4px;
@@ -1623,7 +1623,7 @@ svg {
   text-align: center;
   border: 1px dashed var(--line-soft);
   border-radius: 18px;
-  background: color-mix(in srgb, var(--paper) 72%, transparent);
+  background: transparent;
 }
 
 .empty .empty-art {
@@ -1671,7 +1671,7 @@ svg {
   padding: 9px 14px;
   border: 1px solid var(--line-soft);
   border-radius: 11px;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink);
   font-size: 12px;
   font-weight: 850;
@@ -1798,7 +1798,7 @@ svg {
   padding: 7px 11px;
   border: 1px solid var(--line-soft);
   border-radius: 999px;
-  background: var(--paper);
+  background: transparent;
   color: var(--ink-2);
   font-size: 11px;
   font-weight: 800;
@@ -1904,7 +1904,7 @@ svg {
   align-items: center;
   gap: 9px;
   padding: 10px;
-  background: var(--paper);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
   border-radius: 13px;
@@ -1998,133 +1998,16 @@ svg {
   text-overflow: ellipsis;
 }
 
-.detail-hero {
-  position: relative;
-  margin: 14px 0 14px;
-  padding: 17px;
-  background: #0b1027;
-  color: #f6ecd9;
-  border: 1px solid rgba(255, 250, 240, 0.18);
-  border-radius: 25px;
-  overflow: hidden;
-}
-
-.detail-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 3px);
-  opacity: 0.8;
-}
-
-.detail-hero::after {
-  content: "";
-  position: absolute;
-  right: -20px;
-  top: -22px;
-  width: 100px;
-  height: 100px;
-  background: var(--chrome);
-  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  opacity: 0.92;
-}
-
-.detail-hero > * {
-  position: relative;
-  z-index: 2;
-}
-
-.detail-hero .dh-top {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-}
-
-.detail-hero .dh-id {
-  min-width: 0;
-  flex: 1;
-}
-
-.detail-hero .dh-id h1 {
-  margin-top: 3px;
-  font-size: 30px;
-  line-height: 1;
-  letter-spacing: -0.07em;
-  font-weight: 900;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.detail-hero .tag {
-  background: rgba(255, 250, 240, 0.1);
-  color: #f0e8d8;
-  border-color: rgba(255, 250, 240, 0.24);
-}
-
-.detail-hero .tag.blue {
-  background: var(--blue);
-  border-color: #7c8fff;
-}
-
-.detail-hero .tag.red {
-  background: var(--red);
-  border-color: #f0a0aa;
-}
-
-.detail-hero .tag.green {
-  background: var(--green);
-  border-color: #a8d1ae;
-}
-
-.detail-hero .detail-modules {
+/* 档案页顶部摘要：直接复用首页 home-card 结构 */
+.detail-summary {
   margin-top: 14px;
-  background: transparent;
-  border: 1px solid rgba(255, 250, 240, 0.22);
-  border-radius: 14px;
-  overflow: hidden;
 }
-
-.detail-hero .detail-modules .module-tile {
-  padding: 9px 6px;
-  gap: 6px;
-}
-
-.detail-hero .detail-modules .module-tile + .module-tile {
-  border-left: 1px solid rgba(255, 250, 240, 0.16);
-}
-
-.detail-hero .detail-modules .module-tile:active {
-  background: rgba(255, 250, 240, 0.1);
-}
-
-.detail-hero .detail-modules .module-row strong {
-  font-size: 13px;
-  color: #f6ecd9;
-}
-
-.detail-hero .detail-modules .module-icon {
-  border-color: rgba(255, 250, 240, 0.24);
-}
-
-.detail-hero .detail-modules .module-due {
-  background: rgba(255, 250, 240, 0.1);
-  border: 1px solid rgba(255, 250, 240, 0.18);
-  color: #ece3ce;
-}
-
-.detail-hero .detail-modules .module-due.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); border-color: transparent; }
-.detail-hero .detail-modules .module-due.today { background: var(--tone-today-bg); color: var(--tone-today-ink); border-color: transparent; }
-.detail-hero .detail-modules .module-due.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); border-color: transparent; }
-.detail-hero .detail-modules .module-due.later { background: var(--tone-later-bg); color: var(--tone-later-ink); border-color: transparent; }
-.detail-hero .detail-modules .module-due.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); border-color: transparent; }
-.detail-hero .detail-modules .module-due.none { background: rgba(255, 250, 240, 0.1); color: #ece3ce; border-color: rgba(255, 250, 240, 0.18); }
 
 /* ---------- info card ---------- */
 
 .info-card {
   padding: 14px;
-  background: var(--paper);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: 21px;
 }
@@ -2134,24 +2017,45 @@ svg {
 }
 
 .field-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   border: 1px solid var(--line-soft);
   border-radius: 12px;
   overflow: hidden;
-  background: var(--line-soft);
+  background: transparent;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.field-row + .field-row {
+  border-top: 1px solid var(--line-soft);
+}
+
+.field-row .field + .field {
+  border-left: 1px solid var(--line-soft);
+}
+
+.field-row.single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.field-row.single .field {
+  border-left: none;
 }
 
 .field {
   min-width: 0;
   min-height: 57px;
   padding: 9px 10px;
-  background: var(--paper-2);
+  background: transparent;
 }
 
-.field.span-2 {
-  grid-column: 1 / -1;
+.field.field-empty {
+  min-height: 57px;
 }
 
 .field span {
@@ -2237,7 +2141,7 @@ svg {
   padding: 0 22px 0 9px;
   border: 1px solid var(--line-soft);
   border-radius: 9px;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink-2);
   font-size: 10.5px;
   font-weight: 800;
@@ -2263,7 +2167,7 @@ svg {
   gap: 8px;
   padding: 9px 10px;
   margin-bottom: 7px;
-  background: var(--paper-2);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
   border-radius: 12px;
@@ -2305,8 +2209,8 @@ svg {
   position: relative;
   border-radius: 14px;
   overflow: hidden;
-  background: var(--paper);
-  border: 0;
+  background: transparent;
+  border: 1px solid var(--line-soft);
 }
 
 .swipe-delete {
@@ -2338,8 +2242,10 @@ svg {
   align-items: center;
   gap: 9px;
   padding: 9px 10px;
-  background: var(--paper);
-  border-radius: 14px;
+  /* 左滑时需要挡住下方的红色删除按钮，所以只能贴合页面底色，不能用 transparent。
+     圆角比外壳小 1px，抵消外壳的 1px 描边，否则红按钮会在圆角处漏出一圈。 */
+  background: var(--bg);
+  border-radius: 13px;
   touch-action: pan-y;
   will-change: transform;
   transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -2356,7 +2262,7 @@ svg {
   text-align: center;
   border: 1px solid var(--line-soft);
   border-radius: 8px;
-  background: var(--paper-2);
+  background: transparent;
 }
 
 .rec-date b {
@@ -2433,7 +2339,7 @@ svg {
   margin-top: 3px;
   padding: 2px 5px;
   border-radius: 4px;
-  background: var(--paper-2);
+  background: transparent;
   border: 1px solid var(--line-soft);
   color: var(--ink-3);
   font-size: 8px;
@@ -2472,7 +2378,7 @@ svg {
 
 .neuter-card {
   padding: 13px;
-  background: var(--paper);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: 16px;
 }
@@ -2507,7 +2413,7 @@ svg {
   padding: 4px 7px;
   border-radius: 5px;
   border: 1px solid var(--line-soft);
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink-2);
   font-size: 9px;
   font-weight: 800;
@@ -2526,7 +2432,7 @@ svg {
 
 .neuter-meta .nm {
   padding: 7px 8px;
-  background: var(--paper-2);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: 8px;
 }
@@ -2679,7 +2585,7 @@ svg {
 
 .settings-card {
   overflow: hidden;
-  background: var(--paper);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: 16px;
 }
@@ -2706,7 +2612,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 8px;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink-2);
 }
 
@@ -2742,7 +2648,7 @@ svg {
   display: flex;
   gap: 3px;
   padding: 3px;
-  background: var(--paper);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: 13px;
 }
@@ -2867,7 +2773,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 50%;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink-2);
 }
 
@@ -2940,7 +2846,7 @@ svg {
   display: grid;
   place-items: center;
   margin: 0 auto 10px;
-  background: var(--paper-2);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: 14px;
   color: var(--red);
@@ -3011,7 +2917,7 @@ svg {
   padding: 10px 11px;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink);
   font-size: 13px;
   line-height: 1.4;
@@ -3031,7 +2937,7 @@ select.input[type="date"],
   padding: 0 11px;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: var(--paper-2);
+  background: transparent;
   font-size: 13px;
   line-height: 38px;
   -webkit-appearance: none;
@@ -3121,7 +3027,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 7px 10px;
   border: 1px solid var(--line-soft);
   border-radius: 8px;
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink-2);
   font-size: 11px;
   line-height: 1.2;
@@ -3215,7 +3121,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 5px 8px;
   border: 1px solid var(--line-softer);
   border-radius: 7px;
-  background: var(--paper);
+  background: transparent;
   color: var(--ink);
   font-size: 11.5px;
   line-height: 1.35;
@@ -3251,7 +3157,7 @@ textarea.field-value-input {
   padding: 9px;
   border: 1px dashed var(--line-soft);
   border-radius: 10px;
-  background: color-mix(in srgb, var(--paper) 55%, transparent);
+  background: transparent;
 }
 
 .add-field-box .add-field-title {
@@ -3312,7 +3218,7 @@ textarea.field-value-input {
   gap: 10px;
   padding: 9px 10px;
   margin-top: 9px;
-  background: var(--paper-2);
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
 }
@@ -3547,17 +3453,17 @@ textarea.field-value-input {
   display: flex;
   flex-direction: column;
   gap: 0;
-  border: 1px solid var(--line-softer);
+  border: 1px solid var(--line-soft);
   border-radius: 9px;
   overflow: hidden;
-  background: var(--line-softer);
+  background: transparent;
 }
 
 .field-editor.single {
   margin: 2px 0 14px;
   border: 1px solid var(--line-softer);
   border-radius: 9px;
-  background: var(--line-softer);
+  background: transparent;
   overflow: hidden;
 }
 
@@ -3566,7 +3472,7 @@ textarea.field-value-input {
   align-items: center;
   gap: 0;
   padding: 0;
-  background: var(--paper);
+  background: transparent;
   border: none;
   border-bottom: 1px solid var(--line-softer);
   border-radius: 0;
@@ -3587,7 +3493,7 @@ textarea.field-value-input {
   border: none;
   border-right: 1px solid var(--line-softer);
   border-radius: 0;
-  background: color-mix(in srgb, var(--paper-3) 72%, transparent);
+  background: transparent;
   color: var(--ink-3);
   font-family: var(--font-mono);
   font-size: 9px;
@@ -4868,7 +4774,9 @@ textarea.field-value-input {
     </div>`;
   }
 
-  function renderCatHero(cat) {
+  function renderCatHero(cat, options) {
+    const opts = options || {};
+    const withActions = opts.actions !== false;
     return `<article class="cat-hero paper-card">
       <div class="cat-hero-top">
         ${avatarHTML(cat, 74, 'lg')}
@@ -4876,10 +4784,10 @@ textarea.field-value-input {
           <div class="micro">档案 ${String(store.cats.findIndex((item) => item.id === cat.id) + 1).padStart(2, '0')}</div>
           <div class="cat-name-row">
             <h2>${esc(cat.name)}</h2>
-            <div class="hero-actions">
+            ${withActions ? `<div class="hero-actions">
               <button type="button" class="link-btn hero-full-link" data-action="open-detail" data-id="${esc(cat.id)}">完整档案 ${icon('chevronRight', 12)}</button>
               <button type="button" class="round-btn small edit-corner" data-action="edit-cat" data-id="${esc(cat.id)}" aria-label="编辑 ${esc(cat.name)} 的档案">${icon('edit', 13)}</button>
-            </div>
+            </div>` : ''}
           </div>
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
         </div>
@@ -5195,19 +5103,10 @@ textarea.field-value-input {
      ========================================================= */
 
   function renderDetailHero(cat) {
-    const index = store.cats.findIndex((item) => item.id === cat.id) + 1;
-
-    return `<section class="detail-hero">
-      <div class="dh-top">
-        ${avatarHTML(cat, 88, 'xl')}
-        <div class="dh-id">
-          <div class="micro light">档案 ${String(index).padStart(2, '0')}</div>
-          <h1>${esc(cat.name)}</h1>
-          <div class="tag-row">${tagMarkup(catTags(cat))}</div>
-        </div>
-      </div>
-      ${renderModuleGrid(cat, { add: false, inDetail: true, className: 'detail-modules' })}
-    </section>`;
+    return `<div class="home-card paper-card detail-summary">
+      ${renderCatHero(cat, { actions: false })}
+      ${renderModuleGrid(cat, { add: false, inDetail: true })}
+    </div>`;
   }
 
   function fieldEntries(fields) {
@@ -5237,11 +5136,33 @@ textarea.field-value-input {
   function renderFieldGrid(fields) {
     const entries = fieldEntries(fields);
     if (!entries.length) return '';
-    return `<div class="field-grid">
-      ${entries.map((entry) => `<div class="field ${entry.span ? 'span-2' : ''}">
+
+    // 拆成显式的行：整行字段独占一行，其余两两成行。
+    // 这样每行边界由 CSS 的 border-bottom 绘制，格子本身可以保持透明。
+    const rows = [];
+    let pending = null;
+    entries.forEach((entry) => {
+      if (entry.span) {
+        if (pending) { rows.push([pending]); pending = null; }
+        rows.push([entry, null]);
+        return;
+      }
+      if (!pending) { pending = entry; return; }
+      rows.push([pending, entry]);
+      pending = null;
+    });
+    if (pending) rows.push([pending, null]);
+
+    const cell = (entry) => {
+      if (!entry) return '<div class="field field-empty" aria-hidden="true"></div>';
+      return `<div class="field">
         <span>${esc(entry.field.label)}</span>
         <strong class="${entry.empty ? 'muted' : ''}">${entry.empty ? '—' : esc(entry.display)}</strong>
-      </div>`).join('')}
+      </div>`;
+    };
+
+    return `<div class="field-grid">
+      ${rows.map((row) => `<div class="field-row${row[1] === null ? ' single' : ''}">${cell(row[0])}${row[1] === null ? '' : cell(row[1])}</div>`).join('')}
     </div>`;
   }
 

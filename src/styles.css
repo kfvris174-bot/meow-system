@@ -45,8 +45,18 @@
   --status-bg: #0a0f26;
   --status-ink: #f2e8d4;
   --status-soft: #8790b8;
-  --tab-bg: rgba(251, 244, 229, 0.91);
+  --tab-bg: rgba(251, 244, 229, 0.82);
   --tab-line: rgba(27, 33, 66, 0.16);
+
+  /* 背景照片上的毛玻璃层：--glass 给卡片，--glass-soft 给输入框/标签等小控件，
+     --glass-strong 给必须压住内容的弹窗面板与底栏 */
+  --glass: rgba(251, 244, 229, 0.82);
+  --glass-soft: rgba(251, 244, 229, 0.72);
+  --glass-strong: rgba(251, 244, 229, 0.92);
+  --glass-blur: 18px;
+  /* 照片整体压一层薄纱 + 轻微虚化，保证直接压在照片上的标题也能读 */
+  --photo-veil: rgba(251, 244, 229, 0.55);
+  --photo-blur: 2px;
 
   --chrome: linear-gradient(135deg,
       #ffffff 0%,
@@ -107,8 +117,13 @@
   --tone-plan-bg: #403456;
   --tone-plan-ink: #e9dffa;
 
-  --tab-bg: rgba(12, 17, 40, 0.9);
+  --tab-bg: rgba(12, 17, 40, 0.82);
   --tab-line: rgba(228, 220, 203, 0.16);
+  --glass: rgba(16, 22, 48, 0.8);
+  --glass-soft: rgba(16, 22, 48, 0.68);
+  --glass-strong: rgba(14, 19, 44, 0.92);
+  --photo-veil: rgba(8, 12, 30, 0.6);
+  --photo-blur: 2px;
   color-scheme: dark;
 }
 
@@ -147,8 +162,13 @@
     --tone-plan-bg: #403456;
     --tone-plan-ink: #e9dffa;
 
-        --tab-bg: rgba(12, 17, 40, 0.9);
+    --tab-bg: rgba(12, 17, 40, 0.82);
     --tab-line: rgba(228, 220, 203, 0.16);
+    --glass: rgba(16, 22, 48, 0.8);
+    --glass-soft: rgba(16, 22, 48, 0.68);
+    --glass-strong: rgba(14, 19, 44, 0.92);
+    --photo-veil: rgba(8, 12, 30, 0.6);
+    --photo-blur: 2px;
     color-scheme: dark;
   }
 }
@@ -457,6 +477,29 @@ svg {
   background: var(--bg);
 }
 
+/* 背景照片：绝对定位在手机屏内，不随 .screen 滚动而移动 */
+.bg-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("__BG_DATA__");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  /* 照片细节太密，轻微虚化 + 降饱和，正文压在上面才读得清 */
+  filter: blur(var(--photo-blur)) saturate(0.82);
+  transform: scale(1.02);
+}
+
+/* 薄纱：压低照片对比度，让直接压在照片上的大标题也能读 */
+.bg-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--photo-veil);
+}
+
 .phone-screen::after {
   content: "";
   position: absolute;
@@ -600,9 +643,9 @@ svg {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   padding: 17px 16px calc(26px + var(--safe-bottom));
-  background:
-    linear-gradient(180deg, var(--bg) 0%, var(--bg) 72%, var(--bg-2) 100%);
+  background: transparent;
   position: relative;
+  z-index: 1;
 }
 
 .screen::-webkit-scrollbar {
@@ -686,7 +729,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 50%;
-  background: transparent;
+  background: var(--glass-strong);
   color: var(--ink);
   position: relative;
   transition: transform 0.15s ease;
@@ -739,7 +782,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: transparent;
+  background: var(--glass-strong);
   color: var(--ink-2);
   transition: transform 0.12s ease, background 0.12s ease;
 }
@@ -798,7 +841,7 @@ svg {
 }
 
 .paper-card {
-  background: transparent;
+  background: var(--glass);
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
   position: relative;
@@ -977,7 +1020,7 @@ svg {
   gap: 7px;
   height: 42px;
   padding: 4px 12px 4px 4px;
-  background: transparent;
+  background: var(--glass-strong);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   color: var(--ink-2);
@@ -1180,7 +1223,7 @@ svg {
   padding: 3px 7px;
   border: 1px solid var(--line-soft);
   border-radius: 6px;
-  background: transparent;
+  background: var(--glass-soft);
   color: var(--ink-2);
   font-size: 9px;
   line-height: 1.2;
@@ -1229,7 +1272,7 @@ svg {
   font-size: 10.5px;
   border: 1px solid var(--line-soft);
   border-radius: 999px;
-  background: transparent;
+  background: var(--glass-strong);
   white-space: nowrap;
 }
 
@@ -1255,7 +1298,8 @@ svg {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
   margin: 0 0 5px;
-  background: var(--paper);
+  /* 外框（home-card / 档案页摘要卡）已经做了毛玻璃，这里透明，避免叠两层发灰 */
+  background: transparent;
   border: 1px solid var(--line-soft);
   border-radius: 17px;
   overflow: hidden;
@@ -1326,7 +1370,7 @@ svg {
   max-width: 100%;
   padding: 3px 5px;
   border-radius: 5px;
-  background: transparent;
+  background: var(--glass-soft);
   border: 1px solid var(--line-soft);
   color: var(--ink-2);
   font-size: 9px;
@@ -1353,7 +1397,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 50%;
-  background: transparent;
+  background: var(--glass-strong);
   color: var(--ink-2);
   opacity: 0.8;
   z-index: 2;
@@ -1377,7 +1421,7 @@ svg {
   align-items: center;
   gap: 9px;
   padding: 9px 10px;
-  background: transparent;
+  background: var(--glass);
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
   border-radius: 13px;
@@ -1396,7 +1440,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 9px;
-  background: transparent;
+  background: var(--glass-soft);
   color: var(--ink-2);
 }
 
@@ -1433,7 +1477,7 @@ svg {
   line-height: 1.2;
   font-weight: 800;
   color: var(--ink-2);
-  background: transparent;
+  background: var(--glass-soft);
   border: 1px solid var(--line-soft);
 }
 
@@ -1491,7 +1535,7 @@ svg {
 
 .event-row {
   padding: 9px 10px;
-  background: transparent;
+  background: var(--glass);
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
   border-radius: 4px 10px 10px 4px;
@@ -1609,7 +1653,7 @@ svg {
   text-align: center;
   border: 1px dashed var(--line-soft);
   border-radius: 18px;
-  background: transparent;
+  background: var(--glass-soft);
 }
 
 .empty .empty-art {
@@ -1657,7 +1701,7 @@ svg {
   padding: 9px 14px;
   border: 1px solid var(--line-soft);
   border-radius: 11px;
-  background: transparent;
+  background: var(--glass-soft);
   color: var(--ink);
   font-size: 12px;
   font-weight: 850;
@@ -1784,7 +1828,7 @@ svg {
   padding: 7px 11px;
   border: 1px solid var(--line-soft);
   border-radius: 999px;
-  background: transparent;
+  background: var(--glass-soft);
   color: var(--ink-2);
   font-size: 11px;
   font-weight: 800;
@@ -1890,7 +1934,7 @@ svg {
   align-items: center;
   gap: 9px;
   padding: 10px;
-  background: transparent;
+  background: var(--glass);
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
   border-radius: 13px;
@@ -1965,7 +2009,7 @@ svg {
   gap: 9px;
   margin: 0 -16px;
   padding: 7px 16px 8px;
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  background: var(--glass-strong);
   backdrop-filter: blur(18px) saturate(1.4);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
   border-bottom: 1px solid var(--line-soft);
@@ -1993,7 +2037,7 @@ svg {
 
 .info-card {
   padding: 14px;
-  background: transparent;
+  background: var(--glass);
   border: 1px solid var(--line-soft);
   border-radius: 21px;
 }
@@ -2009,7 +2053,7 @@ svg {
   border: 1px solid var(--line-soft);
   border-radius: 12px;
   overflow: hidden;
-  background: transparent;
+  background: var(--glass-soft);
 }
 
 .field-row {
@@ -2127,7 +2171,7 @@ svg {
   padding: 0 22px 0 9px;
   border: 1px solid var(--line-soft);
   border-radius: 9px;
-  background: transparent;
+  background: var(--glass-soft);
   color: var(--ink-2);
   font-size: 10.5px;
   font-weight: 800;
@@ -2153,7 +2197,7 @@ svg {
   gap: 8px;
   padding: 9px 10px;
   margin-bottom: 7px;
-  background: transparent;
+  background: var(--glass);
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
   border-radius: 12px;
@@ -2195,8 +2239,10 @@ svg {
   position: relative;
   border-radius: 14px;
   overflow: hidden;
-  background: transparent;
+  background: var(--glass);
   border: 1px solid var(--line-soft);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
 }
 
 .swipe-delete {
@@ -2212,6 +2258,9 @@ svg {
   gap: 3px;
   background: var(--red);
   color: #fff;
+  /* 行改成毛玻璃后红色会从半透明行下透出来；
+     用 --reveal 只显示被滑开的那一条缝。 */
+  clip-path: inset(0 0 0 calc(100% - var(--reveal, 0px)));
   font-size: 10px;
   font-weight: 850;
   z-index: 0;
@@ -2228,9 +2277,10 @@ svg {
   align-items: center;
   gap: 9px;
   padding: 9px 10px;
-  /* 左滑时需要挡住下方的红色删除按钮，所以只能贴合页面底色，不能用 transparent。
-     圆角比外壳小 1px，抵消外壳的 1px 描边，否则红按钮会在圆角处漏出一圈。 */
-  background: var(--bg);
+  /* 背景换成照片后，实心底色会盖住照片；改用毛玻璃（红按钮由 --reveal 裁剪）。 */
+  background: var(--glass-strong);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
   border-radius: 13px;
   touch-action: pan-y;
   will-change: transform;
@@ -2248,7 +2298,7 @@ svg {
   text-align: center;
   border: 1px solid var(--line-soft);
   border-radius: 8px;
-  background: transparent;
+  background: var(--glass-soft);
 }
 
 .rec-date b {
@@ -2364,7 +2414,7 @@ svg {
 
 .neuter-card {
   padding: 13px;
-  background: transparent;
+  background: var(--glass);
   border: 1px solid var(--line-soft);
   border-radius: 16px;
 }
@@ -2399,7 +2449,7 @@ svg {
   padding: 4px 7px;
   border-radius: 5px;
   border: 1px solid var(--line-soft);
-  background: transparent;
+  background: var(--glass-soft);
   color: var(--ink-2);
   font-size: 9px;
   font-weight: 800;
@@ -2418,7 +2468,7 @@ svg {
 
 .neuter-meta .nm {
   padding: 7px 8px;
-  background: transparent;
+  background: var(--glass-soft);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
 }
@@ -2571,7 +2621,7 @@ svg {
 
 .settings-card {
   overflow: hidden;
-  background: transparent;
+  background: var(--glass);
   border: 1px solid var(--line-soft);
   border-radius: 16px;
 }
@@ -2598,7 +2648,7 @@ svg {
   place-items: center;
   border: 1px solid var(--line-soft);
   border-radius: 8px;
-  background: transparent;
+  background: var(--glass-soft);
   color: var(--ink-2);
 }
 
@@ -2634,7 +2684,7 @@ svg {
   display: flex;
   gap: 3px;
   padding: 3px;
-  background: transparent;
+  background: var(--glass-soft);
   border: 1px solid var(--line-soft);
   border-radius: 13px;
 }
@@ -2702,7 +2752,9 @@ svg {
   max-height: 92dvh;
   display: flex;
   flex-direction: column;
-  background: var(--paper);
+  background: var(--glass-strong);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
   border: 1px solid var(--line-soft);
   border-radius: 27px 27px 0 0;
   animation: sheetUp 0.3s cubic-bezier(0.2, 0.85, 0.25, 1) both;
@@ -2782,7 +2834,7 @@ svg {
   display: flex;
   gap: 7px;
   padding: 10px 18px calc(12px + var(--safe-bottom));
-  background: var(--paper);
+  background: var(--glass-strong);
   border-top: 1px solid var(--line-soft);
 }
 
@@ -2903,7 +2955,7 @@ svg {
   padding: 10px 11px;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: transparent;
+  background: var(--glass-soft);
   color: var(--ink);
   font-size: 13px;
   line-height: 1.4;

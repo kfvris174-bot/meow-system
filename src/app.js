@@ -2760,6 +2760,7 @@
     $$('.swipe-shell[data-open="1"]').forEach((shell) => {
       if (shell === except) return;
       shell.dataset.open = '0';
+      shell.style.setProperty('--reveal', '0px');
       const content = shell.querySelector('.swipe-content');
       if (content) content.style.transform = 'translateX(0)';
     });
@@ -2783,6 +2784,8 @@
       const setX = (value) => {
         offset = value;
         content.style.transform = `translateX(${value}px)`;
+        // 红色删除按钮只显示被滑开的那条缝，避免从半透明行下面透出来
+        shell.style.setProperty('--reveal', `${Math.max(0, -value)}px`);
       };
 
       content.addEventListener('pointerdown', (event) => {

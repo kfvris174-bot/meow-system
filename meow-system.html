@@ -2125,39 +2125,83 @@ svg {
   border-color: #a8d1ae;
 }
 
-.detail-hero .dh-stats {
+.detail-hero .dh-modules {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
   margin-top: 15px;
 }
 
-.detail-hero .dh-stat {
-  padding: 8px;
+.detail-hero .dh-mod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 8px 6px;
   background: rgba(255, 250, 240, 0.08);
   border: 1px solid rgba(255, 250, 240, 0.2);
   border-radius: 9px;
+  color: inherit;
+  cursor: pointer;
+}
+
+.detail-hero .dh-mod:active {
+  background: rgba(255, 250, 240, 0.16);
+}
+
+.detail-hero .dh-mod-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   min-width: 0;
 }
 
-.detail-hero .dh-stat span {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 7.5px;
-  letter-spacing: 0.09em;
-  color: #aeb8df;
-  text-transform: uppercase;
+.detail-hero .dh-mod-icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 250, 240, 0.28);
+  border-radius: 7px;
+  background: var(--blue);
+  color: #fff;
 }
 
-.detail-hero .dh-stat strong {
-  display: block;
-  margin-top: 3px;
+.detail-hero .dh-mod-icon.vaccine { background: var(--red); }
+.detail-hero .dh-mod-icon.neuter { background: var(--green); }
+
+.detail-hero .dh-mod-row strong {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 850;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.detail-hero .dh-mod-due {
+  display: inline-block;
+  max-width: 100%;
+  padding: 2px 4px;
+  border-radius: 5px;
+  background: rgba(255, 250, 240, 0.14);
+  color: #e8e0cd;
+  font-size: 8px;
+  line-height: 1.25;
+  font-weight: 750;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.detail-hero .dh-mod-due.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); }
+.detail-hero .dh-mod-due.today { background: var(--tone-today-bg); color: var(--tone-today-ink); }
+.detail-hero .dh-mod-due.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); }
+.detail-hero .dh-mod-due.later { background: var(--tone-later-bg); color: var(--tone-later-ink); }
+.detail-hero .dh-mod-due.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); }
 
 /* ---------- info card ---------- */
 
@@ -2259,6 +2303,43 @@ svg {
   line-height: 1.1;
   letter-spacing: -0.045em;
   font-weight: 850;
+}
+
+/* 月份筛选 */
+.month-pick {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.month-select {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 22px 0 9px;
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  outline: none;
+  cursor: pointer;
+}
+
+.month-select:focus-visible {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(30, 59, 219, 0.14);
+}
+
+.month-pick svg {
+  position: absolute;
+  right: 7px;
+  pointer-events: none;
+  color: var(--ink-3);
 }
 
 .next-strip {
@@ -4554,6 +4635,7 @@ textarea.field-value-input {
     selectedCatId: store.cats[0] ? store.cats[0].id : null,
     detailCatId: null,
     filter: 'all',
+    monthFilter: { events: 'all', deworm: 'all' },
     pendingSection: null,
     returnScroll: 0
   };
@@ -4735,6 +4817,46 @@ textarea.field-value-input {
 
   function catWeight(cat) {
     return getFieldValue(cat, 'weight') || '—';
+  }
+
+  function monthKey(iso) {
+    const date = parseISO(iso);
+    return date ? `${date.getFullYear()}-${pad2(date.getMonth() + 1)}` : '';
+  }
+
+  function monthLabel(key) {
+    return `${key.slice(0, 4)}年${Number(key.slice(5))}月`;
+  }
+
+  function monthOptions(records) {
+    const keys = new Set();
+    records.forEach((record) => {
+      const key = monthKey(record.date);
+      if (key) keys.add(key);
+    });
+    return Array.from(keys).sort((a, b) => b.localeCompare(a)).map((key) => ({ key, label: monthLabel(key) }));
+  }
+
+  function filterByMonth(records, scope) {
+    const key = ui.monthFilter[scope];
+    if (!key || key === 'all') return records;
+    const hit = records.filter((record) => monthKey(record.date) === key);
+    // 选中的月份在这份数据里已不存在（切猫/删记录）时回退到全部，避免下拉显示与列表不一致
+    if (!hit.length && !records.some((record) => monthKey(record.date) === key)) return records;
+    return hit;
+  }
+
+  function renderMonthPick(scope, records) {
+    const options = monthOptions(records);
+    if (!options.length) return '';
+    const picked = options.some((option) => option.key === ui.monthFilter[scope]) ? ui.monthFilter[scope] : 'all';
+    return `<label class="month-pick">
+      <select class="month-select" data-month-filter="${scope}" aria-label="选择月份">
+        <option value="all"${picked === 'all' ? ' selected' : ''}>全部月份</option>
+        ${options.map((option) => `<option value="${option.key}"${picked === option.key ? ' selected' : ''}>${option.label}</option>`).join('')}
+      </select>
+      ${icon('chevronDown', 11)}
+    </label>`;
   }
 
   function catTags(cat) {
@@ -4949,18 +5071,23 @@ textarea.field-value-input {
   }
 
   function renderEventSection(cat) {
-    const events = (cat.events || []).slice().sort(sortEventsDesc);
+    const all = (cat.events || []).slice().sort(sortEventsDesc);
+    const events = filterByMonth(all, 'events');
+    const emptyText = all.length
+      ? '这个月还没有事件记录。切换月份看看别的记录。'
+      : '还没有事件记录。添加一件事，记下时间、标题和经过。';
     return `<section class="record-section" id="section-events">
       <div class="module-head">
         <div class="module-icon events">${icon('note', 17)}</div>
         <div class="module-title">
           <h2>猫咪事件记录</h2>
         </div>
+        ${renderMonthPick('events', all)}
         <button type="button" class="btn small ghost" data-action="add-event" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
       </div>
       ${events.length
         ? `<div class="event-list all">${events.map((event) => renderEventRow(cat, event)).join('')}</div>`
-        : `<div class="empty"><p>还没有事件记录。添加一件事，记下时间、标题和经过。</p></div>`}
+        : `<div class="empty"><p>${emptyText}</p></div>`}
     </section>`;
   }
 
@@ -5177,10 +5304,15 @@ textarea.field-value-input {
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
         </div>
       </div>
-      <div class="dh-stats">
-        <div class="dh-stat"><span>体重</span><strong>${esc(catWeight(cat))}</strong></div>
-        <div class="dh-stat"><span>绝育</span><strong>${esc(neuterStatus(cat))}</strong></div>
-        <div class="dh-stat"><span>年龄</span><strong>${esc(catAge(cat))}</strong></div>
+      <div class="dh-modules">
+        ${['deworm', 'vaccine', 'neuter'].map((type) => {
+          const due = moduleDue(cat, type);
+          const iconName = type === 'deworm' ? 'pill' : type === 'vaccine' ? 'syringe' : 'scissors';
+          return `<button type="button" class="dh-mod" data-action="scroll-section" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
+            <span class="dh-mod-row"><span class="dh-mod-icon ${type}">${icon(iconName, 14)}</span><strong>${TYPE_LABEL[type]}</strong></span>
+            <span class="dh-mod-due ${due.tone}">${esc(due.label)}</span>
+          </button>`;
+        }).join('')}
       </div>
     </section>`;
   }
@@ -5274,7 +5406,8 @@ textarea.field-value-input {
 
   function renderModuleSection(cat, type) {
     const records = type === 'deworm' ? cat.dewormings : cat.vaccines;
-    const sorted = records.slice().sort(sortRecordsDesc);
+    const all = records.slice().sort(sortRecordsDesc);
+    const sorted = filterByMonth(all, type);
     const latest = latestRecordsByKind(records);
     const latestIds = new Set(latest.map((item) => item.record.id));
     const reminders = remindersForCat(cat).filter((reminder) => reminder.type === type).sort(sortReminders);
@@ -5286,10 +5419,13 @@ textarea.field-value-input {
         <div class="module-title">
           <h2>${TYPE_LABEL[type]}记录</h2>
         </div>
+        ${type === 'deworm' ? renderMonthPick('deworm', all) : ''}
         <button type="button" class="btn small ghost" data-action="add-record" data-type="${type}" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
       </div>
       ${reminders.map((reminder) => renderNextStrip(cat, type, reminder)).join('')}
-      ${sorted.length ? `<div class="record-list">${sorted.map((record) => renderRecordRow(cat, type, record, latestIds.has(record.id))).join('')}</div>` : `<div class="empty"><p>还没有${TYPE_LABEL[type]}记录。添加一次，之后可以一键完成并生成下次。</p></div>`}
+      ${sorted.length
+        ? `<div class="record-list">${sorted.map((record) => renderRecordRow(cat, type, record, latestIds.has(record.id))).join('')}</div>`
+        : `<div class="empty"><p>${all.length ? `这个月还没有${TYPE_LABEL[type]}记录。切换月份看看别的记录。` : `还没有${TYPE_LABEL[type]}记录。添加一次，之后可以一键完成并生成下次。`}</p></div>`}
     </section>`;
   }
 
@@ -6676,6 +6812,15 @@ textarea.field-value-input {
     }
   }
 
+  function handleAppChange(event) {
+    const select = event.target.closest('[data-month-filter]');
+    if (!select) return;
+    const scope = select.dataset.monthFilter;
+    if (!scope) return;
+    ui.monthFilter[scope] = select.value || 'all';
+    render({ preserveScroll: true });
+  }
+
   function handleAppKeydown(event) {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     if (event.target.closest('button, a, input, select, textarea, [contenteditable="true"]')) return;
@@ -6713,6 +6858,7 @@ textarea.field-value-input {
 
     app.addEventListener('click', handleAppClick);
     app.addEventListener('keydown', handleAppKeydown);
+    app.addEventListener('change', handleAppChange);
 
     document.addEventListener('click', (event) => {
       if (!event.target.closest('.swipe-shell')) closeAllSwipes();

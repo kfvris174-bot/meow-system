@@ -2111,39 +2111,83 @@ svg {
   border-color: #a8d1ae;
 }
 
-.detail-hero .dh-stats {
+.detail-hero .dh-modules {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
   margin-top: 15px;
 }
 
-.detail-hero .dh-stat {
-  padding: 8px;
+.detail-hero .dh-mod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 8px 6px;
   background: rgba(255, 250, 240, 0.08);
   border: 1px solid rgba(255, 250, 240, 0.2);
   border-radius: 9px;
+  color: inherit;
+  cursor: pointer;
+}
+
+.detail-hero .dh-mod:active {
+  background: rgba(255, 250, 240, 0.16);
+}
+
+.detail-hero .dh-mod-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   min-width: 0;
 }
 
-.detail-hero .dh-stat span {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 7.5px;
-  letter-spacing: 0.09em;
-  color: #aeb8df;
-  text-transform: uppercase;
+.detail-hero .dh-mod-icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 250, 240, 0.28);
+  border-radius: 7px;
+  background: var(--blue);
+  color: #fff;
 }
 
-.detail-hero .dh-stat strong {
-  display: block;
-  margin-top: 3px;
+.detail-hero .dh-mod-icon.vaccine { background: var(--red); }
+.detail-hero .dh-mod-icon.neuter { background: var(--green); }
+
+.detail-hero .dh-mod-row strong {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 850;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.detail-hero .dh-mod-due {
+  display: inline-block;
+  max-width: 100%;
+  padding: 2px 4px;
+  border-radius: 5px;
+  background: rgba(255, 250, 240, 0.14);
+  color: #e8e0cd;
+  font-size: 8px;
+  line-height: 1.25;
+  font-weight: 750;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.detail-hero .dh-mod-due.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); }
+.detail-hero .dh-mod-due.today { background: var(--tone-today-bg); color: var(--tone-today-ink); }
+.detail-hero .dh-mod-due.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); }
+.detail-hero .dh-mod-due.later { background: var(--tone-later-bg); color: var(--tone-later-ink); }
+.detail-hero .dh-mod-due.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); }
 
 /* ---------- info card ---------- */
 
@@ -2245,6 +2289,43 @@ svg {
   line-height: 1.1;
   letter-spacing: -0.045em;
   font-weight: 850;
+}
+
+/* 月份筛选 */
+.month-pick {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.month-select {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 22px 0 9px;
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  outline: none;
+  cursor: pointer;
+}
+
+.month-select:focus-visible {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(30, 59, 219, 0.14);
+}
+
+.month-pick svg {
+  position: absolute;
+  right: 7px;
+  pointer-events: none;
+  color: var(--ink-3);
 }
 
 .next-strip {

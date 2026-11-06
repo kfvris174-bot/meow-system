@@ -792,6 +792,7 @@
     selectedCatId: store.cats[0] ? store.cats[0].id : null,
     detailCatId: null,
     filter: 'all',
+    monthFilter: { events: 'all', deworm: 'all' },
     pendingSection: null,
     returnScroll: 0
   };
@@ -973,6 +974,46 @@
 
   function catWeight(cat) {
     return getFieldValue(cat, 'weight') || '—';
+  }
+
+  function monthKey(iso) {
+    const date = parseISO(iso);
+    return date ? `${date.getFullYear()}-${pad2(date.getMonth() + 1)}` : '';
+  }
+
+  function monthLabel(key) {
+    return `${key.slice(0, 4)}年${Number(key.slice(5))}月`;
+  }
+
+  function monthOptions(records) {
+    const keys = new Set();
+    records.forEach((record) => {
+      const key = monthKey(record.date);
+      if (key) keys.add(key);
+    });
+    return Array.from(keys).sort((a, b) => b.localeCompare(a)).map((key) => ({ key, label: monthLabel(key) }));
+  }
+
+  function filterByMonth(records, scope) {
+    const key = ui.monthFilter[scope];
+    if (!key || key === 'all') return records;
+    const hit = records.filter((record) => monthKey(record.date) === key);
+    // 选中的月份在这份数据里已不存在（切猫/删记录）时回退到全部，避免下拉显示与列表不一致
+    if (!hit.length && !records.some((record) => monthKey(record.date) === key)) return records;
+    return hit;
+  }
+
+  function renderMonthPick(scope, records) {
+    const options = monthOptions(records);
+    if (!options.length) return '';
+    const picked = options.some((option) => option.key === ui.monthFilter[scope]) ? ui.monthFilter[scope] : 'all';
+    return `<label class="month-pick">
+      <select class="month-select" data-month-filter="${scope}" aria-label="选择月份">
+        <option value="all"${picked === 'all' ? ' selected' : ''}>全部月份</option>
+        ${options.map((option) => `<option value="${option.key}"${picked === option.key ? ' selected' : ''}>${option.label}</option>`).join('')}
+      </select>
+      ${icon('chevronDown', 11)}
+    </label>`;
   }
 
   function catTags(cat) {
@@ -1187,18 +1228,23 @@
   }
 
   function renderEventSection(cat) {
-    const events = (cat.events || []).slice().sort(sortEventsDesc);
+    const all = (cat.events || []).slice().sort(sortEventsDesc);
+    const events = filterByMonth(all, 'events');
+    const emptyText = all.length
+      ? '这个月还没有事件记录。切换月份看看别的记录。'
+      : '还没有事件记录。添加一件事，记下时间、标题和经过。';
     return `<section class="record-section" id="section-events">
       <div class="module-head">
         <div class="module-icon events">${icon('note', 17)}</div>
         <div class="module-title">
           <h2>猫咪事件记录</h2>
         </div>
+        ${renderMonthPick('events', all)}
         <button type="button" class="btn small ghost" data-action="add-event" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
       </div>
       ${events.length
         ? `<div class="event-list all">${events.map((event) => renderEventRow(cat, event)).join('')}</div>`
-        : `<div class="empty"><p>还没有事件记录。添加一件事，记下时间、标题和经过。</p></div>`}
+        : `<div class="empty"><p>${emptyText}</p></div>`}
     </section>`;
   }
 
@@ -1415,10 +1461,15 @@
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
         </div>
       </div>
-      <div class="dh-stats">
-        <div class="dh-stat"><span>体重</span><strong>${esc(catWeight(cat))}</strong></div>
-        <div class="dh-stat"><span>绝育</span><strong>${esc(neuterStatus(cat))}</strong></div>
-        <div class="dh-stat"><span>年龄</span><strong>${esc(catAge(cat))}</strong></div>
+      <div class="dh-modules">
+        ${['deworm', 'vaccine', 'neuter'].map((type) => {
+          const due = moduleDue(cat, type);
+          const iconName = type === 'deworm' ? 'pill' : type === 'vaccine' ? 'syringe' : 'scissors';
+          return `<button type="button" class="dh-mod" data-action="scroll-section" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
+            <span class="dh-mod-row"><span class="dh-mod-icon ${type}">${icon(iconName, 14)}</span><strong>${TYPE_LABEL[type]}</strong></span>
+            <span class="dh-mod-due ${due.tone}">${esc(due.label)}</span>
+          </button>`;
+        }).join('')}
       </div>
     </section>`;
   }
@@ -1512,7 +1563,8 @@
 
   function renderModuleSection(cat, type) {
     const records = type === 'deworm' ? cat.dewormings : cat.vaccines;
-    const sorted = records.slice().sort(sortRecordsDesc);
+    const all = records.slice().sort(sortRecordsDesc);
+    const sorted = filterByMonth(all, type);
     const latest = latestRecordsByKind(records);
     const latestIds = new Set(latest.map((item) => item.record.id));
     const reminders = remindersForCat(cat).filter((reminder) => reminder.type === type).sort(sortReminders);
@@ -1524,10 +1576,13 @@
         <div class="module-title">
           <h2>${TYPE_LABEL[type]}记录</h2>
         </div>
+        ${type === 'deworm' ? renderMonthPick('deworm', all) : ''}
         <button type="button" class="btn small ghost" data-action="add-record" data-type="${type}" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
       </div>
       ${reminders.map((reminder) => renderNextStrip(cat, type, reminder)).join('')}
-      ${sorted.length ? `<div class="record-list">${sorted.map((record) => renderRecordRow(cat, type, record, latestIds.has(record.id))).join('')}</div>` : `<div class="empty"><p>还没有${TYPE_LABEL[type]}记录。添加一次，之后可以一键完成并生成下次。</p></div>`}
+      ${sorted.length
+        ? `<div class="record-list">${sorted.map((record) => renderRecordRow(cat, type, record, latestIds.has(record.id))).join('')}</div>`
+        : `<div class="empty"><p>${all.length ? `这个月还没有${TYPE_LABEL[type]}记录。切换月份看看别的记录。` : `还没有${TYPE_LABEL[type]}记录。添加一次，之后可以一键完成并生成下次。`}</p></div>`}
     </section>`;
   }
 
@@ -2914,6 +2969,15 @@
     }
   }
 
+  function handleAppChange(event) {
+    const select = event.target.closest('[data-month-filter]');
+    if (!select) return;
+    const scope = select.dataset.monthFilter;
+    if (!scope) return;
+    ui.monthFilter[scope] = select.value || 'all';
+    render({ preserveScroll: true });
+  }
+
   function handleAppKeydown(event) {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     if (event.target.closest('button, a, input, select, textarea, [contenteditable="true"]')) return;
@@ -2951,6 +3015,7 @@
 
     app.addEventListener('click', handleAppClick);
     app.addEventListener('keydown', handleAppKeydown);
+    app.addEventListener('change', handleAppChange);
 
     document.addEventListener('click', (event) => {
       if (!event.target.closest('.swipe-shell')) closeAllSwipes();

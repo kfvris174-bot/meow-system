@@ -55,9 +55,6 @@
   --tone-plan-bg: #dfd4ee;
   --tone-plan-ink: #49376a;
 
-  --shadow: 4px 4px 0 rgba(27, 33, 66, 0.13);
-  --shadow-strong: 6px 6px 0 rgba(27, 33, 66, 0.2);
-  --shadow-phone: 0 34px 90px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.16);
 
   --status-bg: #0a0f26;
   --status-ink: #f2e8d4;
@@ -124,8 +121,6 @@
   --tone-plan-bg: #403456;
   --tone-plan-ink: #e9dffa;
 
-  --shadow: 4px 4px 0 rgba(0, 0, 0, 0.36);
-  --shadow-strong: 6px 6px 0 rgba(0, 0, 0, 0.44);
   --tab-bg: rgba(12, 17, 40, 0.9);
   --tab-line: rgba(228, 220, 203, 0.16);
   color-scheme: dark;
@@ -166,9 +161,7 @@
     --tone-plan-bg: #403456;
     --tone-plan-ink: #e9dffa;
 
-    --shadow: 4px 4px 0 rgba(0, 0, 0, 0.36);
-    --shadow-strong: 6px 6px 0 rgba(0, 0, 0, 0.44);
-    --tab-bg: rgba(12, 17, 40, 0.9);
+        --tab-bg: rgba(12, 17, 40, 0.9);
     --tab-line: rgba(228, 220, 203, 0.16);
     color-scheme: dark;
   }
@@ -302,7 +295,6 @@ svg {
   height: 70px;
   background: var(--chrome);
   clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  filter: drop-shadow(5px 6px 0 rgba(0, 0, 0, 0.48));
 }
 
 .scene-star.s1 { left: 12%; top: 13%; width: 96px; height: 96px; transform: rotate(11deg); }
@@ -318,9 +310,8 @@ svg {
   padding: 18px 20px;
   background: #fbf4e5;
   color: #1e3bdb;
-  border: 2px solid #0a0f26;
+  border: 1px solid #0a0f26;
   border-radius: 4px;
-  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.45);
   transform: rotate(-6deg);
   font-family: var(--font-mono);
   font-size: 18px;
@@ -337,8 +328,8 @@ svg {
   width: 30px;
   height: 30px;
   background: #fbf4e5;
-  border-right: 2px solid #0a0f26;
-  border-bottom: 2px solid #0a0f26;
+  border-right: 1px solid #0a0f26;
+  border-bottom: 1px solid #0a0f26;
   transform: rotate(45deg);
 }
 
@@ -357,10 +348,9 @@ svg {
   width: 242px;
   padding: 16px;
   background: #1e3bdb;
-  border: 2px solid #e9dfcb;
+  border: 1px solid #e9dfcb;
   color: #fff;
   transform: rotate(3deg);
-  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.42);
   font-family: var(--font-mono);
   overflow: hidden;
 }
@@ -408,8 +398,7 @@ svg {
   height: 126px;
   padding: 9px;
   background: #1e3bdb;
-  border: 2px solid #f1e7d5;
-  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.45);
+  border: 1px solid #f1e7d5;
   transform: rotate(7deg);
   overflow: hidden;
 }
@@ -469,7 +458,6 @@ svg {
   border-radius: 42px;
   background: var(--bg);
   overflow: hidden;
-  box-shadow: var(--shadow-phone);
   border: 1px solid rgba(255, 255, 255, 0.22);
   isolation: isolate;
 }
@@ -691,7 +679,7 @@ svg {
   content: "";
   width: 6px;
   height: 6px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 50%;
   background: var(--red);
   flex: none;
@@ -710,25 +698,22 @@ svg {
   flex: none;
   display: inline-grid;
   place-items: center;
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 50%;
   background: var(--paper);
   color: var(--ink);
-  box-shadow: 2px 2px 0 var(--shadow);
   position: relative;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease;
 }
 
 .round-btn:active {
   transform: translate(2px, 2px);
-  box-shadow: 0 0 0 var(--shadow);
 }
 
 .round-btn.small {
   width: 31px;
   height: 31px;
   border-width: 1px;
-  box-shadow: 1px 1px 0 var(--shadow);
 }
 
 .head-badge {
@@ -743,7 +728,7 @@ svg {
   border-radius: 99px;
   background: var(--red);
   color: #fff;
-  border: 1.5px solid var(--paper);
+  border: 1px solid var(--paper);
   font-family: var(--font-mono);
   font-size: 7px;
   font-weight: 800;
@@ -759,7 +744,6 @@ svg {
 .round-btn.ghost {
   background: transparent;
   border-color: transparent;
-  box-shadow: none;
 }
 
 .icon-btn {
@@ -829,9 +813,8 @@ svg {
 
 .paper-card {
   background: var(--paper);
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   position: relative;
 }
 
@@ -842,11 +825,10 @@ svg {
   min-height: 138px;
   margin: 2px 0 14px;
   padding: 17px;
-  border: 1.5px solid var(--line);
+  border: 1px solid rgba(255, 250, 240, 0.18);
   border-radius: 24px 28px 20px 25px;
   background: #0b1027;
   color: #f7edda;
-  box-shadow: var(--shadow-strong);
   overflow: hidden;
   isolation: isolate;
 }
@@ -870,7 +852,6 @@ svg {
   bottom: -36px;
   background: var(--chrome);
   clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.45));
   opacity: 0.9;
   z-index: 1;
 }
@@ -896,9 +877,8 @@ svg {
   padding: 13px 13px 14px;
   background: #fbf4e5;
   color: #0c1f7a;
-  border: 1.5px solid #0b1027;
+  border: 1px solid #0b1027;
   border-radius: 7px 8px 8px 2px;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.42);
   transform: rotate(-1.8deg);
 }
 
@@ -910,8 +890,8 @@ svg {
   width: 13px;
   height: 13px;
   background: #fbf4e5;
-  border-right: 1.5px solid #0b1027;
-  border-bottom: 1.5px solid #0b1027;
+  border-right: 1px solid #0b1027;
+  border-bottom: 1px solid #0b1027;
   transform: rotate(45deg);
 }
 
@@ -933,8 +913,7 @@ svg {
   z-index: 3;
   padding: 7px;
   background: var(--blue);
-  border: 1.5px solid #f2e8d4;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+  border: 1px solid #f2e8d4;
   transform: rotate(4deg);
   overflow: hidden;
 }
@@ -965,7 +944,6 @@ svg {
   z-index: 5;
   background: var(--chrome);
   clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  filter: drop-shadow(1px 2px 0 rgba(0, 0, 0, 0.48));
   transform: rotate(12deg);
 }
 
@@ -989,7 +967,6 @@ svg {
   height: 5px;
   border-radius: 50%;
   background: #d7bf5d;
-  box-shadow: 0 0 0 3px rgba(215, 191, 93, 0.15);
 }
 
 /* ---------- cat switcher ---------- */
@@ -1015,13 +992,12 @@ svg {
   height: 42px;
   padding: 4px 12px 4px 4px;
   background: var(--paper);
-  border: 1.5px solid var(--line-soft);
+  border: 1px solid var(--line-soft);
   border-radius: 999px;
   color: var(--ink-2);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: -0.02em;
-  box-shadow: 2px 2px 0 var(--shadow);
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
@@ -1033,7 +1009,6 @@ svg {
   background: var(--blue);
   border-color: var(--blue-deep);
   color: #fff;
-  box-shadow: 2px 2px 0 rgba(12, 31, 122, 0.35);
 }
 
 .cat-chip .avatar {
@@ -1041,7 +1016,6 @@ svg {
   height: 30px !important;
   border-radius: 50% !important;
   border-width: 1px;
-  box-shadow: none;
 }
 
 .cat-chip.add {
@@ -1049,7 +1023,6 @@ svg {
   color: var(--blue);
   border-style: dashed;
   background: transparent;
-  box-shadow: none;
 }
 
 .cat-chip .chip-dot {
@@ -1057,7 +1030,6 @@ svg {
   height: 6px;
   border-radius: 50%;
   background: var(--red);
-  box-shadow: 0 0 0 2px rgba(178, 58, 75, 0.16);
 }
 
 /* ---------- avatars + pixel cat ---------- */
@@ -1069,12 +1041,11 @@ svg {
   flex: none;
   display: inline-grid;
   place-items: center;
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: calc(var(--size) * 0.28);
   background: var(--blue);
   overflow: hidden;
   position: relative;
-  box-shadow: 2px 2px 0 rgba(27, 33, 66, 0.16);
 }
 
 .avatar::before {
@@ -1095,7 +1066,6 @@ svg {
   width: 88%;
   height: 88%;
   image-rendering: pixelated;
-  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.18));
 }
 
 .avatar.emoji {
@@ -1111,15 +1081,13 @@ svg {
 .avatar.lg {
   --size: 78px;
   border-radius: 22px;
-  border-width: 2px;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.28);
+  border-width: 1px;
 }
 
 .avatar.xl {
   --size: 92px;
   border-radius: 26px;
-  border-width: 2px;
-  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.3);
+  border-width: 1px;
 }
 
 /* ---------- cat hero card ---------- */
@@ -1134,7 +1102,6 @@ svg {
   background: transparent;
   border: none;
   border-radius: 0;
-  box-shadow: none;
 }
 
 .home-card .cat-hero {
@@ -1149,7 +1116,7 @@ svg {
 
 .home-card .module-grid {
   margin: 0;
-  border-top: 1.5px solid var(--line-soft);
+  border-top: 1px solid var(--line-soft);
   overflow: hidden;
 }
 
@@ -1303,9 +1270,8 @@ svg {
   gap: 0;
   margin: 0 0 5px;
   background: var(--paper);
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 17px;
-  box-shadow: 3px 3px 0 var(--shadow);
   overflow: hidden;
 }
 
@@ -1322,14 +1288,13 @@ svg {
   background: transparent;
   border: none;
   border-radius: 0;
-  box-shadow: none;
   overflow: visible;
   transition: background 0.15s ease;
   cursor: pointer;
 }
 
 .module-tile + .module-tile {
-  border-left: 1.5px solid var(--line-soft);
+  border-left: 1px solid var(--line-soft);
 }
 
 .module-tile:active {
@@ -1358,11 +1323,10 @@ svg {
   height: 26px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 9px;
   background: var(--blue);
   color: #fff;
-  box-shadow: 1px 1px 0 rgba(27, 33, 66, 0.18);
 }
 
 .module-tile.vaccine .module-icon { background: var(--red); }
@@ -1429,7 +1393,7 @@ svg {
   padding: 9px 10px;
   background: var(--paper);
   border: 1px solid var(--line-soft);
-  border-left: 3px solid var(--blue);
+  border-left: 1px solid var(--line-soft);
   border-radius: 13px;
 }
 
@@ -1499,26 +1463,23 @@ svg {
   align-items: center;
   gap: 3px;
   padding: 6px 8px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 7px;
   background: var(--blue);
   color: #fff;
   font-size: 9px;
   line-height: 1.2;
   font-weight: 800;
-  box-shadow: 1px 1px 0 rgba(12, 31, 122, 0.3);
 }
 
 .btn-complete:active {
   transform: translate(1px, 1px);
-  box-shadow: none;
 }
 
 .btn-complete.ghost {
   background: var(--paper-2);
   color: var(--blue);
   border-color: var(--line-soft);
-  box-shadow: none;
 }
 
 /* ---------- timeline / recent ---------- */
@@ -1546,7 +1507,7 @@ svg {
   padding: 9px 10px;
   background: var(--paper);
   border: 1px solid var(--line-soft);
-  border-left: 3px solid var(--blue);
+  border-left: 1px solid var(--line-soft);
   border-radius: 4px 10px 10px 4px;
 }
 
@@ -1626,7 +1587,7 @@ svg {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   background: var(--blue);
 }
 
@@ -1660,7 +1621,7 @@ svg {
 .empty {
   padding: 24px 18px;
   text-align: center;
-  border: 1.5px dashed var(--line-soft);
+  border: 1px dashed var(--line-soft);
   border-radius: 18px;
   background: color-mix(in srgb, var(--paper) 72%, transparent);
 }
@@ -1671,8 +1632,7 @@ svg {
   margin: 0 auto 10px;
   padding: 6px;
   background: var(--blue);
-  border: 1.5px solid var(--line);
-  box-shadow: 3px 3px 0 var(--shadow);
+  border: 1px solid var(--line-soft);
   transform: rotate(-3deg);
 }
 
@@ -1709,20 +1669,18 @@ svg {
   gap: 6px;
   min-height: 40px;
   padding: 9px 14px;
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 11px;
   background: var(--paper-2);
   color: var(--ink);
   font-size: 12px;
   font-weight: 850;
   letter-spacing: -0.01em;
-  box-shadow: 2px 2px 0 var(--shadow);
-  transition: transform 0.13s ease, box-shadow 0.13s ease;
+  transition: transform 0.13s ease;
 }
 
 .btn:active {
   transform: translate(2px, 2px);
-  box-shadow: 0 0 0 var(--shadow);
 }
 
 .btn.primary {
@@ -1739,7 +1697,6 @@ svg {
 
 .btn.ghost {
   background: transparent;
-  box-shadow: none;
 }
 
 .btn.small {
@@ -1747,7 +1704,6 @@ svg {
   padding: 6px 10px;
   font-size: 10.5px;
   border-width: 1px;
-  box-shadow: 1px 1px 0 var(--shadow);
 }
 
 .btn.block {
@@ -1763,7 +1719,7 @@ svg {
   gap: 4px;
   padding: 7px 14px calc(8px + var(--safe-bottom));
   background: var(--tab-bg);
-  border-top: 1.5px solid var(--line);
+  border-top: 1px solid var(--line-soft);
   backdrop-filter: blur(18px) saturate(1.5);
   -webkit-backdrop-filter: blur(18px) saturate(1.5);
   position: relative;
@@ -1862,9 +1818,8 @@ svg {
   margin-bottom: 6px;
   background: #0b1027;
   color: #f6ecd9;
-  border: 1.5px solid var(--line);
+  border: 1px solid rgba(255, 250, 240, 0.18);
   border-radius: 19px;
-  box-shadow: var(--shadow);
   overflow: hidden;
   position: relative;
 }
@@ -1886,7 +1841,6 @@ svg {
   height: 68px;
   background: var(--chrome);
   clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.5));
 }
 
 .reminder-summary > * {
@@ -1952,7 +1906,7 @@ svg {
   padding: 10px;
   background: var(--paper);
   border: 1px solid var(--line-soft);
-  border-left: 3px solid var(--blue);
+  border-left: 1px solid var(--line-soft);
   border-radius: 13px;
   margin-bottom: 7px;
 }
@@ -2050,9 +2004,8 @@ svg {
   padding: 17px;
   background: #0b1027;
   color: #f6ecd9;
-  border: 1.5px solid var(--line);
+  border: 1px solid rgba(255, 250, 240, 0.18);
   border-radius: 25px;
-  box-shadow: var(--shadow-strong);
   overflow: hidden;
 }
 
@@ -2073,7 +2026,6 @@ svg {
   height: 100px;
   background: var(--chrome);
   clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, 0.55));
   opacity: 0.92;
 }
 
@@ -2125,92 +2077,56 @@ svg {
   border-color: #a8d1ae;
 }
 
-.detail-hero .dh-modules {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
-  margin-top: 15px;
-}
-
-.detail-hero .dh-mod {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  min-width: 0;
-  padding: 8px 6px;
-  background: rgba(255, 250, 240, 0.08);
-  border: 1px solid rgba(255, 250, 240, 0.2);
-  border-radius: 9px;
-  color: inherit;
-  cursor: pointer;
-}
-
-.detail-hero .dh-mod:active {
-  background: rgba(255, 250, 240, 0.16);
-}
-
-.detail-hero .dh-mod-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  min-width: 0;
-}
-
-.detail-hero .dh-mod-icon {
-  flex: none;
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 250, 240, 0.28);
-  border-radius: 7px;
-  background: var(--blue);
-  color: #fff;
-}
-
-.detail-hero .dh-mod-icon.vaccine { background: var(--red); }
-.detail-hero .dh-mod-icon.neuter { background: var(--green); }
-
-.detail-hero .dh-mod-row strong {
-  font-size: 11px;
-  font-weight: 850;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-}
-
-.detail-hero .dh-mod-due {
-  display: inline-block;
-  max-width: 100%;
-  padding: 2px 4px;
-  border-radius: 5px;
-  background: rgba(255, 250, 240, 0.14);
-  color: #e8e0cd;
-  font-size: 8px;
-  line-height: 1.25;
-  font-weight: 750;
-  white-space: nowrap;
+.detail-hero .detail-modules {
+  margin-top: 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 250, 240, 0.22);
+  border-radius: 14px;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.detail-hero .dh-mod-due.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); }
-.detail-hero .dh-mod-due.today { background: var(--tone-today-bg); color: var(--tone-today-ink); }
-.detail-hero .dh-mod-due.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); }
-.detail-hero .dh-mod-due.later { background: var(--tone-later-bg); color: var(--tone-later-ink); }
-.detail-hero .dh-mod-due.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); }
+.detail-hero .detail-modules .module-tile {
+  padding: 9px 6px;
+  gap: 6px;
+}
+
+.detail-hero .detail-modules .module-tile + .module-tile {
+  border-left: 1px solid rgba(255, 250, 240, 0.16);
+}
+
+.detail-hero .detail-modules .module-tile:active {
+  background: rgba(255, 250, 240, 0.1);
+}
+
+.detail-hero .detail-modules .module-row strong {
+  font-size: 13px;
+  color: #f6ecd9;
+}
+
+.detail-hero .detail-modules .module-icon {
+  border-color: rgba(255, 250, 240, 0.24);
+}
+
+.detail-hero .detail-modules .module-due {
+  background: rgba(255, 250, 240, 0.1);
+  border: 1px solid rgba(255, 250, 240, 0.18);
+  color: #ece3ce;
+}
+
+.detail-hero .detail-modules .module-due.overdue { background: var(--tone-overdue-bg); color: var(--tone-overdue-ink); border-color: transparent; }
+.detail-hero .detail-modules .module-due.today { background: var(--tone-today-bg); color: var(--tone-today-ink); border-color: transparent; }
+.detail-hero .detail-modules .module-due.soon { background: var(--tone-soon-bg); color: var(--tone-soon-ink); border-color: transparent; }
+.detail-hero .detail-modules .module-due.later { background: var(--tone-later-bg); color: var(--tone-later-ink); border-color: transparent; }
+.detail-hero .detail-modules .module-due.plan { background: var(--tone-plan-bg); color: var(--tone-plan-ink); border-color: transparent; }
+.detail-hero .detail-modules .module-due.none { background: rgba(255, 250, 240, 0.1); color: #ece3ce; border-color: rgba(255, 250, 240, 0.18); }
 
 /* ---------- info card ---------- */
 
 .info-card {
   padding: 14px;
   background: var(--paper);
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 21px;
-  box-shadow: var(--shadow);
 }
 
 .info-card .section-head {
@@ -2332,7 +2248,6 @@ svg {
 
 .month-select:focus-visible {
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(30, 59, 219, 0.14);
 }
 
 .month-pick svg {
@@ -2350,7 +2265,7 @@ svg {
   margin-bottom: 7px;
   background: var(--paper-2);
   border: 1px solid var(--line-soft);
-  border-left: 3px solid var(--blue);
+  border-left: 1px solid var(--line-soft);
   border-radius: 12px;
 }
 
@@ -2636,7 +2551,7 @@ svg {
 .neuter-notes {
   margin-top: 8px;
   padding: 8px 9px;
-  border-left: 2px solid var(--line-soft);
+  border-left: 1px solid var(--line-soft);
   color: var(--ink-2);
   font-size: 10px;
   line-height: 1.55;
@@ -2669,9 +2584,8 @@ svg {
   margin: 2px 0 15px;
   background: #1e3bdb;
   color: #fff;
-  border: 1.5px solid var(--line);
+  border: 1px solid rgba(255, 250, 240, 0.18);
   border-radius: 23px;
-  box-shadow: var(--shadow-strong);
   overflow: hidden;
 }
 
@@ -2766,9 +2680,8 @@ svg {
 .settings-card {
   overflow: hidden;
   background: var(--paper);
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 16px;
-  box-shadow: var(--shadow);
 }
 
 .setting-row {
@@ -2830,9 +2743,8 @@ svg {
   gap: 3px;
   padding: 3px;
   background: var(--paper);
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 13px;
-  box-shadow: var(--shadow);
 }
 
 .theme-segmented button {
@@ -2851,7 +2763,6 @@ svg {
 .theme-segmented button.active {
   background: var(--blue);
   color: #fff;
-  box-shadow: 1px 1px 0 rgba(12, 31, 122, 0.3);
 }
 
 .screen-footer {
@@ -2900,9 +2811,8 @@ svg {
   display: flex;
   flex-direction: column;
   background: var(--paper);
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 27px 27px 0 0;
-  box-shadow: 0 -24px 70px rgba(0, 0, 0, 0.45);
   animation: sheetUp 0.3s cubic-bezier(0.2, 0.85, 0.25, 1) both;
   overflow: hidden;
 }
@@ -2996,13 +2906,11 @@ svg {
   color: var(--red);
   background: transparent;
   border-color: transparent;
-  box-shadow: none;
 }
 
 .btn.danger-text:active {
   background: color-mix(in srgb, var(--red) 10%, transparent);
   transform: none;
-  box-shadow: none;
 }
 
 .modal.alert {
@@ -3033,9 +2941,8 @@ svg {
   place-items: center;
   margin: 0 auto 10px;
   background: var(--paper-2);
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 14px;
-  box-shadow: 3px 3px 0 var(--shadow);
   color: var(--red);
 }
 
@@ -3102,14 +3009,14 @@ svg {
   width: 100%;
   min-height: 40px;
   padding: 10px 11px;
-  border: 1.5px solid var(--line-soft);
+  border: 1px solid var(--line-soft);
   border-radius: 10px;
   background: var(--paper-2);
   color: var(--ink);
   font-size: 13px;
   line-height: 1.4;
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease;
 }
 
 /* 所有日期框与文本框同宽同高 */
@@ -3122,7 +3029,7 @@ select.input[type="date"],
   min-height: 40px;
   max-height: 40px;
   padding: 0 11px;
-  border: 1.5px solid var(--line-soft);
+  border: 1px solid var(--line-soft);
   border-radius: 10px;
   background: var(--paper-2);
   font-size: 13px;
@@ -3133,7 +3040,6 @@ select.input[type="date"],
 
 .input[type="date"]:focus {
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(30, 59, 219, 0.14);
 }
 
 input[type="date"]::-webkit-date-and-time-value {
@@ -3155,7 +3061,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .select:focus,
 .textarea:focus {
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(30, 59, 219, 0.14);
 }
 
 .textarea {
@@ -3214,7 +3119,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .choice span {
   display: inline-block;
   padding: 7px 10px;
-  border: 1.5px solid var(--line-soft);
+  border: 1px solid var(--line-soft);
   border-radius: 8px;
   background: var(--paper-2);
   color: var(--ink-2);
@@ -3228,7 +3133,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background: var(--blue);
   border-color: var(--blue-deep);
   color: #fff;
-  box-shadow: 1px 1px 0 rgba(12, 31, 122, 0.3);
 }
 
 .avatar-picker {
@@ -3244,7 +3148,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .avatar-option {
   flex: none;
   padding: 3px;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 15px;
   background: transparent;
 }
@@ -3298,7 +3202,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .field-edit-row .label-input:focus {
   color: var(--blue);
-  box-shadow: inset 0 -1.5px 0 var(--blue);
+  border-bottom-color: var(--blue);
 }
 
 .field-value-input {
@@ -3448,7 +3352,6 @@ textarea.field-value-input {
   height: 19px;
   border-radius: 50%;
   background: var(--paper-2);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: transform 0.18s ease;
 }
 
@@ -3482,7 +3385,6 @@ textarea.field-value-input {
   color: #f6ecd9;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 12px;
-  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.42);
   font-size: 10.5px;
   line-height: 1.4;
   animation: toastIn 0.24s cubic-bezier(0.2, 0.85, 0.25, 1) both;
@@ -3499,7 +3401,6 @@ textarea.field-value-input {
   flex: none;
   border-radius: 50%;
   background: #d7bf5d;
-  box-shadow: 0 0 0 3px rgba(215, 191, 93, 0.16);
 }
 
 .toast button {
@@ -3570,7 +3471,6 @@ textarea.field-value-input {
     height: 100dvh;
     border: 0;
     border-radius: 0;
-    box-shadow: none;
   }
 
   .phone-screen::after {
@@ -3727,7 +3627,6 @@ textarea.field-value-input {
 
 .field-value-input:focus {
   background: color-mix(in srgb, var(--blue) 7%, transparent);
-  box-shadow: inset 0 0 0 1.5px var(--blue);
 }
 
 /* 日期框：与文本行同宽同高，去掉 iOS/Safari 的默认内边距差异 */
@@ -3747,7 +3646,6 @@ input.field-value-input[type="date"] {
 
 input.field-value-input[type="date"]:focus {
   background: color-mix(in srgb, var(--blue) 7%, transparent);
-  box-shadow: inset 0 0 0 1.5px var(--blue);
 }
 
 input.field-value-input[type="date"]::-webkit-date-and-time-value {
@@ -4989,12 +4887,16 @@ textarea.field-value-input {
     </article>`;
   }
 
-  function moduleTile(cat, type) {
+  function moduleTile(cat, type, options) {
+    const opts = options || {};
+    const withAdd = opts.add !== false;
+    const inDetail = opts.inDetail === true;
     const due = moduleDue(cat, type);
     const addAction = type === 'neuter' ? 'edit-neuter' : 'add-record';
     const iconName = type === 'deworm' ? 'pill' : type === 'vaccine' ? 'syringe' : 'scissors';
-    return `<div class="module-tile ${type}" role="button" tabindex="0" data-action="open-detail" data-id="${esc(cat.id)}" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
-      <button type="button" class="module-add" data-action="${addAction}" data-type="${type}" data-cat="${esc(cat.id)}" aria-label="添加${TYPE_LABEL[type]}记录">${icon('plus', 13)}</button>
+    const action = inDetail ? 'scroll-section' : 'open-detail';
+    return `<div class="module-tile ${type}" role="button" tabindex="0" data-action="${action}" data-id="${esc(cat.id)}" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
+      ${withAdd ? `<button type="button" class="module-add" data-action="${addAction}" data-type="${type}" data-cat="${esc(cat.id)}" aria-label="添加${TYPE_LABEL[type]}记录">${icon('plus', 13)}</button>` : ''}
       <div class="module-row">
         <div class="module-icon">${icon(iconName, 16)}</div>
         <strong>${TYPE_LABEL[type]}</strong>
@@ -5003,11 +4905,12 @@ textarea.field-value-input {
     </div>`;
   }
 
-  function renderModuleGrid(cat) {
-    return `<div class="module-grid">
-      ${moduleTile(cat, 'deworm')}
-      ${moduleTile(cat, 'vaccine')}
-      ${moduleTile(cat, 'neuter')}
+  function renderModuleGrid(cat, options) {
+    const opts = options || {};
+    return `<div class="module-grid${opts.className ? ` ${opts.className}` : ''}">
+      ${moduleTile(cat, 'deworm', opts)}
+      ${moduleTile(cat, 'vaccine', opts)}
+      ${moduleTile(cat, 'neuter', opts)}
     </div>`;
   }
 
@@ -5292,7 +5195,6 @@ textarea.field-value-input {
      ========================================================= */
 
   function renderDetailHero(cat) {
-    const neuter = moduleDue(cat, 'neuter');
     const index = store.cats.findIndex((item) => item.id === cat.id) + 1;
 
     return `<section class="detail-hero">
@@ -5304,16 +5206,7 @@ textarea.field-value-input {
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
         </div>
       </div>
-      <div class="dh-modules">
-        ${['deworm', 'vaccine', 'neuter'].map((type) => {
-          const due = moduleDue(cat, type);
-          const iconName = type === 'deworm' ? 'pill' : type === 'vaccine' ? 'syringe' : 'scissors';
-          return `<button type="button" class="dh-mod" data-action="scroll-section" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
-            <span class="dh-mod-row"><span class="dh-mod-icon ${type}">${icon(iconName, 14)}</span><strong>${TYPE_LABEL[type]}</strong></span>
-            <span class="dh-mod-due ${due.tone}">${esc(due.label)}</span>
-          </button>`;
-        }).join('')}
-      </div>
+      ${renderModuleGrid(cat, { add: false, inDetail: true, className: 'detail-modules' })}
     </section>`;
   }
 

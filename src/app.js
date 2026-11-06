@@ -1146,12 +1146,16 @@
     </article>`;
   }
 
-  function moduleTile(cat, type) {
+  function moduleTile(cat, type, options) {
+    const opts = options || {};
+    const withAdd = opts.add !== false;
+    const inDetail = opts.inDetail === true;
     const due = moduleDue(cat, type);
     const addAction = type === 'neuter' ? 'edit-neuter' : 'add-record';
     const iconName = type === 'deworm' ? 'pill' : type === 'vaccine' ? 'syringe' : 'scissors';
-    return `<div class="module-tile ${type}" role="button" tabindex="0" data-action="open-detail" data-id="${esc(cat.id)}" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
-      <button type="button" class="module-add" data-action="${addAction}" data-type="${type}" data-cat="${esc(cat.id)}" aria-label="添加${TYPE_LABEL[type]}记录">${icon('plus', 13)}</button>
+    const action = inDetail ? 'scroll-section' : 'open-detail';
+    return `<div class="module-tile ${type}" role="button" tabindex="0" data-action="${action}" data-id="${esc(cat.id)}" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
+      ${withAdd ? `<button type="button" class="module-add" data-action="${addAction}" data-type="${type}" data-cat="${esc(cat.id)}" aria-label="添加${TYPE_LABEL[type]}记录">${icon('plus', 13)}</button>` : ''}
       <div class="module-row">
         <div class="module-icon">${icon(iconName, 16)}</div>
         <strong>${TYPE_LABEL[type]}</strong>
@@ -1160,11 +1164,12 @@
     </div>`;
   }
 
-  function renderModuleGrid(cat) {
-    return `<div class="module-grid">
-      ${moduleTile(cat, 'deworm')}
-      ${moduleTile(cat, 'vaccine')}
-      ${moduleTile(cat, 'neuter')}
+  function renderModuleGrid(cat, options) {
+    const opts = options || {};
+    return `<div class="module-grid${opts.className ? ` ${opts.className}` : ''}">
+      ${moduleTile(cat, 'deworm', opts)}
+      ${moduleTile(cat, 'vaccine', opts)}
+      ${moduleTile(cat, 'neuter', opts)}
     </div>`;
   }
 
@@ -1449,7 +1454,6 @@
      ========================================================= */
 
   function renderDetailHero(cat) {
-    const neuter = moduleDue(cat, 'neuter');
     const index = store.cats.findIndex((item) => item.id === cat.id) + 1;
 
     return `<section class="detail-hero">
@@ -1461,16 +1465,7 @@
           <div class="tag-row">${tagMarkup(catTags(cat))}</div>
         </div>
       </div>
-      <div class="dh-modules">
-        ${['deworm', 'vaccine', 'neuter'].map((type) => {
-          const due = moduleDue(cat, type);
-          const iconName = type === 'deworm' ? 'pill' : type === 'vaccine' ? 'syringe' : 'scissors';
-          return `<button type="button" class="dh-mod" data-action="scroll-section" data-section="${type}" aria-label="查看${TYPE_LABEL[type]}记录">
-            <span class="dh-mod-row"><span class="dh-mod-icon ${type}">${icon(iconName, 14)}</span><strong>${TYPE_LABEL[type]}</strong></span>
-            <span class="dh-mod-due ${due.tone}">${esc(due.label)}</span>
-          </button>`;
-        }).join('')}
-      </div>
+      ${renderModuleGrid(cat, { add: false, inDetail: true, className: 'detail-modules' })}
     </section>`;
   }
 

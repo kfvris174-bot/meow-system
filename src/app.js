@@ -205,8 +205,8 @@
      Look: 系统色 + 背景图
      ========================================================= */
 
-  const DEFAULT_ACCENT = '#1e3bdb';
-  const DEFAULT_VEIL = 0.44;
+  const DEFAULT_ACCENT = '#2b3050';
+  const DEFAULT_VEIL = 0.6;
   const ACCENT_PRESETS = [
     { value: '#1e3bdb', label: '克莱因蓝' },
     { value: '#0e7d84', label: '湖水青' },
@@ -1224,10 +1224,7 @@
     const tags = [];
     const sex = getFieldValue(cat, 'sex');
     if (sex) {
-      tags.push({
-        label: sex === '公' ? '♂ 公' : sex === '母' ? '♀ 母' : sex,
-        cls: sex === '母' ? 'red' : sex === '公' ? 'blue' : ''
-      });
+      tags.push({ label: sex, cls: '' });
     }
     const breed = getFieldValue(cat, 'breed');
     if (breed) tags.push({ label: breed, cls: '' });
@@ -1390,10 +1387,12 @@
   function renderRecent(cat) {
     const items = catActivity(cat).slice(0, 3);
     return `<div class="section-head">
-      <div class="head-copy"><h2>最近动态</h2></div>
+      <div class="head-copy"><h2>最近动态<span class="head-hint">（预览三条）</span></h2></div>
       <button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}" data-section="deworm">完整动态 ${icon('chevronRight', 13)}</button>
     </div>
-    ${items.length ? `<div class="timeline">${items.map(timelineItem).join('')}</div>` : `<div class="empty"><p>还没有健康记录。打开档案后可以添加驱虫、疫苗和绝育记录。</p></div>`}`;
+    <div class="list-card">
+      ${items.length ? `<div class="timeline">${items.map(timelineItem).join('')}</div>` : `<div class="empty"><p>还没有健康记录。打开档案后可以添加驱虫、疫苗和绝育记录。</p></div>`}
+    </div>`;
   }
 
   function sortEventsDesc(a, b) {
@@ -1417,7 +1416,7 @@
     const events = (cat.events || []).slice().sort(sortEventsDesc);
     const shown = limit ? events.slice(0, limit) : events;
     return `<div class="section-head">
-      <div class="head-copy"><h2>猫咪事件记录</h2></div>
+      <div class="head-copy"><h2>猫咪事件<span class="head-hint">（预览三条）</span></h2></div>
       <div class="head-actions-inline">
         <button type="button" class="link-btn" data-action="add-event" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
         <button type="button" class="link-btn" data-action="open-detail" data-id="${esc(cat.id)}" data-section="events">完整记录 ${icon('chevronRight', 13)}</button>
@@ -1436,7 +1435,7 @@
       <div class="module-head">
         <div class="module-icon events">${icon('note', 17)}</div>
         <div class="module-title">
-          <h2>猫咪事件记录</h2>
+          <h2>猫咪事件</h2>
         </div>
         ${renderMonthPick('events', all)}
         <button type="button" class="btn small ghost" data-action="add-event" data-cat="${esc(cat.id)}">${icon('plus', 12)} 记录</button>
@@ -1577,10 +1576,7 @@
     const background = look.background;
     const veilPercent = Math.round(background.veil * 100);
     const records = allRecordCount();
-    const storageMode = serverAvailable ? 'data.json' : '浏览器';
-    const storageCopy = serverAvailable
-      ? ''
-      : '不用登录，也没有服务器。数据保存在当前浏览器里，记得偶尔导出一份 JSON 备份。';
+    const storageMode = serverAvailable ? '服务器' : '浏览器';
 
     return `<header class="page-head">
       <div>
@@ -1593,8 +1589,7 @@
     </header>
 
     <section class="system-panel">
-      <div class="sys-label"><span>系统 · 本地${serverAvailable ? '文件' : '浏览器'}</span><span>● 就绪</span></div>
-      ${storageCopy ? `<p>${storageCopy}</p>` : ''}
+      <div class="sys-label"><span>系统</span><span>● 就绪</span></div>
       <div class="sys-grid">
         <div class="sys-mini"><span>猫咪</span><strong>${store.cats.length} 只</strong></div>
         <div class="sys-mini"><span>记录</span><strong>${records} 条</strong></div>
@@ -1648,9 +1643,7 @@
           <span class="chev">${icon('chevronRight', 14)}</span>
         </button>
       </div>
-    </div>
-
-    <div class="screen-footer">喵档 · 为猫而生</div>`;
+    </div>`;
   }
 
   /* =========================================================
@@ -2985,13 +2978,6 @@
     if (wrap) wrap.innerHTML = '';
   }
 
-  function updateClock() {
-    const target = $('#clock');
-    if (!target) return;
-    const now = new Date();
-    target.textContent = `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
-  }
-
   /* =========================================================
      Render orchestration / swipe
      ========================================================= */
@@ -3018,7 +3004,6 @@
     }
 
     initSwipes();
-    updateClock();
 
     window.requestAnimationFrame(() => {
       const screen = $('.screen');
@@ -3331,8 +3316,6 @@
     applyLook();
     writeLocalStore();
     render();
-    updateClock();
-    window.setInterval(updateClock, 30000);
 
     app.addEventListener('click', handleAppClick);
     app.addEventListener('keydown', handleAppKeydown);

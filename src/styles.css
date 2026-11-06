@@ -55,7 +55,7 @@
   --glass-strong: rgba(251, 244, 229, 0.92);
   --glass-blur: 18px;
   /* 照片整体压一层薄纱 + 轻微虚化，保证直接压在照片上的标题也能读 */
-  --photo-veil: rgba(251, 244, 229, 0.55);
+  --photo-veil: rgba(251, 244, 229, 0.44);
   --photo-blur: 2px;
 
   --chrome: linear-gradient(135deg,

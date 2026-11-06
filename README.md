@@ -25,7 +25,7 @@ iOS 风格 + Y2K 拼贴的猫咪档案 App。App 本身仍是单文件 HTML；�
 
 **视觉**：全局不使用阴影（含卡片投影、按钮立体投影、贴纸投影）；所有框线统一为 1px 浅色细线（`--line-soft`，深底卡片用半透明浅色线），不再出现 1.5px / 2px 粗描边。
 
-**背景与毛玻璃**：整屏背景是一张拼贴照片（`src/bg.jpg`，构建时以 base64 内联进 `meow-system.html`，因为线上 nginx 只放行这一个文件）。照片挂在 `.phone-screen` 内的绝对定位层 `.bg-photo` 上，`background-attachment` 不参与滚动，所以上下滑动内容时背景位置完全不动；照片本身做了 `blur(2px)` 与降饱和，再压一层 `--photo-veil` 薄纱，保证直接压在照片上的标题也能读。所有卡片、列表行、输入框、按钮、标签都用 `--glass` / `--glass-soft` / `--glass-strong` 三档半透明底 + `backdrop-filter: blur()`；只有弹窗面板和底部标签栏用最重的一档，确保能压住下层内容。
+**背景与毛玻璃**：整屏背景是一张拼贴照片（`src/bg.jpg`，构建时以 base64 内联进 `meow-system.html`，因为线上 nginx 只放行这一个文件）。照片挂在 `.phone-screen` 内的绝对定位层 `.bg-photo` 上，`background-attachment` 不参与滚动，所以上下滑动内容时背景位置完全不动；照片本身做了 `blur(2px)` 与降饱和（`saturate(0.82)`），再压一层 `--photo-veil` 薄纱（浅色 44%，深色 60%），保证直接压在照片上的标题也能读。当前壁纸是那张深蓝扫描线、彩条、像素猫的拼贴图，浅色主题下纱层刻意压到 44%，把彩虹条和星星保留出来。所有卡片、列表行、输入框、按钮、标签都用 `--glass` / `--glass-soft` / `--glass-strong` 三档半透明底 + `backdrop-filter: blur()`；只有弹窗面板和底部标签栏用最重的一档，确保能压住下层内容。
 
 左滑删除的红色按钮不再铺在整行下面（半透明行会把它透上来），改成按滑动距离裁剪：`.swipe-delete` 用 `clip-path: inset(0 0 0 calc(100% - var(--reveal)))`，`--reveal` 由滑动脚本实时写入。
 

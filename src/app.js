@@ -207,6 +207,9 @@
 
   const DEFAULT_ACCENT = '#2b3050';
   const DEFAULT_VEIL = 0.6;
+  // 组件（方框）底色：默认等于原来的米色毛玻璃，alpha 就是原 --glass 的 0.82
+  const DEFAULT_PANEL_COLOR = '#fbf4e5';
+  const DEFAULT_PANEL_ALPHA = 0.82;
   const ACCENT_PRESETS = [
     { value: '#1e3bdb', label: '克莱因蓝' },
     { value: '#0e7d84', label: '湖水青' },
@@ -284,12 +287,18 @@
   }
 
   // 系统色当文字用时（卡片是浅底），压深到正文级对比（4.5:1）
-  function accentForText(accentHex) {
+  function accentForText(accentHex, bgRgb) {
+    const bg = bgRgb || PAPER_RGB;
     const accent = hexToRgb(accentHex);
     let candidate = accent;
     let step = 0;
-    while (contrastRatio(candidate, PAPER_RGB) < 4.5 && step < 24) {
-      candidate = mixRgb(candidate, { r: 0, g: 0, b: 0 }, 0.09);
+    // 深底就往亮里抬，浅底往深里压
+    const dark = relativeLuminance(bg) < 0.42;
+    const toward = dark ? { r: 255, g: 250, b: 240 } : { r: 0, g: 0, b: 0 };
+    // 深底上 4.5:1 会偏灰，抬到 6.5:1 才不至于糊在深色方框里
+    const target = dark ? 6.5 : 4.5;
+    while (contrastRatio(candidate, bg) < target && step < 24) {
+      candidate = mixRgb(candidate, toward, 0.09);
       step += 1;
     }
     return rgbToHex(candidate);
@@ -333,7 +342,21 @@
     const raw = settings && typeof settings === 'object' ? settings : {};
     return {
       accent: normaliseHex(raw.accent) || DEFAULT_ACCENT,
-      background: normaliseBackground(raw.background)
+      background: normaliseBackground(raw.background),
+      panel: normalisePanel(raw.panel)
+    };
+  }
+
+  function normalisePanel(raw) {
+    const source = raw && typeof raw === 'object' ? raw : {};
+    const color = normaliseHex(source.color) || DEFAULT_PANEL_COLOR;
+    let alpha = Number(source.alpha);
+    if (source.alpha === undefined || source.alpha === null || !Number.isFinite(alpha)) {
+      alpha = DEFAULT_PANEL_ALPHA;
+    }
+    return {
+      color,
+      alpha: Math.round(clamp(alpha, 0, 1) * 100) / 100
     };
   }
 
@@ -363,10 +386,29 @@
       <span class="swatch" style="--swatch:${accent}">${isCustom ? `<span class="swatch-tick">${icon('check', 15, 2.6)}</span>` : ''}</span>
       <span class="custom-accent-copy">
         <strong>自定义颜色</strong>
-        <span>${isCustom ? accent.toUpperCase() : '任意取一个色，整站跟着变'}</span>
+        ${isCustom ? `<span>${accent.toUpperCase()}</span>` : ''}
       </span>
       <input type="color" value="${accent}" data-accent-input aria-label="自定义系统色">
     </label>`;
+  }
+
+  // 组件色：卡片 / 列表 / 输入框这些方框的底色，可自选颜色 + 透明度
+  function panelColorRow(panel) {
+    const alphaPercent = Math.round(panel.alpha * 100);
+    return `<div class="panel-color-row">
+      <label class="custom-accent" aria-pressed="false">
+        <span class="swatch" style="--swatch:${panel.color}"></span>
+        <span class="custom-accent-copy">
+          <strong>方框颜色</strong>
+        </span>
+        <input type="color" value="${panel.color}" data-panel-input aria-label="自定义组件色">
+      </label>
+      <div class="veil-row">
+        <span>透明度</span>
+        <input type="range" min="0" max="100" step="1" value="${alphaPercent}" data-panel-alpha aria-label="组件透明度">
+        <span class="veil-value" data-panel-alpha-value>${alphaPercent}%</span>
+      </div>
+    </div>`;
   }
 
   function backgroundTiles(background) {
@@ -398,12 +440,31 @@
     const accent = look.accent;
     const accentRgb = hexToRgb(accent);
 
+    const panel = look.panel;
+    const panelRgb = hexToRgb(panel.color);
+    const panelDark = relativeLuminance(panelRgb) < 0.42;
+
     root.style.setProperty('--blue', accent);
     root.style.setProperty('--blue-2', rgbToHex(mixRgb(accentRgb, { r: 255, g: 255, b: 255 }, 0.32)));
     root.style.setProperty('--blue-deep', rgbToHex(mixRgb(accentRgb, { r: 0, g: 0, b: 0 }, 0.45)));
-    root.style.setProperty('--blue-ink', accentForText(accent));
+    // 方框外（压在照片上的小节标题、链接）永远按纸色算深色文字
+    root.style.setProperty('--blue-ink', accentForText(accent, PAPER_RGB));
+    // 方框内若是深底，再给一份压亮到能看清的版本，由 CSS 在框内覆盖
+    root.style.setProperty('--blue-ink-on-dark', accentForText(accent, panelRgb));
     root.style.setProperty('--on-accent', readableOn(accent));
     root.style.setProperty('--status-bg', statusBarTone(accent));
+
+    // 组件色：方框底色由用户自选，透明度直接写进 rgba
+    const panelAlpha = panel.alpha;
+    const softAlpha = Math.round(clamp(panelAlpha * 0.88, 0, 1) * 100) / 100;
+    const strongAlpha = Math.round(clamp(panelAlpha + (1 - panelAlpha) * 0.55, 0, 1) * 100) / 100;
+    root.style.setProperty('--glass', `rgba(${panelRgb.r}, ${panelRgb.g}, ${panelRgb.b}, ${panelAlpha})`);
+    root.style.setProperty('--glass-soft', `rgba(${panelRgb.r}, ${panelRgb.g}, ${panelRgb.b}, ${softAlpha})`);
+    root.style.setProperty('--glass-strong', `rgba(${panelRgb.r}, ${panelRgb.g}, ${panelRgb.b}, ${strongAlpha})`);
+    // 底栏原本和卡片同透明度，这里保持一致，避免用户没动组件色时观感变化
+    root.style.setProperty('--tab-bg', `rgba(${panelRgb.r}, ${panelRgb.g}, ${panelRgb.b}, ${panelAlpha})`);
+
+    root.setAttribute('data-panel-dark', panelDark ? '1' : '0');
 
     const background = look.background;
     const photo = background.preset === 'custom' && background.image
@@ -1584,6 +1645,7 @@
     const look = normaliseLook(store.settings);
     const accent = look.accent;
     const background = look.background;
+    const panel = look.panel;
     const veilPercent = Math.round(background.veil * 100);
     const records = allRecordCount();
     const storageMode = serverAvailable ? '服务器' : '浏览器';
@@ -1616,6 +1678,9 @@
           ${accentSwatches(accent)}
         </div>
         ${customAccentRow(accent)}
+        <div class="appearance-sep"></div>
+        <div class="appearance-label"><span>组件色</span><span class="hint">${panel.color.toUpperCase()} · ${Math.round(panel.alpha * 100)}%</span></div>
+        ${panelColorRow(panel)}
         <div class="appearance-sep"></div>
         <div class="appearance-label"><span>背景图</span><span class="hint">${background.preset === 'custom' ? '我的照片' : background.preset === 'plain' ? '无照片' : '拼贴照片'}</span></div>
         <div class="bg-grid" role="group" aria-label="背景图">
@@ -2884,6 +2949,27 @@
     if (persistLook) persist();
   }
 
+  function setPanelColor(value) {
+    const color = normaliseHex(value);
+    if (!color) return;
+    store.settings.panel = { ...normalisePanel(store.settings.panel), color };
+    persist();
+    applyLook();
+    render({ preserveScroll: true });
+  }
+
+  function setPanelAlpha(value, persistLook) {
+    const alpha = clamp(Number(value), 0, 100) / 100;
+    store.settings.panel = { ...normalisePanel(store.settings.panel), alpha };
+    applyLook();
+    const row = document.querySelector('[data-panel-alpha-value]');
+    if (row) row.textContent = `${Math.round(alpha * 100)}%`;
+    if (persistLook) {
+      persist();
+      render({ preserveScroll: true });
+    }
+  }
+
   function pickBackgroundImage() {
     const input = $('#bg-file');
     if (input) input.click();
@@ -3281,6 +3367,14 @@
       setVeil(target.value, true);
       return;
     }
+    if (target.matches('[data-panel-input]')) {
+      setPanelColor(target.value);
+      return;
+    }
+    if (target.matches('[data-panel-alpha]')) {
+      setPanelAlpha(target.value, true);
+      return;
+    }
     const select = target.closest('[data-month-filter]');
     if (!select) return;
     const scope = select.dataset.monthFilter;
@@ -3300,6 +3394,17 @@
     }
     if (target.matches('[data-veil]')) {
       setVeil(target.value, false);
+      return;
+    }
+    if (target.matches('[data-panel-input]')) {
+      const color = normaliseHex(target.value);
+      if (!color) return;
+      store.settings.panel = { ...normalisePanel(store.settings.panel), color };
+      applyLook();
+      return;
+    }
+    if (target.matches('[data-panel-alpha]')) {
+      setPanelAlpha(target.value, false);
     }
   }
 

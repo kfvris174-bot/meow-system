@@ -732,7 +732,7 @@ svg {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--ink-3);
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -2618,6 +2618,53 @@ svg {
   color: var(--ink-2);
   font-family: var(--font-mono);
   font-size: 9px;
+}
+
+/* 组件色：颜色块 + 透明度滑杆，和「薄纱」行同尺寸 */
+.panel-color-row {
+  display: block;
+}
+
+.panel-color-row .veil-row {
+  margin-top: 9px;
+}
+
+/* 方框选了深色底时，框内文字、分隔线就地翻成米白（只影响框内，不动压在照片上的标题） */
+[data-panel-dark="1"] .paper-card,
+[data-panel-dark="1"] .list-card,
+[data-panel-dark="1"] .event-row,
+[data-panel-dark="1"] .settings-card,
+[data-panel-dark="1"] .appearance-card,
+[data-panel-dark="1"] .system-panel,
+[data-panel-dark="1"] .info-card,
+[data-panel-dark="1"] .detail-nav,
+[data-panel-dark="1"] .reminder-card,
+[data-panel-dark="1"] .due-card,
+[data-panel-dark="1"] .next-strip,
+[data-panel-dark="1"] .neuter-card,
+[data-panel-dark="1"] .swipe-content,
+[data-panel-dark="1"] .modal,
+[data-panel-dark="1"] .toast,
+[data-panel-dark="1"] .tabbar {
+  --ink: #fffaf0;
+  --ink-2: rgba(255, 250, 240, 0.92);
+  --ink-3: rgba(255, 250, 240, 0.78);
+  --line-soft: rgba(255, 250, 240, 0.24);
+  --line-softer: rgba(255, 250, 240, 0.14);
+  --line: #fffaf0;
+  --blue-ink: var(--blue-ink-on-dark, var(--blue-ink));
+  color: var(--ink);
+}
+
+[data-panel-dark="1"] .appearance-card .custom-accent,
+[data-panel-dark="1"] .appearance-card .sys-mini,
+[data-panel-dark="1"] .appearance-card .bg-thumb,
+[data-panel-dark="1"] .settings-card .setting-icon {
+  border-color: var(--line-soft);
+}
+
+[data-panel-dark="1"] .appearance-card .bg-tile[aria-pressed="true"] > span {
+  color: var(--ink);
 }
 
 .screen-footer {

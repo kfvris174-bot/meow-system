@@ -33,7 +33,7 @@ iOS 风格 + Y2K 拼贴的猫咪档案 App。App 本身仍是单文件 HTML；�
 
 **视觉**：全局不使用阴影（含卡片投影、按钮立体投影、贴纸投影）；所有框线统一为 1px 浅色细线（`--line-soft`），不再出现 1.5px / 2px 粗描边。**所有圆角归零**：卡片、按钮、标签、输入框、头像、色块、弹窗、手机外框一律直角，边框只保留 1px 细线来分区。
 
-**背景与毛玻璃**：整屏背景是一张拼贴照片（`src/bg.jpg`，构建时以 base64 内联进 `meow-system.html`，因为线上 nginx 只放行这一个文件）。照片挂在 `.phone-screen` 内的绝对定位层 `.bg-photo` 上，`background-attachment` 不参与滚动，所以上下滑动内容时背景位置完全不动；照片本身做了 `blur(2px)` 与降饱和（`saturate(0.82)`），再压一层 `--photo-veil` 薄纱（默认 60%，可在「我的 → 外观」里 15%–75% 调；自选照片时虚化加到 3px），保证直接压在照片上的标题也能读。默认壁纸是洗手台上撒了一把贴纸、写着 INHALE EXHALE 的那张照片；60% 的纱让它退成一层浅暖底，字压上去不打架。所有卡片、列表行、输入框、按钮、标签都用 `--glass` / `--glass-soft` / `--glass-strong` 三档半透明底 + `backdrop-filter: blur()`；只有弹窗面板和底部标签栏用最重的一档，确保能压住下层内容。
+**背景与毛玻璃**：整屏背景是一张拼贴照片（`src/bg.jpg`，构建时以 base64 内联进 `meow-system.html`，因为线上 nginx 只放行这一个文件）。照片挂在 `.phone-screen` 内的绝对定位层 `.bg-photo` 上，`background-attachment` 不参与滚动，所以上下滑动内容时背景位置完全不动；照片本身做了 `blur(2px)` 与降饱和（`saturate(0.82)`），再压一层 `--photo-veil` 薄纱（默认 60%，可在「我的 → 外观」里 15%–75% 调；自选照片时虚化加到 3px），保证直接压在照片上的标题也能读。默认壁纸是一张黑白猫拼贴（Steve Canyon / Cherry / Canada Dry 复古剪贴风格，`src/bg.jpg` 700×1520）；60% 的纱让它退成一层浅暖底，字压上去不打架。所有卡片、列表行、输入框、按钮、标签都用 `--glass` / `--glass-soft` / `--glass-strong` 三档半透明底 + `backdrop-filter: blur()`；只有弹窗面板和底部标签栏用最重的一档，确保能压住下层内容。
 
 左滑删除的红色按钮不再铺在整行下面（半透明行会把它透上来），改成按滑动距离裁剪：`.swipe-delete` 用 `clip-path: inset(0 0 0 calc(100% - var(--reveal)))`，`--reveal` 由滑动脚本实时写入。
 

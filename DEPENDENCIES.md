@@ -370,7 +370,7 @@ start-phone.command（macOS）
 | 脚本没有执行权限 | `chmod +x start-phone.sh` |
 | Linux 没有 `ss`/`lsof` | 脚本会自动回退到 Python 端口检测 |
 | Safari 直接打开本地 HTML | 使用本地服务地址；不要依赖 Files 预览 |
-| 深色模式颜色异常 | 浏览器版本过旧；升级 Safari/Chrome |
+| 自选系统色后个别文字发灰 | 浏览器过旧不支持 `color-mix()`；升级 Safari/Chrome |
 
 ---
 

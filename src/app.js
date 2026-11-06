@@ -202,6 +202,213 @@
   }
 
   /* =========================================================
+     Look: 系统色 + 背景图
+     ========================================================= */
+
+  const DEFAULT_ACCENT = '#1e3bdb';
+  const DEFAULT_VEIL = 0.44;
+  const ACCENT_PRESETS = [
+    { value: '#1e3bdb', label: '克莱因蓝' },
+    { value: '#0e7d84', label: '湖水青' },
+    { value: '#3f7a52', label: '苔绿' },
+    { value: '#b8862b', label: '琥珀' },
+    { value: '#c96a20', label: '落日橙' },
+    { value: '#c2415c', label: '桃红' },
+    { value: '#6b3fa0', label: '茄紫' },
+    { value: '#2b3050', label: '石墨' }
+  ];
+  const BG_PRESETS = [
+    { id: 'collage', label: '拼贴照片' },
+    { id: 'plain', label: '纯色底' },
+    { id: 'custom', label: '我的照片' }
+  ];
+  const MAX_BG_BYTES = 900 * 1024;
+
+  function normaliseHex(value) {
+    const text = String(value || '').trim().toLowerCase();
+    if (/^#[0-9a-f]{6}$/.test(text)) return text;
+    if (/^#[0-9a-f]{3}$/.test(text)) {
+      return `#${text[1]}${text[1]}${text[2]}${text[2]}${text[3]}${text[3]}`;
+    }
+    return '';
+  }
+
+  function hexToRgb(hex) {
+    const value = normaliseHex(hex) || DEFAULT_ACCENT;
+    return {
+      r: parseInt(value.slice(1, 3), 16),
+      g: parseInt(value.slice(3, 5), 16),
+      b: parseInt(value.slice(5, 7), 16)
+    };
+  }
+
+  function rgbToHex(rgb) {
+    const part = (n) => clamp(Math.round(n), 0, 255).toString(16).padStart(2, '0');
+    return `#${part(rgb.r)}${part(rgb.g)}${part(rgb.b)}`;
+  }
+
+  function mixRgb(a, b, weight) {
+    const t = clamp(weight, 0, 1);
+    return {
+      r: a.r + (b.r - a.r) * t,
+      g: a.g + (b.g - a.g) * t,
+      b: a.b + (b.b - a.b) * t
+    };
+  }
+
+  function relativeLuminance(rgb) {
+    const channel = (value) => {
+      const c = value / 255;
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    };
+    return 0.2126 * channel(rgb.r) + 0.7152 * channel(rgb.g) + 0.0722 * channel(rgb.b);
+  }
+
+  function contrastRatio(a, b) {
+    const l1 = relativeLuminance(a);
+    const l2 = relativeLuminance(b);
+    const light = Math.max(l1, l2);
+    const dark = Math.min(l1, l2);
+    return (light + 0.05) / (dark + 0.05);
+  }
+
+  const PAPER_RGB = { r: 251, g: 244, b: 229 };
+  const INK_RGB = { r: 23, g: 28, b: 58 };
+
+  // 系统色上的文字：亮色用深墨，深色用米白，取对比更高的那个
+  function readableOn(accentHex) {
+    const accent = hexToRgb(accentHex);
+    const light = contrastRatio(accent, PAPER_RGB);
+    const dark = contrastRatio(accent, INK_RGB);
+    return dark >= light ? '#171c3a' : '#fffaf0';
+  }
+
+  // 系统色当文字用时（卡片是浅底），压深到正文级对比（4.5:1）
+  function accentForText(accentHex) {
+    const accent = hexToRgb(accentHex);
+    let candidate = accent;
+    let step = 0;
+    while (contrastRatio(candidate, PAPER_RGB) < 4.5 && step < 24) {
+      candidate = mixRgb(candidate, { r: 0, g: 0, b: 0 }, 0.09);
+      step += 1;
+    }
+    return rgbToHex(candidate);
+  }
+
+  // 下限 15%：全透明时压在照片上的大标题会糊成一片，留一点薄纱保底
+  function normaliseVeil(value) {
+    const num = Number(value);
+    if (!Number.isFinite(num)) return DEFAULT_VEIL;
+    return Math.round(clamp(num, 0.15, 0.75) * 100) / 100;
+  }
+
+  function normaliseBackground(raw) {
+    const source = raw && typeof raw === 'object' ? raw : {};
+    const preset = BG_PRESETS.some((item) => item.id === source.preset) ? source.preset : 'collage';
+    const image = typeof source.image === 'string'
+      && /^data:image\//.test(source.image)
+      && source.image.length < MAX_BG_BYTES * 2
+      ? source.image
+      : '';
+    if (preset === 'custom' && !image) {
+      return { preset: 'collage', image: '', veil: normaliseVeil(source.veil) };
+    }
+    return { preset, image: preset === 'custom' ? image : '', veil: normaliseVeil(source.veil) };
+  }
+
+  function normaliseLook(settings) {
+    const raw = settings && typeof settings === 'object' ? settings : {};
+    return {
+      accent: normaliseHex(raw.accent) || DEFAULT_ACCENT,
+      background: normaliseBackground(raw.background)
+    };
+  }
+
+  function defaultLook() {
+    return normaliseLook(null);
+  }
+
+  function lookAccentLabel(accent) {
+    const preset = ACCENT_PRESETS.find((item) => item.value === accent);
+    return preset ? preset.label : accent.toUpperCase();
+  }
+
+  function accentSwatches(accent) {
+    return ACCENT_PRESETS.map((item) => {
+      const active = item.value === accent;
+      return `<button type="button" class="swatch" style="--swatch:${item.value}"
+        data-action="set-accent" data-accent="${item.value}"
+        aria-pressed="${active}" aria-label="系统色 ${esc(item.label)}" title="${esc(item.label)}">
+        ${active ? `<span class="swatch-tick">${icon('check', 15, 2.6)}</span>` : ''}
+      </button>`;
+    }).join('');
+  }
+
+  function customAccentRow(accent) {
+    const isCustom = !ACCENT_PRESETS.some((item) => item.value === accent);
+    return `<label class="custom-accent" aria-pressed="${isCustom}">
+      <span class="swatch" style="--swatch:${accent}">${isCustom ? `<span class="swatch-tick">${icon('check', 15, 2.6)}</span>` : ''}</span>
+      <span class="custom-accent-copy">
+        <strong>自定义颜色</strong>
+        <span>${isCustom ? accent.toUpperCase() : '任意取一个色，整站跟着变'}</span>
+      </span>
+      <input type="color" value="${accent}" data-accent-input aria-label="自定义系统色">
+    </label>`;
+  }
+
+  function backgroundTiles(background) {
+    return BG_PRESETS.map((item) => {
+      const active = background.preset === item.id;
+      const hasCustom = Boolean(background.image);
+      let inner = '';
+      if (item.id === 'plain') {
+        inner = `<span class="thumb-empty">${icon('close', 16)}</span>`;
+      } else if (item.id === 'custom' && !hasCustom) {
+        inner = `<span class="thumb-empty">${icon('upload', 16)}</span>`;
+      }
+      const thumbClass = item.id === 'custom' && hasCustom ? ` bg-thumb thumb-custom has-img` : ` bg-thumb thumb-${item.id}`;
+      return `<button type="button" class="bg-tile" data-action="set-background" data-preset="${item.id}"
+        aria-pressed="${active}" aria-label="背景 ${esc(item.label)}">
+        <span class="${thumbClass.trim()}">${inner}</span>
+        <span>${item.label}</span>
+      </button>`;
+    }).join('');
+  }
+
+  function escapeCssUrl(value) {
+    return String(value).replace(/["\\\n\r]/g, '');
+  }
+
+  function applyLook() {
+    const root = document.documentElement;
+    const look = normaliseLook(store.settings);
+    const accent = look.accent;
+    const accentRgb = hexToRgb(accent);
+
+    root.style.setProperty('--blue', accent);
+    root.style.setProperty('--blue-2', rgbToHex(mixRgb(accentRgb, { r: 255, g: 255, b: 255 }, 0.32)));
+    root.style.setProperty('--blue-deep', rgbToHex(mixRgb(accentRgb, { r: 0, g: 0, b: 0 }, 0.45)));
+    root.style.setProperty('--blue-ink', accentForText(accent));
+    root.style.setProperty('--on-accent', readableOn(accent));
+
+    const background = look.background;
+    const photo = background.preset === 'custom' && background.image
+      ? `url("${escapeCssUrl(background.image)}")`
+      : background.preset === 'plain'
+        ? 'none'
+        : 'var(--bg-default-url)';
+    root.style.setProperty('--bg-photo-url', photo);
+    root.style.setProperty('--bg-custom-url', background.image ? `url("${escapeCssUrl(background.image)}")` : 'none');
+
+    const veil = background.preset === 'plain' ? 0 : background.veil;
+    root.style.setProperty('--photo-veil', `rgba(241, 231, 213, ${veil})`);
+    root.style.setProperty('--photo-blur', background.preset === 'custom' ? '3px' : '2px');
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', accent);
+  }
+
+  /* =========================================================
      Icons
      ========================================================= */
 
@@ -598,14 +805,11 @@
       throw new Error('文件格式不正确：缺少 cats 数组');
     }
     const cats = raw.cats.map(normaliseCat).filter((cat) => cat.name);
-    const theme = raw.settings && ['auto', 'light', 'dark'].includes(raw.settings.theme)
-      ? raw.settings.theme
-      : 'auto';
     const updatedAt = Number(raw.updatedAt) || Date.parse(raw.updatedAt) || 0;
     return {
       version: 1,
       cats,
-      settings: { theme },
+      settings: normaliseLook(raw.settings),
       updatedAt
     };
   }
@@ -614,12 +818,12 @@
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
-        return { version: 1, cats: demoCats(), settings: { theme: 'auto' }, updatedAt: 0 };
+        return { version: 1, cats: demoCats(), settings: defaultLook(), updatedAt: 0 };
       }
       return normaliseStore(JSON.parse(raw));
     } catch (error) {
       console.warn('MEOW SYSTEM: 无法读取本地数据，使用示例数据。', error);
-      return { version: 1, cats: demoCats(), settings: { theme: 'auto' }, updatedAt: 0 };
+      return { version: 1, cats: demoCats(), settings: defaultLook(), updatedAt: 0 };
     }
   }
 
@@ -1382,12 +1586,10 @@
   }
 
   function renderSettings() {
-    const theme = store.settings.theme || 'auto';
-    const themeOptions = [
-      { id: 'auto', label: '自动', icon: 'auto' },
-      { id: 'light', label: '浅色', icon: 'sun' },
-      { id: 'dark', label: '深色', icon: 'moon' }
-    ];
+    const look = normaliseLook(store.settings);
+    const accent = look.accent;
+    const background = look.background;
+    const veilPercent = Math.round(background.veil * 100);
     const records = allRecordCount();
     const storageMode = serverAvailable ? 'data.json' : '浏览器';
     const storageCopy = serverAvailable
@@ -1417,8 +1619,22 @@
 
     <div class="settings-group">
       <div class="settings-group-title">外观</div>
-      <div class="theme-segmented" role="group" aria-label="主题">
-        ${themeOptions.map((option) => `<button type="button" class="${theme === option.id ? 'active' : ''}" data-action="set-theme" data-theme="${option.id}" aria-pressed="${theme === option.id}">${icon(option.icon, 18)}<span>${option.label}</span></button>`).join('')}
+      <div class="appearance-card">
+        <div class="appearance-label"><span>系统色</span><span class="hint">${esc(lookAccentLabel(accent))}</span></div>
+        <div class="swatch-row" role="group" aria-label="系统色预设">
+          ${accentSwatches(accent)}
+        </div>
+        ${customAccentRow(accent)}
+        <div class="appearance-sep"></div>
+        <div class="appearance-label"><span>背景图</span><span class="hint">${background.preset === 'custom' ? '我的照片' : background.preset === 'plain' ? '无照片' : '拼贴照片'}</span></div>
+        <div class="bg-grid" role="group" aria-label="背景图">
+          ${backgroundTiles(background)}
+        </div>
+        ${background.preset === 'plain' ? '' : `<div class="veil-row">
+          <span>薄纱</span>
+          <input type="range" min="15" max="75" step="1" value="${veilPercent}" data-veil aria-label="背景薄纱浓度">
+          <span class="veil-value" data-veil-value>${veilPercent}%</span>
+        </div>`}
       </div>
     </div>
 
@@ -1667,7 +1883,6 @@
      Modal system
      ========================================================= */
 
-  const darkMedia = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
   let modalReturnFocus = null;
   let modalKeyHandler = null;
   let toastTimer = null;
@@ -2619,7 +2834,7 @@
             ui.view = 'tabs';
             ui.tab = 'home';
             resetFilters();
-            applyTheme();
+            applyLook();
             persist();
             render({ animate: true });
             showToast('备份已导入');
@@ -2649,29 +2864,109 @@
     reader.readAsText(file);
   }
 
-  function applyTheme() {
-    const theme = store.settings.theme || 'auto';
-    if (theme === 'auto') {
-      document.documentElement.removeAttribute('data-theme');
-    } else {
-      document.documentElement.setAttribute('data-theme', theme);
-    }
-    updateThemeMeta();
-  }
-
-  function updateThemeMeta() {
-    const theme = store.settings.theme || 'auto';
-    const dark = theme === 'dark' || (theme === 'auto' && darkMedia && darkMedia.matches);
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', dark ? '#0c1128' : '#f1e7d5');
-  }
-
-  function setTheme(theme) {
-    if (!['auto', 'light', 'dark'].includes(theme)) return;
-    store.settings.theme = theme;
+  function setAccent(value) {
+    const accent = normaliseHex(value);
+    if (!accent) return;
+    store.settings.accent = accent;
     persist();
-    applyTheme();
+    applyLook();
     render({ preserveScroll: true });
+  }
+
+  function setBackgroundPreset(preset) {
+    if (!BG_PRESETS.some((item) => item.id === preset)) return;
+    const background = normaliseBackground(store.settings.background);
+    if (preset === 'custom' && !background.image) {
+      pickBackgroundImage();
+      return;
+    }
+    store.settings.background = { ...background, preset };
+    persist();
+    applyLook();
+    render({ preserveScroll: true });
+  }
+
+  function setVeil(value, persistLook) {
+    const veil = normaliseVeil(Number(value) / 100);
+    store.settings.background = { ...normaliseBackground(store.settings.background), veil };
+    applyLook();
+    const label = document.querySelector('[data-veil-value]');
+    if (label) label.textContent = `${Math.round(veil * 100)}%`;
+    if (persistLook) persist();
+  }
+
+  function pickBackgroundImage() {
+    const input = $('#bg-file');
+    if (input) input.click();
+  }
+
+  function readImageAsBackground(file) {
+    return new Promise((resolve, reject) => {
+      if (!file) {
+        reject(new Error('没有选择图片'));
+        return;
+      }
+      if (!/^image\//.test(file.type)) {
+        reject(new Error('请选择图片文件（JPG / PNG / WebP）'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('读取图片失败'));
+      reader.onload = () => {
+        const image = new Image();
+        image.onerror = () => reject(new Error('这张图片无法解析'));
+        image.onload = () => {
+          try {
+            resolve(compressImage(image));
+          } catch (error) {
+            reject(error);
+          }
+        };
+        image.src = String(reader.result || '');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // 背景图内联进单文件与 data.json，先压到 900KB 以内
+  function compressImage(image) {
+    const maxSide = 1600;
+    const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(image.width * scale));
+    canvas.height = Math.max(1, Math.round(image.height * scale));
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('浏览器不支持图片处理');
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    let quality = 0.86;
+    let dataUrl = canvas.toDataURL('image/jpeg', quality);
+    while (dataUrl.length > MAX_BG_BYTES && quality > 0.42) {
+      quality -= 0.08;
+      dataUrl = canvas.toDataURL('image/jpeg', quality);
+    }
+    if (dataUrl.length > MAX_BG_BYTES) {
+      throw new Error('图片太大，换一张小一点的再试');
+    }
+    return dataUrl;
+  }
+
+  async function handleBackgroundFile(event) {
+    const input = event.target;
+    const file = input.files && input.files[0];
+    input.value = '';
+    if (!file) return;
+    try {
+      const dataUrl = await readImageAsBackground(file);
+      const current = normaliseBackground(store.settings.background);
+      store.settings.background = { preset: 'custom', image: dataUrl, veil: current.veil || DEFAULT_VEIL };
+      persist();
+      applyLook();
+      render({ preserveScroll: true });
+      showToast('背景已更新');
+    } catch (error) {
+      showToast(error && error.message ? error.message : '背景图设置失败');
+    }
   }
 
   function showToast(message, actionLabel, action) {
@@ -2956,8 +3251,12 @@
         render({ preserveScroll: true });
         break;
       }
-      case 'set-theme': {
-        setTheme(actionElement.dataset.theme);
+      case 'set-accent': {
+        setAccent(actionElement.dataset.accent);
+        break;
+      }
+      case 'set-background': {
+        setBackgroundPreset(actionElement.dataset.preset);
         break;
       }
       case 'export': {
@@ -2983,12 +3282,35 @@
   }
 
   function handleAppChange(event) {
-    const select = event.target.closest('[data-month-filter]');
+    const target = event.target;
+    if (target.matches('[data-accent-input]')) {
+      setAccent(target.value);
+      return;
+    }
+    if (target.matches('[data-veil]')) {
+      setVeil(target.value, true);
+      return;
+    }
+    const select = target.closest('[data-month-filter]');
     if (!select) return;
     const scope = select.dataset.monthFilter;
     if (!scope) return;
     ui.monthFilter[scope] = select.value || 'all';
     render({ preserveScroll: true });
+  }
+
+  function handleAppInput(event) {
+    const target = event.target;
+    if (target.matches('[data-accent-input]')) {
+      const accent = normaliseHex(target.value);
+      if (!accent) return;
+      store.settings.accent = accent;
+      applyLook();
+      return;
+    }
+    if (target.matches('[data-veil]')) {
+      setVeil(target.value, false);
+    }
   }
 
   function handleAppKeydown(event) {
@@ -3020,7 +3342,7 @@
     ensureSelection();
     await hydrateFromServer();
     ensureSelection();
-    applyTheme();
+    applyLook();
     writeLocalStore();
     render();
     updateClock();
@@ -3029,6 +3351,7 @@
     app.addEventListener('click', handleAppClick);
     app.addEventListener('keydown', handleAppKeydown);
     app.addEventListener('change', handleAppChange);
+    app.addEventListener('input', handleAppInput);
 
     document.addEventListener('click', (event) => {
       if (!event.target.closest('.swipe-shell')) closeAllSwipes();
@@ -3044,13 +3367,8 @@
     const importFile = $('#import-file');
     if (importFile) importFile.addEventListener('change', handleImportFile);
 
-    if (darkMedia) {
-      if (typeof darkMedia.addEventListener === 'function') {
-        darkMedia.addEventListener('change', updateThemeMeta);
-      } else if (typeof darkMedia.addListener === 'function') {
-        darkMedia.addListener(updateThemeMeta);
-      }
-    }
+    const bgFile = $('#bg-file');
+    if (bgFile) bgFile.addEventListener('change', handleBackgroundFile);
 
     window.addEventListener('storage', (event) => {
       if (event.key !== STORAGE_KEY || !event.newValue) return;

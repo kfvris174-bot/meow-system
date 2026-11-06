@@ -295,6 +295,19 @@
     return rgbToHex(candidate);
   }
 
+  // 时间电量栏底色：跟随系统色，但压深到白字能看清（≥4.5:1）
+  const WHITE_RGB = { r: 255, g: 255, b: 255 };
+  function statusBarTone(accentHex) {
+    const accent = hexToRgb(accentHex);
+    let candidate = accent;
+    let step = 0;
+    while (contrastRatio(candidate, WHITE_RGB) < 4.5 && step < 30) {
+      candidate = mixRgb(candidate, { r: 0, g: 0, b: 0 }, 0.1);
+      step += 1;
+    }
+    return rgbToHex(candidate);
+  }
+
   // 下限 15%：全透明时压在照片上的大标题会糊成一片，留一点薄纱保底
   function normaliseVeil(value) {
     const num = Number(value);
@@ -390,6 +403,7 @@
     root.style.setProperty('--blue-deep', rgbToHex(mixRgb(accentRgb, { r: 0, g: 0, b: 0 }, 0.45)));
     root.style.setProperty('--blue-ink', accentForText(accent));
     root.style.setProperty('--on-accent', readableOn(accent));
+    root.style.setProperty('--status-bg', statusBarTone(accent));
 
     const background = look.background;
     const photo = background.preset === 'custom' && background.image
@@ -1546,10 +1560,6 @@
       <div>
         <div class="eyebrow">提醒 · ${String(filtered.length).padStart(2, '0')} 项</div>
         <h1>提醒</h1>
-      </div>
-      <div class="head-actions">
-        <button type="button" class="round-btn" data-action="tab" data-tab="home" aria-label="回到首页">${icon('home', 18)}</button>
-        <button type="button" class="round-btn blue" data-action="add-cat" aria-label="添加猫咪">${icon('plus', 18)}</button>
       </div>
     </header>
 

@@ -34,8 +34,12 @@
   --line-softer: rgba(27, 33, 66, 0.09);
 
   --blue: #2b3050;
+  /* 石墨：固定中性色，用于「最近动态」左侧时间轴方块，不跟随系统色 */
+  --graphite: #2b3050;
   /* 驱虫固定用克莱因蓝：不跟随「系统色」，方便一眼认出健康类目 */
   --deworm: #1e3bdb;
+  /* 猫咪事件图标固定湖水青：不跟随「系统色」 */
+  --event: #0e7d84;
   --blue-2: #6f7288;
   --blue-deep: #181a2c;
   --red: #b23a4b;
@@ -64,8 +68,9 @@
   --tone-plan-ink: #49376a;
 
 
-  --status-bg: #0a0f26;
-  --status-ink: #f2e8d4;
+  /* 时间电量栏跟随系统色：底色取 --blue，符号固定白色 */
+  --status-bg: var(--blue);
+  --status-ink: #fff;
   --tab-bg: rgba(251, 244, 229, 0.82);
   --tab-line: rgba(27, 33, 66, 0.16);
 
@@ -682,7 +687,7 @@ svg {
 
 .round-btn.blue {
   background: var(--blue);
-  color: var(--on-accent);
+  color: #fff;
   border-color: var(--blue-deep);
 }
 
@@ -1144,10 +1149,14 @@ svg {
   border: 1px solid var(--line-soft);
   border-radius: 0;
   background: var(--blue);
-  color: var(--on-accent);
+  /* 图标里的符号固定白色：系统色变亮时不跟着翻成深墨 */
+  color: #fff;
 }
 
-.module-tile.deworm .module-icon { background: var(--deworm); color: #fffaf0; }
+/* 猫咪事件图标固定湖水青，不随系统色变化 */
+.module-icon.events { background: var(--event); color: #fff; }
+
+.module-tile.deworm .module-icon { background: var(--deworm); color: #fff; }
 .module-tile.vaccine .module-icon { background: var(--red); }
 .module-tile.neuter .module-icon { background: var(--green); }
 
@@ -1407,12 +1416,9 @@ svg {
   height: 8px;
   border-radius: 0;
   border: 1px solid var(--line-soft);
-  background: var(--blue);
+  /* 时间轴方块固定石墨，不随系统色变化 */
+  background: var(--graphite);
 }
-
-.timeline-item.deworm::before { background: var(--deworm); }
-.timeline-item.vaccine::before { background: var(--red); }
-.timeline-item.neuter::before { background: var(--green); }
 
 .timeline-item .t-date {
   font-family: var(--font-mono);
@@ -1507,6 +1513,13 @@ svg {
   background: var(--blue);
   border-color: var(--blue-deep);
   color: var(--on-accent);
+}
+
+/* 主色按钮里的图标符号固定白色，文字仍按对比度取米白/深墨 */
+.btn.primary svg,
+.btn-complete svg,
+.btn.red svg {
+  color: #fff;
 }
 
 .btn.red {
@@ -1625,10 +1638,12 @@ svg {
 }
 
 .filter-chip.active {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--bg);
+  background: var(--blue);
+  border-color: var(--blue-deep);
+  color: var(--on-accent);
 }
+
+.filter-chip.active svg { color: #fff; }
 
 .reminder-summary {
   display: flex;
@@ -1904,7 +1919,7 @@ svg {
   flex: none;
 }
 
-.module-head .module-icon.deworm { background: var(--deworm); color: #fffaf0; }
+.module-head .module-icon.deworm { background: var(--deworm); color: #fff; }
 .module-head .module-icon.vaccine { background: var(--red); }
 .module-head .module-icon.neuter { background: var(--green); }
 
@@ -2169,7 +2184,7 @@ svg {
 .rec-actions .icon-btn.check {
   background: var(--blue);
   border-color: var(--blue-deep);
-  color: var(--on-accent);
+  color: #fff;
 }
 
 .rec-actions .icon-btn.check:active {
@@ -3868,6 +3883,19 @@ textarea.field-value-input {
     return rgbToHex(candidate);
   }
 
+  // 时间电量栏底色：跟随系统色，但压深到白字能看清（≥4.5:1）
+  const WHITE_RGB = { r: 255, g: 255, b: 255 };
+  function statusBarTone(accentHex) {
+    const accent = hexToRgb(accentHex);
+    let candidate = accent;
+    let step = 0;
+    while (contrastRatio(candidate, WHITE_RGB) < 4.5 && step < 30) {
+      candidate = mixRgb(candidate, { r: 0, g: 0, b: 0 }, 0.1);
+      step += 1;
+    }
+    return rgbToHex(candidate);
+  }
+
   // 下限 15%：全透明时压在照片上的大标题会糊成一片，留一点薄纱保底
   function normaliseVeil(value) {
     const num = Number(value);
@@ -3963,6 +3991,7 @@ textarea.field-value-input {
     root.style.setProperty('--blue-deep', rgbToHex(mixRgb(accentRgb, { r: 0, g: 0, b: 0 }, 0.45)));
     root.style.setProperty('--blue-ink', accentForText(accent));
     root.style.setProperty('--on-accent', readableOn(accent));
+    root.style.setProperty('--status-bg', statusBarTone(accent));
 
     const background = look.background;
     const photo = background.preset === 'custom' && background.image
@@ -5119,10 +5148,6 @@ textarea.field-value-input {
       <div>
         <div class="eyebrow">提醒 · ${String(filtered.length).padStart(2, '0')} 项</div>
         <h1>提醒</h1>
-      </div>
-      <div class="head-actions">
-        <button type="button" class="round-btn" data-action="tab" data-tab="home" aria-label="回到首页">${icon('home', 18)}</button>
-        <button type="button" class="round-btn blue" data-action="add-cat" aria-label="添加猫咪">${icon('plus', 18)}</button>
       </div>
     </header>
 

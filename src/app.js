@@ -1302,18 +1302,6 @@
     </nav>`;
   }
 
-  function renderCollage() {
-    return `<section class="collage-banner">
-      <div class="banner-rainbow"></div>
-      <div class="banner-bubble">
-        <strong>今天要照顾<br>哪只小猫？</strong>
-      </div>
-      <div class="banner-cat">${pixelCatSVG('pixel-1')}</div>
-      <div class="banner-star"></div>
-      <div class="banner-meta"><span class="dot"></span> 猫咪信息 · 事项记录</div>
-    </section>`;
-  }
-
   function renderCatSwitcher() {
     const chips = store.cats.map((cat) => {
       const active = cat.id === ui.selectedCatId;
@@ -1481,12 +1469,10 @@
         <h1>猫咪档案</h1>
       </div>
     </header>
-    ${renderCollage()}
     ${renderCatSwitcher()}
     ${cat ? renderHomeCard(cat) : renderEmptyCats()}
     ${cat ? renderEvents(cat) : ''}
-    ${cat ? renderRecent(cat) : ''}
-    <div class="screen-footer">本地档案 · ${fmtDot(todayISO())}</div>`;
+    ${cat ? renderRecent(cat) : ''}`;
   }
 
   function renderHomeCard(cat) {

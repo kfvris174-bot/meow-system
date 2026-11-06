@@ -97,7 +97,7 @@
       #405fd6 24px 30px,
       #8c6ab4 30px 36px);
 
-  --radius: 22px;
+  --radius: 0px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   color-scheme: light;
 }
@@ -246,7 +246,7 @@ svg {
   background: #fbf4e5;
   color: var(--blue-ink);
   border: 1px solid #0a0f26;
-  border-radius: 4px;
+  border-radius: 0;
   transform: rotate(-6deg);
   font-family: var(--font-mono);
   font-size: 18px;
@@ -390,7 +390,7 @@ svg {
   z-index: 2;
   width: min(430px, calc(100vw - 32px));
   height: min(920px, calc(100dvh - 44px));
-  border-radius: 42px;
+  border-radius: 0;
   background: var(--bg);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -509,7 +509,7 @@ svg {
   display: block;
   width: 2px;
   background: currentColor;
-  border-radius: 1px;
+  border-radius: 0;
 }
 
 .sb-signal i:nth-child(1) { height: 4px; }
@@ -522,7 +522,7 @@ svg {
   width: 19px;
   height: 9px;
   border: 1px solid currentColor;
-  border-radius: 2px;
+  border-radius: 0;
   padding: 1px;
 }
 
@@ -534,7 +534,7 @@ svg {
   width: 2px;
   height: 3px;
   background: currentColor;
-  border-radius: 0 1px 1px 0;
+  border-radius: 0;
 }
 
 .sb-battery i {
@@ -542,17 +542,9 @@ svg {
   width: 74%;
   height: 100%;
   background: currentColor;
-  border-radius: 1px;
+  border-radius: 0;
 }
 
-.rainbow-rule {
-  flex: none;
-  height: 4px;
-  background: var(--rainbow);
-  position: relative;
-  z-index: 29;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
-}
 
 /* ---------- app + screens ---------- */
 
@@ -639,7 +631,7 @@ svg {
   width: 6px;
   height: 6px;
   border: 1px solid var(--line-soft);
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--red);
   flex: none;
 }
@@ -658,7 +650,7 @@ svg {
   display: inline-grid;
   place-items: center;
   border: 1px solid var(--line-soft);
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--glass-strong);
   color: var(--ink);
   position: relative;
@@ -684,7 +676,7 @@ svg {
   padding: 0 4px;
   display: grid;
   place-items: center;
-  border-radius: 99px;
+  border-radius: 0;
   background: var(--red);
   color: #fff;
   border: 1px solid var(--paper);
@@ -711,7 +703,7 @@ svg {
   display: inline-grid;
   place-items: center;
   border: 1px solid var(--line-soft);
-  border-radius: 10px;
+  border-radius: 0;
   background: var(--glass-strong);
   color: var(--ink-2);
   transition: transform 0.12s ease, background 0.12s ease;
@@ -773,159 +765,8 @@ svg {
 .paper-card {
   background: var(--glass);
   border: 1px solid var(--line-soft);
-  border-radius: var(--radius);
+  border-radius: 0;
   position: relative;
-}
-
-/* ---------- collage banner ---------- */
-
-.collage-banner {
-  position: relative;
-  min-height: 138px;
-  margin: 2px 0 14px;
-  padding: 17px;
-  border: 1px solid rgba(255, 250, 240, 0.18);
-  border-radius: 24px 28px 20px 25px;
-  background: #0b1027;
-  color: #f7edda;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.collage-banner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 3px);
-  opacity: 0.75;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.collage-banner::after {
-  content: "";
-  position: absolute;
-  width: 72px;
-  height: 72px;
-  right: 22px;
-  bottom: -36px;
-  background: var(--chrome);
-  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  opacity: 0.9;
-  z-index: 1;
-}
-
-.banner-rainbow {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 48px;
-  background: var(--rainbow);
-  opacity: 0.78;
-  border-right: 1px solid rgba(255, 255, 255, 0.24);
-  z-index: 1;
-}
-
-.banner-bubble {
-  position: absolute;
-  left: 61px;
-  top: 16px;
-  z-index: 4;
-  width: 212px;
-  padding: 13px 13px 14px;
-  background: #fbf4e5;
-  color: var(--blue-ink);
-  border: 1px solid #0b1027;
-  border-radius: 7px 8px 8px 2px;
-  transform: rotate(-1.8deg);
-}
-
-.banner-bubble::after {
-  content: "";
-  position: absolute;
-  left: 18px;
-  bottom: -8px;
-  width: 13px;
-  height: 13px;
-  background: #fbf4e5;
-  border-right: 1px solid #0b1027;
-  border-bottom: 1px solid #0b1027;
-  transform: rotate(45deg);
-}
-
-.banner-bubble strong {
-  display: block;
-  margin: 0;
-  font-size: 23px;
-  line-height: 1.18;
-  letter-spacing: -0.045em;
-  font-weight: 900;
-}
-
-.banner-cat {
-  position: absolute;
-  right: 17px;
-  top: 18px;
-  width: 80px;
-  height: 80px;
-  z-index: 3;
-  padding: 7px;
-  background: var(--blue);
-  border: 1px solid #f2e8d4;
-  transform: rotate(4deg);
-  overflow: hidden;
-}
-
-.banner-cat::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    conic-gradient(rgba(255, 255, 255, 0.16) 25%, transparent 0 50%, rgba(255, 255, 255, 0.16) 0 75%, transparent 0) 0 0 / 12px 12px;
-  opacity: 0.55;
-}
-
-.banner-cat svg {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 1;
-  image-rendering: pixelated;
-}
-
-.banner-star {
-  position: absolute;
-  right: 70px;
-  top: 7px;
-  width: 31px;
-  height: 31px;
-  z-index: 5;
-  background: var(--chrome);
-  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  transform: rotate(12deg);
-}
-
-.banner-meta {
-  position: absolute;
-  left: 61px;
-  bottom: 13px;
-  z-index: 4;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #b7c0e7;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.banner-meta .dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #d7bf5d;
 }
 
 /* ---------- cat switcher ---------- */
@@ -952,7 +793,7 @@ svg {
   padding: 4px 12px 4px 4px;
   background: var(--glass-strong);
   border: 1px solid var(--line-soft);
-  border-radius: 999px;
+  border-radius: 0;
   color: var(--ink-2);
   font-size: 12px;
   font-weight: 800;
@@ -973,7 +814,7 @@ svg {
 .cat-chip .avatar {
   width: 30px !important;
   height: 30px !important;
-  border-radius: 50% !important;
+  border-radius: 0;
   border-width: 1px;
 }
 
@@ -987,7 +828,7 @@ svg {
 .cat-chip .chip-dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--red);
 }
 
@@ -1001,7 +842,7 @@ svg {
   display: inline-grid;
   place-items: center;
   border: 1px solid var(--line-soft);
-  border-radius: calc(var(--size) * 0.28);
+  border-radius: 0;
   background: var(--blue);
   overflow: hidden;
   position: relative;
@@ -1039,13 +880,13 @@ svg {
 
 .avatar.lg {
   --size: 78px;
-  border-radius: 22px;
+  border-radius: 0;
   border-width: 1px;
 }
 
 .avatar.xl {
   --size: 92px;
-  border-radius: 26px;
+  border-radius: 0;
   border-width: 1px;
 }
 
@@ -1092,7 +933,7 @@ svg {
   top: -30px;
   width: 104px;
   height: 104px;
-  border-radius: 50%;
+  border-radius: 0;
   background: radial-gradient(circle, rgba(30, 59, 219, 0.17) 1px, transparent 1.4px) 0 0 / 6px 6px;
   pointer-events: none;
 }
@@ -1152,7 +993,7 @@ svg {
   gap: 3px;
   padding: 3px 7px;
   border: 1px solid var(--line-soft);
-  border-radius: 6px;
+  border-radius: 0;
   background: var(--glass-soft);
   color: var(--ink-2);
   font-size: 9px;
@@ -1201,7 +1042,7 @@ svg {
   padding: 4px 7px 4px 8px;
   font-size: 10.5px;
   border: 1px solid var(--line-soft);
-  border-radius: 999px;
+  border-radius: 0;
   background: var(--glass-strong);
   white-space: nowrap;
 }
@@ -1231,7 +1072,7 @@ svg {
   /* 外框（home-card / 档案页摘要卡）已经做了毛玻璃，这里透明，避免叠两层发灰 */
   background: transparent;
   border: 1px solid var(--line-soft);
-  border-radius: 17px;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -1284,7 +1125,7 @@ svg {
   display: grid;
   place-items: center;
   border: 1px solid var(--line-soft);
-  border-radius: 9px;
+  border-radius: 0;
   background: var(--blue);
   color: var(--on-accent);
 }
@@ -1299,7 +1140,7 @@ svg {
   text-align: center;
   max-width: 100%;
   padding: 3px 5px;
-  border-radius: 5px;
+  border-radius: 0;
   background: var(--glass-soft);
   border: 1px solid var(--line-soft);
   color: var(--ink-2);
@@ -1326,7 +1167,7 @@ svg {
   display: grid;
   place-items: center;
   border: 1px solid var(--line-soft);
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--glass-strong);
   color: var(--ink-2);
   opacity: 0.8;
@@ -1354,7 +1195,7 @@ svg {
   background: var(--glass);
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
-  border-radius: 13px;
+  border-radius: 0;
 }
 
 .due-card.overdue { border-left-color: var(--red); }
@@ -1369,7 +1210,7 @@ svg {
   display: grid;
   place-items: center;
   border: 1px solid var(--line-soft);
-  border-radius: 9px;
+  border-radius: 0;
   background: var(--glass-soft);
   color: var(--ink-2);
 }
@@ -1402,7 +1243,7 @@ svg {
 .due-badge {
   flex: none;
   padding: 3px 6px;
-  border-radius: 5px;
+  border-radius: 0;
   font-size: 9px;
   line-height: 1.2;
   font-weight: 800;
@@ -1424,7 +1265,7 @@ svg {
   gap: 3px;
   padding: 6px 8px;
   border: 1px solid var(--line-soft);
-  border-radius: 7px;
+  border-radius: 0;
   background: var(--blue);
   color: var(--on-accent);
   font-size: 9px;
@@ -1468,7 +1309,7 @@ svg {
   background: var(--glass);
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
-  border-radius: 4px 10px 10px 4px;
+  border-radius: 0;
 }
 
 .event-top {
@@ -1488,7 +1329,7 @@ svg {
 .event-row .icon-btn.tiny {
   width: 22px;
   height: 22px;
-  border-radius: 6px;
+  border-radius: 0;
   background: transparent;
   color: var(--ink-3);
 }
@@ -1546,7 +1387,7 @@ svg {
   top: 5px;
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: 0;
   border: 1px solid var(--line-soft);
   background: var(--blue);
 }
@@ -1582,7 +1423,7 @@ svg {
   padding: 24px 18px;
   text-align: center;
   border: 1px dashed var(--line-soft);
-  border-radius: 18px;
+  border-radius: 0;
   background: var(--glass-soft);
 }
 
@@ -1630,7 +1471,7 @@ svg {
   min-height: 40px;
   padding: 9px 14px;
   border: 1px solid var(--line-soft);
-  border-radius: 11px;
+  border-radius: 0;
   background: var(--glass-soft);
   color: var(--ink);
   font-size: 12px;
@@ -1694,7 +1535,7 @@ svg {
   justify-content: center;
   gap: 3px;
   padding: 5px 3px 4px;
-  border-radius: 12px;
+  border-radius: 0;
   color: var(--ink-3);
   font-size: 9px;
   font-weight: 800;
@@ -1718,7 +1559,7 @@ svg {
   bottom: 1px;
   width: 14px;
   height: 2px;
-  border-radius: 99px;
+  border-radius: 0;
   background: var(--blue);
 }
 
@@ -1731,7 +1572,7 @@ svg {
   padding: 0 4px;
   display: grid;
   place-items: center;
-  border-radius: 99px;
+  border-radius: 0;
   background: var(--red);
   color: #fff;
   border: 1px solid var(--paper);
@@ -1757,7 +1598,7 @@ svg {
   flex: none;
   padding: 7px 11px;
   border: 1px solid var(--line-soft);
-  border-radius: 999px;
+  border-radius: 0;
   background: var(--glass-soft);
   color: var(--ink-2);
   font-size: 11px;
@@ -1776,36 +1617,11 @@ svg {
   gap: 12px;
   padding: 13px 14px;
   margin-bottom: 6px;
-  background: #0b1027;
-  color: #f6ecd9;
-  border: 1px solid rgba(255, 250, 240, 0.18);
-  border-radius: 19px;
+  background: var(--glass);
+  color: var(--ink);
+  border: 1px solid var(--line-soft);
   overflow: hidden;
   position: relative;
-}
-
-.reminder-summary::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.26) 0 1px, transparent 1px 3px);
-  opacity: 0.8;
-}
-
-.reminder-summary::after {
-  content: "";
-  position: absolute;
-  right: -19px;
-  top: -19px;
-  width: 68px;
-  height: 68px;
-  background: var(--chrome);
-  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-}
-
-.reminder-summary > * {
-  position: relative;
-  z-index: 1;
 }
 
 .reminder-summary .rs-copy {
@@ -1823,7 +1639,7 @@ svg {
 .reminder-summary .rs-copy span {
   display: block;
   margin-top: 3px;
-  color: #afb8df;
+  color: var(--ink-3);
   font-size: 9.5px;
 }
 
@@ -1832,7 +1648,7 @@ svg {
   font-size: 34px;
   line-height: 1;
   letter-spacing: -0.08em;
-  color: #fff;
+  color: var(--blue-ink);
 }
 
 .reminder-group {
@@ -1867,7 +1683,7 @@ svg {
   background: var(--glass);
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
-  border-radius: 13px;
+  border-radius: 0;
   margin-bottom: 7px;
 }
 
@@ -1878,7 +1694,7 @@ svg {
 
 .reminder-card .avatar {
   --size: 38px;
-  border-radius: 11px;
+  border-radius: 0;
 }
 
 .reminder-card .r-copy {
@@ -1969,7 +1785,7 @@ svg {
   padding: 14px;
   background: var(--glass);
   border: 1px solid var(--line-soft);
-  border-radius: 21px;
+  border-radius: 0;
 }
 
 .info-card .section-head {
@@ -1981,7 +1797,7 @@ svg {
   flex-direction: column;
   gap: 0;
   border: 1px solid var(--line-soft);
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
   background: var(--glass-soft);
 }
@@ -2100,7 +1916,7 @@ svg {
   min-height: 32px;
   padding: 0 22px 0 9px;
   border: 1px solid var(--line-soft);
-  border-radius: 9px;
+  border-radius: 0;
   background: var(--glass-soft);
   color: var(--ink-2);
   font-size: 10.5px;
@@ -2130,7 +1946,7 @@ svg {
   background: var(--glass);
   border: 1px solid var(--line-soft);
   border-left: 1px solid var(--line-soft);
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 .next-strip.overdue { border-left-color: var(--red); }
@@ -2167,7 +1983,7 @@ svg {
 
 .swipe-shell {
   position: relative;
-  border-radius: 14px;
+  border-radius: 0;
   overflow: hidden;
   background: var(--glass);
   border: 1px solid var(--line-soft);
@@ -2211,7 +2027,7 @@ svg {
   background: var(--glass-strong);
   backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
-  border-radius: 13px;
+  border-radius: 0;
   touch-action: pan-y;
   will-change: transform;
   transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -2227,7 +2043,7 @@ svg {
   padding: 4px 2px;
   text-align: center;
   border: 1px solid var(--line-soft);
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--glass-soft);
 }
 
@@ -2274,7 +2090,7 @@ svg {
 .rec-copy .latest-tag {
   flex: none;
   padding: 1px 4px;
-  border-radius: 3px;
+  border-radius: 0;
   background: var(--blue);
   color: var(--on-accent);
   font-family: var(--font-mono);
@@ -2296,7 +2112,7 @@ svg {
 .rec-copy .rec-meta .sep {
   width: 2px;
   height: 2px;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--ink-3);
 }
 
@@ -2304,7 +2120,7 @@ svg {
   display: inline-block;
   margin-top: 3px;
   padding: 2px 5px;
-  border-radius: 4px;
+  border-radius: 0;
   background: transparent;
   border: 1px solid var(--line-soft);
   color: var(--ink-3);
@@ -2327,7 +2143,7 @@ svg {
 .rec-actions .icon-btn {
   width: 27px;
   height: 27px;
-  border-radius: 8px;
+  border-radius: 0;
 }
 
 .rec-actions .icon-btn.check {
@@ -2346,7 +2162,7 @@ svg {
   padding: 13px;
   background: var(--glass);
   border: 1px solid var(--line-soft);
-  border-radius: 16px;
+  border-radius: 0;
 }
 
 .neuter-top {
@@ -2377,7 +2193,7 @@ svg {
 .status-badge {
   flex: none;
   padding: 4px 7px;
-  border-radius: 5px;
+  border-radius: 0;
   border: 1px solid var(--line-soft);
   background: var(--glass-soft);
   color: var(--ink-2);
@@ -2400,7 +2216,7 @@ svg {
   padding: 7px 8px;
   background: var(--glass-soft);
   border: 1px solid var(--line-soft);
-  border-radius: 8px;
+  border-radius: 0;
 }
 
 .neuter-meta span {
@@ -2454,22 +2270,10 @@ svg {
   position: relative;
   padding: 16px;
   margin: 2px 0 15px;
-  background: var(--blue);
-  color: var(--on-accent);
-  border: 1px solid color-mix(in srgb, var(--on-accent) 22%, transparent);
-  border-radius: 23px;
+  background: var(--glass);
+  color: var(--ink);
+  border: 1px solid var(--line-soft);
   overflow: hidden;
-}
-
-.system-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px),
-    conic-gradient(rgba(255, 255, 255, 0.1) 25%, transparent 0 50%, rgba(255, 255, 255, 0.1) 0 75%, transparent 0) 0 0 / 14px 14px;
-  opacity: 0.7;
-  pointer-events: none;
 }
 
 .system-panel > * {
@@ -2482,7 +2286,7 @@ svg {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  color: color-mix(in srgb, var(--on-accent) 74%, transparent);
+  color: var(--ink-3);
   font-family: var(--font-mono);
   font-size: 8px;
   letter-spacing: 0.16em;
@@ -2500,7 +2304,7 @@ svg {
 .system-panel p {
   max-width: 280px;
   margin-top: 5px;
-  color: color-mix(in srgb, var(--on-accent) 84%, transparent);
+  color: var(--ink-2);
   font-size: 10px;
   line-height: 1.5;
 }
@@ -2514,14 +2318,13 @@ svg {
 
 .sys-mini {
   padding: 8px;
-  background: color-mix(in srgb, var(--on-accent) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--on-accent) 34%, transparent);
-  border-radius: 8px;
+  background: var(--glass-soft);
+  border: 1px solid var(--line-soft);
 }
 
 .sys-mini span {
   display: block;
-  color: color-mix(in srgb, var(--on-accent) 74%, transparent);
+  color: var(--ink-3);
   font-family: var(--font-mono);
   font-size: 7px;
   letter-spacing: 0.1em;
@@ -2553,7 +2356,7 @@ svg {
   overflow: hidden;
   background: var(--glass);
   border: 1px solid var(--line-soft);
-  border-radius: 16px;
+  border-radius: 0;
 }
 
 .setting-row {
@@ -2577,7 +2380,7 @@ svg {
   display: grid;
   place-items: center;
   border: 1px solid var(--line-soft);
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--glass-soft);
   color: var(--ink-2);
 }
@@ -2615,7 +2418,7 @@ svg {
   padding: 12px;
   background: var(--glass);
   border: 1px solid var(--line-soft);
-  border-radius: 16px;
+  border-radius: 0;
 }
 
 .appearance-label {
@@ -2655,7 +2458,7 @@ svg {
   position: relative;
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  border-radius: 0;
   border: 1px solid var(--line-soft);
   background: var(--swatch);
 }
@@ -2681,7 +2484,7 @@ svg {
   margin-top: 7px;
   padding: 7px 9px;
   border: 1px solid var(--line-softer);
-  border-radius: 11px;
+  border-radius: 0;
   background: var(--glass-soft);
   cursor: pointer;
 }
@@ -2740,7 +2543,7 @@ svg {
   position: relative;
   aspect-ratio: 3 / 4;
   border: 1px solid var(--line-soft);
-  border-radius: 10px;
+  border-radius: 0;
   background-color: var(--bg);
   background-size: cover;
   background-position: center;
@@ -2845,7 +2648,7 @@ svg {
   backdrop-filter: blur(22px) saturate(1.4);
   -webkit-backdrop-filter: blur(22px) saturate(1.4);
   border: 1px solid var(--line-soft);
-  border-radius: 27px 27px 0 0;
+  border-radius: 0;
   animation: sheetUp 0.3s cubic-bezier(0.2, 0.85, 0.25, 1) both;
   overflow: hidden;
 }
@@ -2860,7 +2663,7 @@ svg {
   height: 5px;
   flex: none;
   margin: 8px auto 0;
-  border-radius: 99px;
+  border-radius: 0;
   background: var(--line-soft);
 }
 
@@ -2899,7 +2702,7 @@ svg {
   display: grid;
   place-items: center;
   border: 1px solid var(--line-soft);
-  border-radius: 50%;
+  border-radius: 0;
   background: transparent;
   color: var(--ink-2);
 }
@@ -2949,7 +2752,7 @@ svg {
 .modal.alert {
   max-width: 340px;
   margin-bottom: 0;
-  border-radius: 23px;
+  border-radius: 0;
   animation: alertIn 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
@@ -2975,7 +2778,7 @@ svg {
   margin: 0 auto 10px;
   background: transparent;
   border: 1px solid var(--line-soft);
-  border-radius: 14px;
+  border-radius: 0;
   color: var(--red);
 }
 
@@ -3043,7 +2846,7 @@ svg {
   min-height: 40px;
   padding: 10px 11px;
   border: 1px solid var(--line-soft);
-  border-radius: 10px;
+  border-radius: 0;
   background: var(--glass-soft);
   color: var(--ink);
   font-size: 13px;
@@ -3063,7 +2866,7 @@ select.input[type="date"],
   max-height: 40px;
   padding: 0 11px;
   border: 1px solid var(--line-soft);
-  border-radius: 10px;
+  border-radius: 0;
   background: transparent;
   font-size: 13px;
   line-height: 38px;
@@ -3122,7 +2925,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   margin: 5px 1px 0;
   padding: 7px 9px;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--tone-overdue-bg);
   color: var(--tone-overdue-ink);
   font-size: 9.5px;
@@ -3153,7 +2956,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: inline-block;
   padding: 7px 10px;
   border: 1px solid var(--line-soft);
-  border-radius: 8px;
+  border-radius: 0;
   background: transparent;
   color: var(--ink-2);
   font-size: 11px;
@@ -3182,7 +2985,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   flex: none;
   padding: 3px;
   border: 1px solid transparent;
-  border-radius: 15px;
+  border-radius: 0;
   background: transparent;
 }
 
@@ -3247,7 +3050,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-top: 0;
   padding: 5px 8px;
   border: 1px solid var(--line-softer);
-  border-radius: 7px;
+  border-radius: 0;
   background: transparent;
   color: var(--ink);
   font-size: 11.5px;
@@ -3268,7 +3071,7 @@ textarea.field-value-input {
   width: 24px;
   height: 24px;
   flex: none;
-  border-radius: 6px;
+  border-radius: 0;
   border-color: transparent;
   background: transparent;
   color: var(--ink-3);
@@ -3283,7 +3086,7 @@ textarea.field-value-input {
   margin-top: 9px;
   padding: 9px;
   border: 1px dashed var(--line-soft);
-  border-radius: 10px;
+  border-radius: 0;
   background: transparent;
 }
 
@@ -3347,7 +3150,7 @@ textarea.field-value-input {
   margin-top: 9px;
   background: transparent;
   border: 1px solid var(--line-soft);
-  border-radius: 10px;
+  border-radius: 0;
 }
 
 .switch-row span {
@@ -3371,7 +3174,7 @@ textarea.field-value-input {
 .switch i {
   position: absolute;
   inset: 0;
-  border-radius: 99px;
+  border-radius: 0;
   background: var(--line-soft);
   transition: background 0.18s ease;
 }
@@ -3383,7 +3186,7 @@ textarea.field-value-input {
   left: 3px;
   width: 19px;
   height: 19px;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--paper-2);
   transition: transform 0.18s ease;
 }
@@ -3414,10 +3217,10 @@ textarea.field-value-input {
   align-items: center;
   gap: 10px;
   padding: 10px 11px 10px 13px;
-  background: #0b1027;
-  color: #f6ecd9;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 12px;
+  background: var(--glass-strong);
+  color: var(--ink);
+  border: 1px solid var(--line-soft);
+  border-radius: 0;
   font-size: 10.5px;
   line-height: 1.4;
   animation: toastIn 0.24s cubic-bezier(0.2, 0.85, 0.25, 1) both;
@@ -3432,7 +3235,7 @@ textarea.field-value-input {
   width: 6px;
   height: 6px;
   flex: none;
-  border-radius: 50%;
+  border-radius: 0;
   background: #d7bf5d;
 }
 
@@ -3468,7 +3271,7 @@ textarea.field-value-input {
   width: 34px;
   height: 4px;
   background: var(--rainbow);
-  border-radius: 2px;
+  border-radius: 0;
   vertical-align: middle;
 }
 
@@ -3478,7 +3281,7 @@ textarea.field-value-input {
   }
 
   .modal {
-    border-radius: 26px;
+    border-radius: 0;
     margin-bottom: 22px;
     max-height: min(840px, 88dvh);
   }
@@ -3521,20 +3324,6 @@ textarea.field-value-input {
     padding-right: 13px;
   }
 
-  .banner-bubble {
-    width: 188px;
-    left: 56px;
-  }
-
-  .banner-bubble strong {
-    font-size: 20px;
-  }
-
-  .banner-cat {
-    width: 68px;
-    height: 68px;
-    right: 12px;
-  }
 
   .cat-hero .avatar.lg {
     --size: 66px;
@@ -3569,9 +3358,6 @@ textarea.field-value-input {
     display: none;
   }
 
-  .rainbow-rule {
-    margin-top: env(safe-area-inset-top);
-  }
 }
 
 /* ---------- 表单：档案表格化 ---------- */
@@ -3581,7 +3367,7 @@ textarea.field-value-input {
   flex-direction: column;
   gap: 0;
   border: 1px solid var(--line-soft);
-  border-radius: 9px;
+  border-radius: 0;
   overflow: hidden;
   background: transparent;
 }
@@ -3589,7 +3375,7 @@ textarea.field-value-input {
 .field-editor.single {
   margin: 2px 0 14px;
   border: 1px solid var(--line-softer);
-  border-radius: 9px;
+  border-radius: 0;
   background: transparent;
   overflow: hidden;
 }
@@ -3708,7 +3494,7 @@ textarea.field-value-input {
   height: 26px;
   flex: none;
   margin-right: 4px;
-  border-radius: 6px;
+  border-radius: 0;
   border-color: transparent;
   background: transparent;
   color: var(--ink-3);
@@ -3759,7 +3545,6 @@ textarea.field-value-input {
           <span class="sb-battery"><i></i></span>
         </div>
       </div>
-      <div class="rainbow-rule" aria-hidden="true"></div>
       <div id="app"></div>
       <div class="toast-wrap" id="toast-wrap" aria-live="polite" aria-atomic="true"></div>
     </div>
@@ -5078,18 +4863,6 @@ textarea.field-value-input {
     </nav>`;
   }
 
-  function renderCollage() {
-    return `<section class="collage-banner">
-      <div class="banner-rainbow"></div>
-      <div class="banner-bubble">
-        <strong>今天要照顾<br>哪只小猫？</strong>
-      </div>
-      <div class="banner-cat">${pixelCatSVG('pixel-1')}</div>
-      <div class="banner-star"></div>
-      <div class="banner-meta"><span class="dot"></span> 猫咪信息 · 事项记录</div>
-    </section>`;
-  }
-
   function renderCatSwitcher() {
     const chips = store.cats.map((cat) => {
       const active = cat.id === ui.selectedCatId;
@@ -5257,12 +5030,10 @@ textarea.field-value-input {
         <h1>猫咪档案</h1>
       </div>
     </header>
-    ${renderCollage()}
     ${renderCatSwitcher()}
     ${cat ? renderHomeCard(cat) : renderEmptyCats()}
     ${cat ? renderEvents(cat) : ''}
-    ${cat ? renderRecent(cat) : ''}
-    <div class="screen-footer">本地档案 · ${fmtDot(todayISO())}</div>`;
+    ${cat ? renderRecent(cat) : ''}`;
   }
 
   function renderHomeCard(cat) {
